@@ -337,6 +337,11 @@ svg text{font-family:var(--body)}
   .legend{grid-template-columns:1fr}
 }
 
+/* ---------- новые артефакты ---------- */
+.rcph{position:relative;height:190px;border-radius:14px;background:#0E1621;display:grid;place-items:center;text-align:center;padding:16px;overflow:hidden}
+.rcph.scan{background:#F7F3E8;color:#2A2A2A}
+.scanl{position:absolute;left:0;right:0;height:3px;background:#1E9E5E;box-shadow:0 0 12px #5CF2A6;animation:scanl 1.2s linear infinite}
+@keyframes scanl{from{top:0}to{top:100%}}
 /* ---------- опросник ---------- */
 .ana{font-size:13.5px;color:var(--mut);line-height:1.55;margin-top:2px}
 .ana b{color:var(--ac);font-weight:600}
@@ -601,11 +606,11 @@ function landing(){
     '<div class="tdesc"><div class="dl">'+dl+'</div><p class="key">'+key+'</p><p>'+p2+'</p></div></div>'+pr+'</div>'+protos+'</section>'}
   // прототипы
   var baseOrder=C.t.filter(function(t){return t!='sales'}).concat(has('sales')?['sales']:[]);
-  BS=baseOrder.slice(0,2);
-  var bp=baseOrder.slice(0,2).map(function(t,i){return COMP[t].html(i)}).join('');
-  if(baseOrder.length<2&&!has('sales'))bp+=COMP.sales.html(1);
-  var pp=COMP.sync.html()+COMP.bot.html();
-  var rp=COMP.panel.html()+((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?COMP.portal.html():'');
+  var BL=pickBase();BS=BL;var PL=['sync','bot'].concat(useReceipts()?['receipts']:[]);var RL=['panel'].concat(usePayreq()?['payreq']:[]).concat((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?['portal']:[]);
+  var bp=BL.map(function(k,i){return COMP[k].html(i)}).join('');
+
+  var pp=PL.map(function(k){return COMP[k].html()}).join('');
+  var rp=RL.map(function(k){return COMP[k].html()}).join('');
   var chips=C.t.map(function(t,i){return '<span class="chip"><b>0'+(i+1)+'</b> '+TASKS[t].l+'</span>'}).join('')+(C.s?'<span class="chip"><b>//</b> сфера: '+esc(C.s)+'</span>':C.i!='other'?'<span class="chip"><b>//</b> сфера: '+IND[C.i].l.toLowerCase()+'</span>':'')+'<span class="chip"><b>//</b> данные: '+C.d.map(function(x){return DATA[x].split(':')[0].split(',')[0]}).concat(C.y&&!detectData(C.y).length?[esc(C.y)]:[]).join(', ')+'</span>';
   var gifts=C.g?'<div class="gifts"><b>Подарки выпускнику на любом тарифе:</b> +1 год доступа к обоим курсам, Обезличиватель, спецкурс «Монетизация вайб-кодинга» и спецкурс «ИИ-сотрудники на OpenClaw». Старт 30 ноября, это последний поток, где кураторами будут Софья, Натали и Алексей.</div>':
     '<div class="gifts"><b>Старт 30 ноября.</b> Это последний поток, где кураторами будут Софья, Натали и Алексей. Оплата в рассрочку до 6 месяцев без переплаты, для компаний можно по счёту.</div>';
@@ -622,8 +627,8 @@ function landing(){
    '<div class="cmp"><div><b>База · '+rub(P[0][0])+'</b><span>'+cap(TASKS[baseOrder[0]].l.toLowerCase())+' по выгрузкам</span></div><div><b>Практика · '+rub(P[1][0])+'</b><span>'+(ls?ls+' напрямую':'Таблицы на сервере')+', бот в Telegram'+(has('docs')||has('pay')?', письма контрагентам':'')+'</span></div><div class="rec"><b>Профи · '+rub(P[2][0])+'</b><span>Своя панель по ссылке'+(rp.indexOf('id="portal"')>-1?' и кабинет для клиентов':' для вас'+(bossW()?' и '+(boss()?'руководителя':'коллег'):''))+'</span></div></div>'+gifts+'</section>'+
    '<div class="foot"><span>МАСТЕР CFO · FIN-ACADEMY.PRO</span><span>ПОДГОТОВИЛА АЛЕКСАНДРА</span></div></main>';
   document.title=C.n+': вайб-кодинг по тарифам';
-  baseOrder.slice(0,2).forEach(function(t){COMP[t].init()});if(baseOrder.length<2&&!has('sales'))COMP.sales.init();
-  COMP.sync.init();COMP.bot.init();COMP.panel.init();if($('#portal'))COMP.portal.init();
+  BL.forEach(function(k){COMP[k].init()});
+  PL.forEach(function(k){COMP[k].init()});RL.forEach(function(k){COMP[k].init()});
   if(false)$('#adm-copy').addEventListener('click',function(){var i=$('#adm-url');i.select();try{navigator.clipboard.writeText(i.value)}catch(e){document.execCommand('copy')}toast('Ссылка скопирована, можно отправлять клиенту')});
 }
 
@@ -993,6 +998,166 @@ COMP.portal=(function(){
     $('#poact').addEventListener('click',function(){this.textContent='Запрос отправлен ✓';this.disabled=true;toast('Запрос акта сверки попал в панель и в Telegram')});
     $('#potg').addEventListener('change',function(){toast(this.checked?'Клиент будет получать уведомления':'Уведомления выключены')})}};
 })();
+
+/* ===================== НОВЫЕ АРТЕФАКТЫ ===================== */
+function hsh(s){var h=7;s=String(s||'');for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h}
+function rng(id,min,max,step,val){return '<input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+val+'">'}
+function fld(lbl,id,inner){return '<div class="fld"><label><span>'+lbl+'</span><b id="'+id+'v" style="color:var(--apptx)"></b></label>'+inner+'</div>'}
+function kpi(id,l,cls){return '<div class="kpi" id="'+id+'"><div class="l">'+l+'</div><div class="v'+(cls?' '+cls:'')+'"></div><div class="d"></div></div>'}
+function setK(id,v,d,vc){var e=$('#'+id);$('.v',e).innerHTML=v;$('.d',e).innerHTML=d||'';if(vc!=null)$('.v',e).className='v '+vc}
+
+/* ---- 1. финмодель с ползунками ---- */
+var FMC={
+ food:{t:'Финмодель кофейни',p:['Средний чек',150,2000,10,650],q:['Гостей в месяц',500,15000,100,4500],v:['Себестоимость и расходники',15,60,1,34],f:['Постоянные расходы в месяц',200,4000,10,1150],i:['Вложения в запуск',500,20000,100,6500],u:'гостей'},
+ retail:{t:'Финмодель магазина',p:['Средний чек',300,15000,50,2400],q:['Покупок в месяц',200,10000,50,1800],v:['Себестоимость и комиссии',30,80,1,58],f:['Постоянные расходы в месяц',100,3000,10,620],i:['Вложения в запуск',300,15000,100,3000],u:'покупок'},
+ serv:{t:'Финмодель услуги',p:['Средний чек',1000,100000,500,18500],q:['Клиентов в месяц',10,600,5,120],v:['Переменные расходы',5,60,1,22],f:['Постоянные расходы в месяц',100,5000,10,1100],i:['Вложения в запуск',100,10000,100,1500],u:'клиентов'},
+ edu:{t:'Финмодель онлайн-курса',p:['Цена курса',3000,150000,500,29900],q:['Учеников в месяц',5,600,5,90],v:['Реклама и платформа',5,70,1,18],f:['Постоянные расходы в месяц',100,5000,10,1250],i:['Вложения в запуск',100,10000,100,1200],u:'учеников'},
+ realty:{t:'Финмодель агентства',p:['Комиссия со сделки',20000,400000,5000,95000],q:['Сделок в месяц',1,80,1,14],v:['Доля агентов и реклама',10,70,1,30],f:['Постоянные расходы в месяц',100,3000,10,620],i:['Вложения в запуск',100,5000,50,900],u:'сделок'},
+ prod:{t:'Финмодель производства',p:['Цена изделия',500,50000,100,3900],q:['Изделий в месяц',100,10000,50,1400],v:['Материалы и сдельная оплата',20,80,1,55],f:['Постоянные расходы в месяц',300,8000,50,1600],i:['Вложения в запуск',1000,50000,500,9000],u:'изделий'},
+ gen:{t:'Финмодель направления',p:['Средняя отгрузка',5000,500000,1000,85000],q:['Отгрузок в месяц',10,1000,5,120],v:['Закупка и логистика',40,92,1,78],f:['Постоянные расходы в месяц',200,6000,10,1300],i:['Вложения в запуск',500,30000,100,5000],u:'отгрузок'}
+};
+COMP.finmodel=(function(){var c;
+  function calc(){var p=+$('#fm-p').value,q=+$('#fm-q').value,v=+$('#fm-v').value/100,fx=+$('#fm-f').value*1000,inv=+$('#fm-i').value*1000;
+    $('#fm-pv').textContent=rub(p);$('#fm-qv').textContent=f(q);$('#fm-vv').textContent=Math.round(v*100)+'%';$('#fm-fv').textContent=rub(fx);$('#fm-iv').textContent=rub(inv);
+    var rev=p*q,prof=rev*(1-v)-fx,mg=rev?prof/rev*100:0,be=Math.ceil(fx/(p*(1-v)||1));
+    var cum=-inv,pts=[cum],pay=null;for(var m=1;m<=24;m++){var k=Math.min(1,.45+.08*m);cum+=p*q*k*(1-v)-fx;pts.push(cum);if(pay==null&&cum>=0)pay=m}
+    setK('fm-k1',mln(rev),'в месяц при полной загрузке');setK('fm-k2',(prof<0?'−':'')+mln(Math.abs(prof)),'рентабельность '+mg.toFixed(1).replace('.',',')+'%',prof<0?'down':'up');
+    setK('fm-k3',f(be)+' '+c.u,'в месяц, чтобы выйти в ноль',be>q?'down':'');setK('fm-k4',pay?pay+' мес.':'больше 24 мес.',pay?'с учётом раскачки первых месяцев':'модель не окупается за 2 года',pay&&pay<=18?'up':'down');
+    var W=520,H=200,pl=40,pr=10,pt=12,pb=24,mn=Math.min.apply(null,pts),mx=Math.max.apply(null,pts.concat([0]));if(mx-mn<1)mx=mn+1;
+    function X(i){return pl+i*(W-pl-pr)/24}function Y(y){return pt+(mx-y)/(mx-mn)*(H-pt-pb)}
+    var g='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(0)+'" y2="'+Y(0)+'" stroke="#9AA6B2" stroke-dasharray="4 4"/><text x="'+(pl-6)+'" y="'+(Y(0)+4)+'" font-size="10" fill="#6A7783" text-anchor="end">0</text>';
+    [mn,mx].forEach(function(y){g+='<text x="'+(pl-6)+'" y="'+(Y(y)+4)+'" font-size="10" fill="#6A7783" text-anchor="end">'+(y/1e6).toFixed(1).replace('.',',')+'</text>'});
+    [0,6,12,18,24].forEach(function(m){g+='<text x="'+X(m)+'" y="'+(H-6)+'" font-size="10" fill="#6A7783" text-anchor="middle">'+(m?m+' мес':'старт')+'</text>'});
+    var line=pts.map(function(y,i){return X(i)+','+Y(y)}).join(' ');
+    g+='<polyline points="'+line+'" fill="none" stroke="'+(pay?'#1E9E5E':'#E5484D')+'" stroke-width="2.5"/>';
+    if(pay)g+='<circle cx="'+X(pay)+'" cy="'+Y(pts[pay])+'" r="5" fill="#1E9E5E"/><text x="'+X(pay)+'" y="'+(Y(pts[pay])-10)+'" font-size="11" font-weight="700" fill="#1E9E5E" text-anchor="middle">окупилось</text>';
+    $('#fm-svg').innerHTML=g;
+  }
+  function scen(k){var b=c,mult={pes:[.92,.8],base:[1,1],opt:[1.06,1.2]}[k];$('#fm-p').value=Math.round(b.p[4]*mult[0]/b.p[3])*b.p[3];$('#fm-q').value=Math.round(b.q[4]*mult[1]/b.q[3])*b.q[3];calc()}
+  return {html:function(k){c=FMC[C.i]||(C.i=='whole'||C.i=='build'||C.i=='logi'?FMC.gen:FMC.gen);if(C.i=='other')c=FMC.gen;
+    return res((k?'ЕЩЁ НА БАЗЕ':'РЕЗУЛЬТАТ')+' <b>//</b> ФИНМОДЕЛЬ С ПОЛЗУНКАМИ','двигайте ползунки и переключайте сценарии')+
+    win('finmodel.html · из ваших цифр','<div class="wbody"><div class="wtitle"><h3>'+c.t+'</h3>'+segBtns('fm-sc',[['pes','Пессимист'],['base','База'],['opt','Оптимист']],'base')+'</div>'+
+    '<div class="kpis">'+kpi('fm-k1','Выручка')+kpi('fm-k2','Прибыль в месяц')+kpi('fm-k3','Точка безубыточности')+kpi('fm-k4','Окупаемость')+'</div>'+
+    '<div class="grid2"><div class="card">'+fld(c.p[0],'fm-p',rng('fm-p',c.p[1],c.p[2],c.p[3],c.p[4]))+fld(c.q[0],'fm-q',rng('fm-q',c.q[1],c.q[2],c.q[3],c.q[4]))+fld(c.v[0]+', % выручки','fm-v',rng('fm-v',c.v[1],c.v[2],c.v[3],c.v[4]))+fld(c.f[0],'fm-f',rng('fm-f',c.f[1],c.f[2],c.f[3],c.f[4]))+fld(c.i[0],'fm-i',rng('fm-i',c.i[1],c.i[2],c.i[3],c.i[4]))+'</div>'+
+    '<div class="card"><h4>Накопленные деньги за 2 года <span>млн ₽</span></h4><svg id="fm-svg" viewBox="0 0 520 200" style="width:100%;height:auto;display:block"></svg><div style="font-size:12.5px;color:#6A7783;margin-top:6px">Первые месяцы продажи растут постепенно, к 8-му месяцу выходят на плановый объём.</div></div></div></div>')},
+   init:function(){['fm-p','fm-q','fm-v','fm-f','fm-i'].forEach(function(id){$('#'+id).addEventListener('input',calc)});onSeg('fm-sc',function(k){scen(k);flash($('#fm-k2'));flash($('#fm-k4'))});calc()}};
+})();
+
+/* ---- 2. калькулятор налоговых режимов ---- */
+COMP.tax=(function(){var form='ooo';
+  function ndfl(x){var b=[[2.4e6,.13],[5e6,.15],[20e6,.18],[50e6,.2],[1e15,.22]],t=0,prev=0;for(var i=0;i<b.length;i++){var top=Math.min(x,b[i][0]);if(top>prev)t+=(top-prev)*b[i][1];prev=b[i][0];if(x<=b[i][0])break}return t}
+  function calc(){var rev=+$('#tx-r').value*1e6,ex=+$('#tx-e').value/100*rev,fot=+$('#tx-f').value*1e6,emp=+$('#tx-n').value;
+    $('#tx-rv').textContent=n2(rev/1e6).replace(',00','')+' млн ₽';$('#tx-ev').textContent=$('#tx-e').value+'% выручки · '+mln(ex);$('#tx-fv').textContent=mln(fot);$('#tx-nv').textContent=emp+' чел.';
+    var con=fot*.3,usnVat=rev>20e6?rev*(rev<=250e6?.05:.07)/(1+(rev<=250e6?.05:.07)):0,usnOk=rev<=490e6;
+    var u6b=rev*.06,u6=u6b-Math.min(con,emp?u6b*.5:u6b);
+    var u15=Math.max((rev-ex-fot-con)*.15,rev*.01);
+    var ausnOk=rev<=60e6&&emp<=5,ausn=rev*.08;
+    var outV=rev*22/122,inV=ex*.7*22/122,vat=Math.max(0,outV-inV),pr=(rev-outV)-(ex-inV)-fot-con,os=Math.max(0,form=='ooo'?pr*.25:ndfl(pr));
+    var R=[['УСН «Доходы» 6%',usnOk?u6+usnVat+con:null,usnOk?(usnVat?'+ НДС '+(rev<=250e6?'5':'7')+'% с выручки':'без НДС'):'выручка выше лимита УСН'],
+           ['УСН «Доходы минус расходы» 15%',usnOk?u15+usnVat+con:null,usnOk?(usnVat?'+ НДС '+(rev<=250e6?'5':'7')+'%':'без НДС'):'выручка выше лимита УСН'],
+           ['АУСН 8%',ausnOk?ausn:null,ausnOk?'взносы за сотрудников 0':'только до 60 млн и 5 сотрудников'],
+           ['ОСНО',vat+os+con,'НДС 22% + '+(form=='ooo'?'налог на прибыль 25%':'НДФЛ по шкале')]];
+    var ok=R.filter(function(r){return r[1]!=null}),best=ok.reduce(function(a,r){return r[1]<a[1]?r:a},ok[0]),mx=Math.max.apply(null,ok.map(function(r){return r[1]}));
+    $('#tx-list').innerHTML=R.map(function(r){var on=r===best;return '<div style="margin-bottom:12px;font-size:13.5px'+(r[1]==null?';opacity:.5':'')+'"><div style="display:flex;justify-content:space-between;gap:10px"><span>'+(on?'<b>'+r[0]+'</b> <span class="st g">выгоднее всего</span>':r[0])+'</span><b>'+(r[1]==null?'недоступно':rub(r[1]))+'</b></div>'+
+      (r[1]!=null?'<div class="prog" style="height:10px"><i style="width:'+(r[1]/mx*100)+'%;background:'+(on?'#1E9E5E':'#C5CDD5')+'"></i></div>':'')+'<div style="font-size:12px;color:#6A7783;margin-top:3px">'+r[2]+'</div></div>'}).join('');
+    var worst=ok.reduce(function(a,r){return r[1]>a[1]?r:a},ok[0]);
+    setK('tx-k1',best[0].replace(/ «.*»/,'').replace(' 15%',' 15%'),'нагрузка '+(best[1]/rev*100).toFixed(1).replace('.',',')+'% выручки','up');setK('tx-k2',mln(worst[1]-best[1]),'по сравнению с «'+worst[0].replace(/ «.*»/,'')+'»','up');setK('tx-k3',mln(con),'взносы 30% с ФОТ, упрощённо')}
+  return {html:function(k){return res((k?'ЕЩЁ НА БАЗЕ':'РЕЗУЛЬТАТ')+' <b>//</b> СРАВНЕНИЕ НАЛОГОВЫХ РЕЖИМОВ','двигайте выручку и расходы, переключите ИП и ООО')+
+    win('tax.html · расчёт на 2026 год','<div class="wbody"><div class="wtitle"><h3>Какой налоговый режим выгоднее</h3>'+segBtns('tx-form',[['ooo','ООО'],['ip','ИП']],'ooo')+'</div>'+
+    '<div class="kpis" style="grid-template-columns:repeat(3,1fr)">'+kpi('tx-k1','Выгоднее всего')+kpi('tx-k2','Экономия в год')+kpi('tx-k3','Страховые взносы')+'</div>'+
+    '<div class="grid2"><div class="card">'+fld('Выручка в год','tx-r',rng('tx-r',5,300,1,48))+fld('Расходы без зарплаты','tx-e',rng('tx-e',10,90,1,55))+fld('Фонд оплаты труда в год','tx-f',rng('tx-f',0,60,.5,9))+fld('Сотрудников','tx-n',rng('tx-n',0,60,1,6))+'</div>'+
+    '<div class="card"><h4>Налоги и взносы за год</h4><div id="tx-list"></div><div style="font-size:12px;color:#6A7783;border-top:1px solid #EEF1F4;padding-top:8px">Ориентировочный расчёт по ставкам 2026 года, без льгот, региональных ставок и вычетов. Перед сменой режима сверьтесь с налоговым консультантом.</div></div></div></div>')},
+   init:function(){['tx-r','tx-e','tx-f','tx-n'].forEach(function(id){$('#'+id).addEventListener('input',calc)});onSeg('tx-form',function(k){form=k;calc()});calc()}};
+})();
+
+/* ---- 3. ABC-анализ ---- */
+var ABCD={
+ food:[['Капучино 300 мл',612000,71],['Круассан с ветчиной',388000,58],['Латте 400 мл',352000,70],['Бизнес-ланч',301000,38],['Сырники',184000,61],['Американо',171000,78],['Чизкейк',126000,52],['Матча-латте',98000,64],['Сэндвич с лососем',74000,41],['Овсянка с ягодами',52000,57],['Раф лавандовый',41000,35],['Смузи',28000,31],['Киш с курицей',19000,22],['Какао на кокосовом',12000,28]],
+ retail:[['Подарочный набор «Классика»',1240000,42],['Товар-хит, артикул 1021',980000,38],['Свеча ароматическая',610000,55],['Набор кружек',455000,33],['Плед вязаный',402000,29],['Ежедневник кожаный',265000,47],['Диффузор',198000,51],['Термокружка',172000,27],['Открытка дизайнерская',96000,24],['Брелок',61000,18],['Упаковка премиум',48000,15],['Стикерпак',35000,21],['Магнит',18000,14],['Закладка',9000,12]],
+ gen:[['Позиция 1021, ходовая',2860000,18],['Позиция 3307',1940000,22],['Позиция 1145',1520000,16],['Позиция 2210',980000,24],['Позиция 4012',760000,27],['Позиция 1180',540000,21],['Позиция 3301',410000,31],['Позиция 2290',305000,19],['Позиция 5007',220000,26],['Позиция 4120',160000,33],['Позиция 1307',118000,12],['Позиция 2045',74000,12],['Позиция 3399',41000,9],['Позиция 5120',22000,14]]
+};
+COMP.abc=(function(){var D,by='rev',off={};
+  function calc(){var rows=D.map(function(d,i){return {i:i,n:d[0],r:d[1],m:d[1]*d[2]/100,p:d[2]}}),key=by=='rev'?'r':'m',tot=sm(rows.map(function(x){return [0,x[key]]}));
+    rows.sort(function(a,b){return b[key]-a[key]});var cum=0;rows.forEach(function(x){cum+=x[key];x.cls=cum/tot<=.8?'A':cum/tot<=.95?'B':'C'});
+    var cnt={A:0,B:0,C:0},share={A:0,B:0,C:0};rows.forEach(function(x){cnt[x.cls]++;share[x.cls]+=x[key]/tot*100});
+    setK('ab-k1',cnt.A+' из '+rows.length,'дают '+Math.round(share.A)+'% '+(by=='rev'?'выручки':'маржи'),'up');setK('ab-k2',cnt.C+' позиций','всего '+share.C.toFixed(1).replace('.',',')+'% '+(by=='rev'?'выручки':'маржи'),'warn');
+    var R=sm(rows.map(function(x){return [0,x.r]})),M=sm(rows.map(function(x){return [0,x.m]})),R2=sm(rows.filter(function(x){return !off[x.i]}).map(function(x){return [0,x.r]})),M2=sm(rows.filter(function(x){return !off[x.i]}).map(function(x){return [0,x.m]})),n=Object.keys(off).filter(function(k){return off[k]}).length;
+    setK('ab-k3',(M/R*100).toFixed(1).replace('.',',')+'%','средняя маржинальность');
+    setK('ab-k4',n?(M2/R2*100).toFixed(1).replace('.',',')+'%':'—',n?'маржинальность без '+n+' поз.: '+((M2/R2-M/R)*100>=0?'+':'')+((M2/R2-M/R)*100).toFixed(1).replace('.',',')+' п.п., выручка −'+((1-R2/R)*100).toFixed(1).replace('.',',')+'%':'отметьте позиции группы C',n?'up':'');
+    $('#ab-rows').innerHTML=rows.map(function(x){var c={A:'g',B:'a',C:'r'}[x.cls];return '<tr'+(off[x.i]?' style="opacity:.45"':'')+'><td>'+x.n+'</td><td class="n">'+f(x.r)+'</td><td class="n">'+x.p+'%</td><td><span class="st '+c+'">'+x.cls+'</span></td><td>'+(x.cls=='C'?'<label class="switch" style="margin:0"><input type="checkbox" data-i="'+x.i+'"'+(off[x.i]?' checked':'')+'><i></i>убрать</label>':'')+'</td></tr>'}).join('');
+    $('#ab-bar').innerHTML=['A','B','C'].map(function(k){return '<i style="width:'+share[k]+'%;background:'+{A:'#1E9E5E',B:'#F5A524',C:'#E5484D'}[k]+'"></i>'}).join('')}
+  return {html:function(k){D=ABCD[C.i=='food'?'food':C.i=='retail'?'retail':'gen'];return res((k?'ЕЩЁ НА БАЗЕ':'РЕЗУЛЬТАТ')+' <b>//</b> ABC-АНАЛИЗ АССОРТИМЕНТА','переключите выручку и маржу, отметьте, что убрать')+
+    win('abc.html · продажи за квартал','<div class="wbody"><div class="wtitle"><h3>ABC-анализ · '+(C.i=='food'?'меню':'ассортимент')+'</h3>'+segBtns('ab-by',[['rev','По выручке'],['mar','По марже']],'rev')+'</div>'+
+    '<div class="kpis">'+kpi('ab-k1','Группа A')+kpi('ab-k2','Группа C')+kpi('ab-k3','Маржинальность сейчас')+kpi('ab-k4','Если убрать отмеченное')+'</div>'+
+    '<div class="aging" id="ab-bar" style="height:14px"></div><div class="card tblwrap"><table><thead><tr><th>Позиция</th><th class="n">Выручка, ₽</th><th class="n">Маржа</th><th>Группа</th><th></th></tr></thead><tbody id="ab-rows"></tbody></table></div></div>')},
+   init:function(){onSeg('ab-by',function(k){by=k;calc()});$('#ab-rows').addEventListener('change',function(e){var c=e.target;if(c.dataset.i==null)return;off[c.dataset.i]=c.checked;calc();flash($('#ab-k4'))});calc()}};
+})();
+
+/* ---- 4. учёт чеков ---- */
+var RCQ={
+ food:[['Метро Кэш энд Керри','Продукты',18420],['Хозтовары у дома','Хозтовары',1260],['Такси до поставщика','Транспорт',640],['Рынок, овощи','Продукты',7350],['Ремонт кофемашины','Ремонт',4500],['Пекарня-партнёр','Продукты',5200]],
+ gen:[['Канцтовары «Офис»','Канцелярия',2340],['Такси на встречу','Транспорт',890],['Кафе, встреча с клиентом','Представительские',4120],['Хозтовары','Хозтовары',1580],['Курьерская доставка','Доставка',760],['Заправка','Транспорт',3200]]
+};
+var RCL={'Продукты':40000,'Хозтовары':5000,'Транспорт':6000,'Ремонт':10000,'Канцелярия':5000,'Представительские':8000,'Доставка':3000};
+COMP.receipts=(function(){var Q,rows=[],k=0,busy=false;
+  function render(){var by={};rows.forEach(function(r){by[r.c]=(by[r.c]||0)+r.s});
+    $('#rc-rows').innerHTML=rows.map(function(r,i){return '<tr><td>'+r.d+'</td><td>'+r.n+'</td><td class="n">'+f(r.s)+'</td><td><select data-i="'+i+'" style="border:1px solid #E4E8EC;border-radius:7px;padding:3px 6px;font:inherit;font-size:12.5px">'+Object.keys(RCL).map(function(c){return '<option'+(c==r.c?' selected':'')+'>'+c+'</option>'}).join('')+'</select></td><td><span class="st '+(r.cf>90?'g':'a')+'">'+r.cf+'%</span></td></tr>'}).join('')||'<tr><td colspan="5" style="color:#6A7783">Сфотографируйте первый чек</td></tr>';
+    var tot=sm(rows.map(function(r){return [0,r.s]}));setK('rc-k1',rows.length,'чеков за ноябрь');setK('rc-k2',rub(tot),'наличными и с карты сотрудника');
+    var over=Object.keys(by).filter(function(c){return by[c]>RCL[c]});setK('rc-k3',over.length,over.length?over.join(', '):'все статьи в лимите',over.length?'down':'up');
+    $('#rc-lim').innerHTML=Object.keys(by).map(function(c){var p=by[c]/RCL[c]*100;return '<div style="font-size:13px;margin-bottom:8px"><div style="display:flex;justify-content:space-between"><span>'+c+'</span><span>'+f(by[c])+' из '+f(RCL[c])+' ₽</span></div><div class="prog"><i style="width:'+Math.min(100,p)+'%;background:'+(p>100?'#E5484D':p>80?'#F5A524':'#1E9E5E')+'"></i></div></div>'}).join('')||'<div style="font-size:13px;color:#6A7783">Лимиты появятся после первого чека</div>'}
+  function shot(){if(busy)return;if(k>=Q.length){toast('Все учебные чеки уже распознаны');return}busy=true;var q=Q[k++],ph=$('#rc-ph');
+    ph.innerHTML='<div style="font:12px var(--mono);line-height:1.7;text-align:left">'+q[0].toUpperCase()+'<br>ИНН 77'+(hsh(q[0])%90000000+10000000)+'<br>11.11.2026 '+(9+k)+':'+(10+k*7)+'<br>ИТОГО: '+f(q[2])+',00</div><div class="scanl"></div>';ph.classList.add('scan');$('#rc-shot').disabled=true;$('#rc-shot').textContent='Распознаю…';
+    setTimeout(function(){ph.classList.remove('scan');rows.unshift({d:'11.11',n:q[0],s:q[2],c:q[1],cf:88+hsh(q[0])%11});busy=false;$('#rc-shot').disabled=false;$('#rc-shot').textContent='Сфотографировать чек';render();flash($('#rc-k2'));
+      var by=0;rows.forEach(function(r){if(r.c==q[1])by+=r.s});toast(by>RCL[q[1]]?'Чек распознан, статья «'+q[1]+'» превысила лимит, руководитель получил уведомление':'Чек распознан и разнесён в статью «'+q[1]+'»')},1400)}
+  return {html:function(){Q=RCQ[C.i=='food'?'food':'gen'];return res('ЕЩЁ НА ПРАКТИКЕ <b>//</b> УЧЁТ ЧЕКОВ ПО ФОТО','сфотографируйте несколько чеков и поменяйте статью')+
+    win('Telegram-бот · чеки сотрудников','<div class="wbody"><div class="grid2" style="grid-template-columns:260px 1fr"><div><div class="rcph" id="rc-ph"><div style="color:#7F91A4;font-size:13px">Сотрудник фотографирует чек<br>в Telegram-боте</div></div><button class="abtn pri" id="rc-shot" style="width:100%;margin-top:10px">Сфотографировать чек</button><div class="card" style="margin-top:12px"><h4>Лимиты по статьям</h4><div id="rc-lim"></div></div></div>'+
+    '<div><div class="kpis" style="grid-template-columns:repeat(3,1fr)">'+kpi('rc-k1','Чеков')+kpi('rc-k2','Потрачено')+kpi('rc-k3','Статей сверх лимита')+'</div><div class="card tblwrap"><h4>Таблица расходов <span>статья подобрана нейросетью, её можно поменять</span></h4><table><thead><tr><th>Дата</th><th>Продавец</th><th class="n">Сумма, ₽</th><th>Статья</th><th>Уверенность</th></tr></thead><tbody id="rc-rows"></tbody></table></div></div></div></div>')},
+   init:function(){render();$('#rc-shot').addEventListener('click',shot);$('#rc-rows').addEventListener('change',function(e){var s=e.target;if(s.dataset.i==null)return;rows[+s.dataset.i].c=s.value;render();toast('Статья изменена, нейросеть запомнит это для похожих чеков')})}};
+})();
+
+/* ---- 5. заявки на платежи с согласованием ---- */
+COMP.payreq=(function(){var role='emp',seq=231;
+  var LIM={'Закупка материалов':2400000,'Логистика':420000,'Маркетинг':300000,'Аренда':540000,'ИТ и связь':120000};
+  var RQ=[{id:226,a:'Закупка материалов',c:'ООО «МеталлСнаб»',s:684000,w:'Иванов С.',st:'paid'},{id:227,a:'Логистика',c:'ТК «Деловые линии»',s:86400,w:'Петров Д.',st:'ok'},{id:228,a:'Маркетинг',c:'Рекламное агентство «Луч»',s:145000,w:'Ирина П.',st:'new'},{id:229,a:'ИТ и связь',c:'ООО «Облако»',s:38500,w:'Смирнова Е.',st:'new'},{id:230,a:'Закупка материалов',c:'ООО «ПромКомплект»',s:912000,w:'Иванов С.',st:'new'}];
+  var SN={new:['a','На согласовании'],ok:['b','Согласована'],paid:['g','Оплачена'],no:['r','Отклонена']};
+  function used(a){return sm(RQ.filter(function(r){return r.a==a&&r.st=='paid'}).map(function(r){return [0,r.s]}))}
+  function render(){var nw=RQ.filter(function(r){return r.st=='new'}),ok=RQ.filter(function(r){return r.st=='ok'});
+    setK('pr-k1',nw.length,'на '+rub(sm(nw.map(function(r){return [0,r.s]}))));setK('pr-k2',ok.length,'ждут оплаты на '+rub(sm(ok.map(function(r){return [0,r.s]}))));
+    var left=sm(Object.keys(LIM).map(function(a){return [0,LIM[a]-used(a)]}));setK('pr-k3',mln(left),'свободно по лимитам ноября');
+    $('#pr-rows').innerHTML=RQ.slice().reverse().map(function(r){var s=SN[r.st],act='';
+      if(role=='boss'&&r.st=='new')act='<button class="abtn pri" data-a="ok" data-i="'+r.id+'">Согласовать</button> <button class="abtn" data-a="no" data-i="'+r.id+'">Отклонить</button>';
+      if(role=='fin'&&r.st=='ok')act='<button class="abtn ok" data-a="pay" data-i="'+r.id+'">Оплатить</button>';
+      var over=r.st!='paid'&&r.s>LIM[r.a]-used(r.a);
+      return '<tr><td>№'+r.id+'</td><td>'+r.a+(over?' <span class="st r">сверх лимита</span>':'')+'</td><td>'+r.c+'</td><td class="n">'+f(r.s)+'</td><td><span class="st '+s[0]+'">'+s[1]+'</span></td><td style="white-space:nowrap">'+act+'</td></tr>'}).join('');
+    $('#pr-lim').innerHTML=Object.keys(LIM).map(function(a){var u=used(a),p=u/LIM[a]*100;return '<div style="font-size:13px;margin-bottom:8px"><div style="display:flex;justify-content:space-between"><span>'+a+'</span><span>'+f(LIM[a]-u)+' ₽ свободно</span></div><div class="prog"><i style="width:'+Math.min(100,p)+'%;background:'+(p>90?'#E5484D':p>70?'#F5A524':'#1E9E5E')+'"></i></div></div>'}).join('');
+    $('#pr-form').style.display=role=='emp'?'':'none';$('#pr-hint').textContent={emp:'Вы сотрудник: создайте заявку на оплату.',boss:'Вы руководитель: согласуйте или отклоните новые заявки.',fin:'Вы финансист: оплатите согласованные заявки, лимиты уменьшатся сами.'}[role]}
+  return {html:function(){return res('ЕЩЁ НА ПРОФИ <b>//</b> ЗАЯВКИ НА ПЛАТЕЖИ С СОГЛАСОВАНИЕМ','создайте заявку, затем переключите роль и проведите её')+
+    win('pay.ваш-домен.ru · заявки на оплату','<div class="rolebar"><span>Роль:</span>'+segBtns('pr-role',[['emp','Сотрудник'],['boss','Руководитель'],['fin','Финансист']],'emp')+'<span id="pr-hint" style="color:#6A7783"></span></div><div class="wbody">'+
+    '<div class="kpis" style="grid-template-columns:repeat(3,1fr)">'+kpi('pr-k1','На согласовании')+kpi('pr-k2','Согласовано')+kpi('pr-k3','Остаток лимитов')+'</div>'+
+    '<div class="grid2" style="grid-template-columns:1.6fr 1fr"><div class="card tblwrap"><h4>Заявки <span>ноябрь</span></h4><table><thead><tr><th>№</th><th>Статья</th><th>Контрагент</th><th class="n">Сумма, ₽</th><th>Статус</th><th></th></tr></thead><tbody id="pr-rows"></tbody></table></div>'+
+    '<div class="stack"><div class="card" id="pr-form"><h4>Новая заявка</h4><div class="fld"><label>Статья</label><select id="pr-a">'+Object.keys(LIM).map(function(a){return '<option>'+a+'</option>'}).join('')+'</select></div><div class="fld"><label>Контрагент</label><input id="pr-c" value="ООО «СтройТехСнаб»" style="width:100%;font:inherit;font-size:14px;padding:8px 10px;border:1px solid #E4E8EC;border-radius:9px"></div><div class="fld"><label>Сумма, ₽</label><input type="number" id="pr-s" value="126000"></div><button class="abtn pri" id="pr-add" style="width:100%">Отправить на согласование</button></div>'+
+    '<div class="card"><h4>Лимиты по статьям</h4><div id="pr-lim"></div></div></div></div></div>')},
+   init:function(){onSeg('pr-role',function(k){role=k;render()});
+    $('#pr-add').addEventListener('click',function(){var s=+$('#pr-s').value;if(!s||s<0){toast('Укажите сумму');return}var a=$('#pr-a').value,r={id:seq++,a:a,c:$('#pr-c').value||'Контрагент',s:s,w:'Вы',st:'new'};RQ.push(r);render();flash($('#pr-k1'));
+      toast(s>LIM[a]-used(a)?'Заявка №'+r.id+' сверх лимита: уйдёт на согласование генеральному':'Заявка №'+r.id+' ушла руководителю на согласование')});
+    $('#pr-rows').addEventListener('click',function(e){var b=e.target.closest('button[data-a]');if(!b)return;var r=RQ.filter(function(x){return x.id==+b.dataset.i})[0];if(!r)return;
+      r.st={ok:'ok',no:'no',pay:'paid'}[b.dataset.a];render();['#pr-k1','#pr-k2','#pr-k3'].forEach(function(s){flash($(s))});toast({ok:'Заявка согласована, финансист получил уведомление',no:'Заявка отклонена, автор получил комментарий',pay:'Платёж отправлен в банк, лимит по статье уменьшен'}[b.dataset.a])});
+    render()}};
+})();
+
+/* ===================== ПОДБОР АРТЕФАКТОВ ===================== */
+var VAR={
+ budget:function(){return ['food','retail','serv','edu','realty'].indexOf(C.i)>-1?'finmodel':'budget'},
+ report:function(){if(/бухгалт/i.test(C.r))return 'tax';if(['food','retail','edu','realty'].indexOf(C.i)>-1)return hsh(C.n)%2?'finmodel':'report';return hsh(C.n)%3==0?'tax':'report'},
+ sales:function(){return (['retail','whole','food'].indexOf(C.i)>-1&&hsh(C.n)%2)?'abc':'sales'}
+};
+function pickBase(){var order=C.t.filter(function(t){return t!='sales'}).concat(has('sales')?['sales']:[]),L=[];
+  order.forEach(function(t){var k=VAR[t]?VAR[t]():t;if(L.indexOf(k)<0&&L.length<2)L.push(k)});
+  var ex=['retail','whole','food'].indexOf(C.i)>-1?['abc','finmodel','sales']:['serv','edu','realty','other'].indexOf(C.i)>-1?['tax','finmodel','sales']:['finmodel','tax','sales'];
+  if(/бухгалт/i.test(C.r))ex.unshift('tax');
+  ex.forEach(function(k){if(L.length<2&&L.indexOf(k)<0)L.push(k)});return L}
+function useReceipts(){return ['food','serv','retail','edu','realty'].indexOf(C.i)>-1||C.d.indexOf('scan')>-1||C.d.indexOf('msg')>-1||C.d.indexOf('iiko')>-1||has('cash')}
+function usePayreq(){return has('budget')||has('cash')||(has('pay')&&(boss()||C.v.indexOf('team')>-1))}
 
 /* ===================== ЗАПУСК ===================== */
 function start(){C=readCfg();window.scrollTo(0,0);if(C)landing();else quiz()}
