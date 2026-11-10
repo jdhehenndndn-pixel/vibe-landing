@@ -342,6 +342,10 @@ svg text{font-family:var(--body)}
 .rcph.scan{background:#F7F3E8;color:#2A2A2A}
 .scanl{position:absolute;left:0;right:0;height:3px;background:#1E9E5E;box-shadow:0 0 12px #5CF2A6;animation:scanl 1.2s linear infinite}
 @keyframes scanl{from{top:0}to{top:100%}}
+.wave{display:flex;align-items:center;gap:3px;height:46px}
+.wave i{flex:1;height:6px;border-radius:3px;background:#2B5278}
+.wave.on i{background:#5CF2A6;animation:wv .6s ease-in-out infinite alternate}
+@keyframes wv{from{height:6px}to{height:40px}}
 /* ---------- опросник ---------- */
 .ana{font-size:13.5px;color:var(--mut);line-height:1.55;margin-top:2px}
 .ana b{color:var(--ac);font-weight:600}
@@ -606,7 +610,7 @@ function landing(){
     '<div class="tdesc"><div class="dl">'+dl+'</div><p class="key">'+key+'</p><p>'+p2+'</p></div></div>'+pr+'</div>'+protos+'</section>'}
   // прототипы
   var baseOrder=C.t.filter(function(t){return t!='sales'}).concat(has('sales')?['sales']:[]);
-  var BL=pickBase();BS=BL;var PL=['sync','bot'].concat(useReceipts()?['receipts']:[]);var RL=['panel'].concat(usePayreq()?['payreq']:[]).concat((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?['portal']:[]);
+  var BL=pickBase();BS=BL;var PL=['sync','bot'].concat(pickPrac());var RL=['panel'].concat(usePayreq()?['payreq']:[]).concat((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?['portal']:[]);
   var bp=BL.map(function(k,i){return COMP[k].html(i)}).join('');
 
   var pp=PL.map(function(k){return COMP[k].html()}).join('');
@@ -1145,18 +1149,165 @@ COMP.payreq=(function(){var role='emp',seq=231;
     render()}};
 })();
 
+/* ===================== АРТЕФАКТЫ, ПАРТИЯ 2 ===================== */
+function tnow(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+function chat(boxId,html,cls){var M=$('#'+boxId),d=document.createElement('div');d.className='msg'+(cls?' '+cls:'');d.innerHTML=html+'<div class="t">'+tnow()+'</div>';M.appendChild(d);M.scrollTop=M.scrollHeight}
+function typing(boxId,ms,cb){var M=$('#'+boxId),t=document.createElement('div');t.className='typing';t.innerHTML='<i></i><i></i><i></i>';M.appendChild(t);M.scrollTop=M.scrollHeight;setTimeout(function(){t.remove();cb()},ms)}
+
+/* ---- бот для сотрудников ---- */
+COMP.staffbot=(function(){var st={q:214,self:186,fwd:28,h:31},busy=false;
+  var QA=[['аванс','Когда аванс?','Аванс 25-го, зарплата 10-го. Если дата выпадает на выходной, деньги придут в пятницу перед ним.'],
+   ['командир','Как оформить командировку?','Заполните заявку в разделе «Командировки» минимум за 3 дня до поездки. Суточные 700 ₽ в день, билеты и гостиницу бронирует офис-менеджер. После поездки сдайте авансовый отчёт за 3 рабочих дня.'],
+   ['такси','Как вернуть деньги за такси?','Сфотографируйте чек и отправьте сюда же в бот. Если поездка рабочая и в пределах лимита 6 000 ₽ в месяц, деньги вернутся с ближайшей выплатой.'],
+   ['справк','Где взять справку о доходах?','Справку о доходах сформирую сам: нажмите «Заказать справку», и через 10 минут она придёт сюда в PDF.'],
+   ['отпуск','Сколько дней отпуска осталось?','На 11 ноября у вас 14 дней отпуска. Заявление подаётся за 2 недели, шаблон пришлю по кнопке «Оформить отпуск».'],
+   ['счет','Кому согласовать счёт?','Счета до 50 000 ₽ согласует руководитель отдела, выше — финансовый директор. Загрузите счёт в бот, я сам отправлю его нужному человеку.']];
+  function kp(){setK('sb-k1',f(st.q),'за ноябрь');setK('sb-k2',Math.round(st.self/st.q*100)+'%','без участия финотдела','up');setK('sb-k3',st.h+' ч','времени финотдела сэкономлено','up');setK('sb-k4',st.fwd,'ушли специалистам')}
+  function ask(text){if(busy)return;busy=true;chat('sb-m',esc(text),'me');var t=norm(text),hit=null;QA.forEach(function(x){if(!hit&&t.indexOf(x[0])>-1)hit=x});
+    typing('sb-m',800,function(){st.q++;if(hit){st.self++;st.h=Math.round(st.self*.17);chat('sb-m',hit[2])}else{st.fwd++;chat('sb-m','Точного ответа в регламентах нет. Передал вопрос в финотдел, ответят сегодня до 18:00, ответ придёт сюда.')}kp();flash($('#sb-k2'));busy=false})}
+  return {html:function(){return res('ЕЩЁ НА ПРАКТИКЕ <b>//</b> БОТ, КОТОРЫЙ ОТВЕЧАЕТ СОТРУДНИКАМ','нажмите вопрос или напишите свой')+
+    win('Telegram · бот для сотрудников','<div class="wbody"><div class="kpis">'+kpi('sb-k1','Вопросов')+kpi('sb-k2','Ответил сам')+kpi('sb-k3','Экономия')+kpi('sb-k4','Передал людям')+'</div>'+
+    '<div class="tg"><div class="phone"><div class="phead"><div class="ava">?</div><div><b>Помощник финотдела</b><span>отвечает по регламентам компании</span></div></div><div class="msgs" id="sb-m" style="height:340px"></div>'+
+    '<div style="display:flex;gap:6px;padding-top:8px;border-top:1px solid #1D2A38"><input id="sb-in" placeholder="Напишите вопрос" style="flex:1;background:#182533;border:0;border-radius:9px;padding:9px 10px;color:#E9EEF3;font:inherit;font-size:13px"><button id="sb-go" style="background:#2B5278;border:0;border-radius:9px;color:#fff;padding:0 12px">→</button></div></div>'+
+    '<div class="card"><h4>Частые вопросы <span>нажмите, чтобы спросить</span></h4><div class="olist" id="sb-q">'+QA.map(function(x,i){return '<button class="ocard" data-i="'+i+'">'+x[1]+'</button>'}).join('')+'</div><div style="font-size:12.5px;color:#6A7783;margin-top:10px">Бот обучен на регламентах, положении об оплате труда и учётной политике. Новые вопросы, на которые он не ответил, финотдел добавляет в базу одной кнопкой.</div></div></div></div>')},
+   init:function(){kp();chat('sb-m','Здравствуйте! Я помощник финотдела. Спросите про зарплату, отпуск, командировки или документы.');
+    $('#sb-q').addEventListener('click',function(e){var b=e.target.closest('.ocard');if(b)ask(QA[+b.dataset.i][1])});
+    var go=function(){var v=$('#sb-in').value.trim();if(!v)return;$('#sb-in').value='';ask(v)};$('#sb-go').addEventListener('click',go);$('#sb-in').addEventListener('keydown',function(e){if(e.key=='Enter')go()})}};
+})();
+
+/* ---- голосовое в задачи ---- */
+COMP.voice=(function(){var VC={
+  plan:{b:'Планёрка, 1:42',tx:'Так, коллеги, по итогам недели. Ирина, до пятницы собери акты сверки с пятью крупнейшими должниками. Олег, завтра позвони поставщику, выясни, почему сдвинули поставку на 14-е. И обнови прайс до 15-го. Я сам в понедельник готовлю отчёт собственнику, мне нужны цифры по оплатам к пятнице.',
+   T:[['Ирина П.','Собрать акты сверки с 5 крупнейшими должниками','пт, 15.11'],['Олег К.','Позвонить поставщику: почему поставка сдвинута на 14.11','завтра, 12.11'],['Олег К.','Обновить прайс','15.11'],['Ирина П.','Подготовить цифры по оплатам для отчёта','пт, 15.11'],['Вы','Отчёт собственнику','пн, 18.11']]},
+  meet:{b:'Встреча с клиентом, 3:05',tx:'Созвонились с «Северным терминалом». Они готовы увеличить заказ на 20%, если дадим отсрочку 45 дней вместо 30. Нужно посчитать, выдержим ли по деньгам. Договорились, что до среды отправим им новое КП, а юристы посмотрят допсоглашение. Следующий созвон в четверг в 11.',
+   T:[['Финансист','Посчитать, выдержим ли отсрочку 45 дней при росте заказа на 20%','вт, 12.11'],['Отдел продаж','Отправить новое КП «Северному терминалу»','ср, 13.11'],['Юрист','Проверить допсоглашение об отсрочке','ср, 13.11'],['Вы','Созвон с клиентом','чт, 14.11, 11:00']]}};
+  var cur=null,busy=false;
+  function rec(k){if(busy)return;busy=true;cur=VC[k];$('#vc-st').textContent='Идёт запись…';$('#vc-wave').classList.add('on');$('#vc-tx').textContent='';$('#vc-rows').innerHTML='';$('#vc-send').disabled=true;
+    setTimeout(function(){$('#vc-wave').classList.remove('on');$('#vc-st').textContent='Расшифровываю…';var w=cur.tx.split(' '),i=0;
+      var tm=setInterval(function(){i+=3;$('#vc-tx').textContent=w.slice(0,i).join(' ');if(i>=w.length){clearInterval(tm);$('#vc-st').textContent='Готово: '+cur.T.length+' задач';
+        $('#vc-rows').innerHTML=cur.T.map(function(t){return '<tr><td>'+t[0]+'</td><td style="white-space:normal">'+t[1]+'</td><td>'+t[2]+'</td><td><span class="st n">Черновик</span></td></tr>'}).join('');$('#vc-send').disabled=false;busy=false}},60)},1600)}
+  return {html:function(){return res('ЕЩЁ НА ПРАКТИКЕ <b>//</b> ГОЛОСОВОЕ В ЗАДАЧИ','запишите голосовое и отправьте задачи')+
+    win('Telegram · бот-секретарь','<div class="wbody"><div class="grid2" style="grid-template-columns:300px 1fr"><div><div class="phone" style="padding:16px"><div style="font-size:13px;color:#7F91A4;margin-bottom:10px">Наговорите голосовое, бот разберёт его на задачи</div>'+
+    '<div class="wave" id="vc-wave">'+Array.apply(null,Array(26)).map(function(_,i){return '<i style="animation-delay:'+(i%7)*0.09+'s"></i>'}).join('')+'</div><div id="vc-st" style="font-size:12.5px;color:#8FC1FF;margin:8px 0">Нажмите, чтобы записать</div>'+
+    '<div class="cmds"><button data-k="plan">Записать: планёрка</button><button data-k="meet">Записать: встреча</button></div></div></div>'+
+    '<div class="stack"><div class="card"><h4>Расшифровка</h4><div id="vc-tx" style="font-size:13.5px;line-height:1.55;min-height:64px;color:#16212B"></div></div><div class="card tblwrap"><h4>Задачи <span>кто, что и к какому сроку</span></h4><table><thead><tr><th>Кто</th><th>Что сделать</th><th>Срок</th><th>Статус</th></tr></thead><tbody id="vc-rows"></tbody></table>'+
+    '<button class="abtn pri" id="vc-send" style="margin-top:10px" disabled>Отправить задачи исполнителям</button></div></div></div></div>')},
+   init:function(){$('#vc-wave').parentNode.querySelector('.cmds').addEventListener('click',function(e){var b=e.target.closest('button');if(b)rec(b.dataset.k)});
+    $('#vc-send').addEventListener('click',function(){$$('#vc-rows .st').forEach(function(s){s.className='st b';s.textContent='Отправлено'});this.disabled=true;toast('Задачи ушли исполнителям в Telegram, напомню за день до срока')})}};
+})();
+
+/* ---- акты, которые уходят сами ---- */
+COMP.autoacts=(function(){
+  var CL=[['ООО «Вектор»',1,48000],['ИП Морозова',1,18500],['ООО «ТехСтрой»',5,96000],['АО «Северный терминал»',10,64000],['ООО «Альфа-Сервис»',10,32000],['ООО «КранТехСервис»',15,41000],['ООО «ПромЛифт»',20,27500],['ООО «ЛенСпецМонтаж»',25,88000],['ИП Коваленко',30,15000]];
+  var S=CL.map(function(c){return c[1]<=5?'sig':c[1]<=10?'sent':'plan'}),sel=11,run=false;
+  var SL={plan:['n','Запланирован'],gen:['a','Сформирован'],sent:['b','Отправлен'],sig:['g','Подписан']};
+  function render(){var cnt={plan:0,gen:0,sent:0,sig:0};S.forEach(function(s){cnt[s]++});
+    setK('aa-k1',CL.length,'на '+rub(sm(CL,2))+' в месяц');setK('aa-k2',cnt.sent+cnt.sig,'отправлено клиентам');setK('aa-k3',cnt.sig,'подписано через ЭДО','up');setK('aa-k4',cnt.sent,cnt.sent?'ждут подписи, напомню через 3 дня':'всё подписано',cnt.sent?'warn':'up');
+    var days='';for(var d=1;d<=30;d++){var ac=CL.map(function(c,i){return c[1]==d?i:-1}).filter(function(i){return i>-1});var col=ac.length?(ac.every(function(i){return S[i]=='sig'})?'#E8F8EF':ac.some(function(i){return S[i]=='sent'})?'#EAF1FF':'#F5F7F9'):'#fff';
+      days+='<button class="day'+(d==sel?' on':'')+'" data-d="'+d+'" style="background:'+col+'"><b>'+d+'</b>'+(ac.length?'<span class="in" style="color:#16212B">'+ac.length+' акт'+(ac.length>1?'а':'')+'</span>':'<span>&nbsp;</span>')+'</button>'}
+    $('#aa-cal').innerHTML=days;
+    var L=CL.map(function(c,i){return [c,i]}).filter(function(x){return x[0][1]==sel});
+    $('#aa-list').innerHTML='<h4>'+sel+' ноября <span>'+(L.length?L.length+' акт(а)':'актов нет')+'</span></h4>'+(L.length?'<table><tbody>'+L.map(function(x){var s=SL[S[x[1]]];return '<tr><td>'+x[0][0]+'</td><td class="n">'+f(x[0][2])+' ₽</td><td><span class="st '+s[0]+'">'+s[1]+'</span></td></tr>'}).join('')+'</tbody></table>':'<div style="font-size:13px;color:#6A7783">Выберите день с актами</div>')}
+  return {html:function(){return res('ЕЩЁ НА ПРАКТИКЕ <b>//</b> АКТЫ, КОТОРЫЕ УХОДЯТ САМИ','нажмите на день или запустите отправку')+
+    win('server.ваш-домен.ru · акты и счета','<div class="wbody"><div class="wtitle"><h3>Акты и счета клиентам · ноябрь</h3><button class="abtn pri" id="aa-run">Запустить отправку на сегодня</button></div><div class="kpis">'+kpi('aa-k1','Актов в месяц')+kpi('aa-k2','Отправлено')+kpi('aa-k3','Подписано')+kpi('aa-k4','Ждут подписи')+'</div>'+
+    '<div class="grid2"><div class="days" id="aa-cal" style="grid-template-columns:repeat(7,1fr)"></div><div class="card" id="aa-list"></div></div><div style="font-size:12.5px;color:#6A7783;margin-top:8px">Каждый день сервер берёт данные из учёта, формирует акт и счёт по шаблону, отправляет через ЭДО и следит за подписью. Вы только проверяете список.</div></div>')},
+   init:function(){render();$('#aa-cal').addEventListener('click',function(e){var b=e.target.closest('.day');if(!b)return;sel=+b.dataset.d;render()});
+    $('#aa-run').addEventListener('click',function(){if(run){toast('Отправка на сегодня уже прошла');return}run=true;var idx=CL.map(function(c,i){return c[1]<=11&&S[i]!='sig'?i:-1}).filter(function(i){return i>-1}).concat(CL.map(function(c,i){return c[1]==15?i:-1}).filter(function(i){return i>-1}));
+      idx.forEach(function(i,k){setTimeout(function(){S[i]=S[i]=='plan'?'gen':S[i]=='gen'?'sent':'sig';render()},300+k*350)});
+      setTimeout(function(){idx.forEach(function(i){if(S[i]=='gen')S[i]='sent'});render();toast('Сформировано и отправлено, подписанные документы уже в карточках клиентов')},300+idx.length*350+500)})}};
+})();
+
+/* ---- интерактивное КП ---- */
+var KPC={
+ serv:{t:'Абонентское обслуживание',base:['Базовый пакет',45000],o:[['Управленческий учёт и отчёт собственнику',28000],['Платёжный календарь и казначейство',18000],['Бюджет на год',35000],['Сопровождение налоговых проверок',22000],['Дашборд для руководителя',15000]],u:'мес.'},
+ edu:{t:'Корпоративное обучение',base:['Программа на группу до 12 человек',180000],o:[['Индивидуальные разборы задач',45000],['Доступ к записям на 12 месяцев',30000],['Сертификаты участникам',12000],['Итоговый проект с наставником',60000],['Тестирование до и после',18000]],u:'группа'},
+ realty:{t:'Сопровождение сделки',base:['Подбор и показ объектов',60000],o:[['Юридическая проверка объекта',35000],['Помощь с ипотекой',25000],['Торг с продавцом',30000],['Оценка объекта',8500],['Сопровождение регистрации',20000]],u:'сделка'},
+ gen:{t:'Внедрение решения',base:['Базовый пакет внедрения',120000],o:[['Интеграция с 1С',60000],['Обучение сотрудников',35000],['Поддержка 3 месяца',45000],['Дашборд для руководителя',40000],['Срочный запуск за 2 недели',30000]],u:'проект'}};
+COMP.kp=(function(){var c,on={},term=1;
+  function calc(){var sum=c.base[1]+c.o.reduce(function(a,o,i){return a+(on[i]?o[1]:0)},0),n=Object.keys(on).filter(function(k){return on[k]}).length,disc=n>=3?.1:n>=2?.05:0,td=term==12?.12:term==6?.06:0,per=sum*(1-disc)*(1-td),tot=per*term;
+    $('#kp-per').textContent=rub(per)+(c.u=='мес.'?' / мес.':'');$('#kp-tot').textContent=rub(tot);$('#kp-disc').textContent=(disc||td)?'Скидка: '+(disc?Math.round(disc*100)+'% за пакет':'')+(disc&&td?' + ':'')+(td?Math.round(td*100)+'% за срок':''):'Выберите 2 опции и получите скидку 5%';
+    $$('#kp-o .ocard').forEach(function(b){b.classList.toggle('on',!!on[b.dataset.i])})}
+  return {html:function(){c=KPC[{serv:'serv',edu:'edu',realty:'realty'}[C.i]||'gen'];return res('ЕЩЁ НА БАЗЕ <b>//</b> ИНТЕРАКТИВНОЕ КП','выберите опции и срок, как это сделает ваш клиент')+
+    win('kp.ваш-сайт.ru · для ООО «Вектор»','<div class="wbody"><div class="wtitle"><div><div style="font-size:12px;color:#6A7783">Коммерческое предложение для ООО «Вектор»</div><h3>'+c.t+'</h3></div><span class="tag live">клиент открыл КП 3 раза</span></div>'+
+    '<div class="grid2"><div><div class="card" style="margin-bottom:12px;display:flex;justify-content:space-between;font-size:14px"><b>'+c.base[0]+'</b><b>'+rub(c.base[1])+'</b></div><div class="olist" id="kp-o">'+c.o.map(function(o,i){return '<button class="ocard" data-i="'+i+'"><span style="display:flex;justify-content:space-between;gap:10px"><span>+ '+o[0]+'</span><b>'+rub(o[1])+'</b></span></button>'}).join('')+'</div></div>'+
+    '<div class="sum"><div style="font-size:13px;color:#9DB2AA;margin-bottom:8px">Срок договора</div>'+segBtns('kp-term',c.u=='мес.'?[['1','1 мес.'],['6','6 мес.'],['12','12 мес.']]:[['1','Разово']],'1')+
+    '<div class="row" style="margin-top:12px"><span>'+(c.u=='мес.'?'В месяц':'Стоимость')+'</span><b id="kp-per"></b></div><div class="row tot"><span>Итого по договору</span><span id="kp-tot"></span></div><div class="save" id="kp-disc"></div>'+
+    '<button class="abtn ok" id="kp-pay" style="margin-top:10px;width:100%">Оплатить счёт онлайн</button><button class="abtn" id="kp-pdf" style="margin-top:8px;width:100%;background:transparent;color:#C9D8D1;border-color:#2C4038">Скачать PDF</button></div></div>'+
+    '<div style="font-size:12.5px;color:#6A7783;margin-top:10px">Менеджер видит, сколько раз клиент открыл КП и какие опции включал: так проще понять, что для него важно.</div></div>')},
+   init:function(){$('#kp-o').addEventListener('click',function(e){var b=e.target.closest('.ocard');if(!b)return;on[b.dataset.i]=!on[b.dataset.i];calc()});onSeg('kp-term',function(k){term=+k;calc()});
+    $('#kp-pay').addEventListener('click',function(){toast('Клиент перешёл к оплате на '+$('#kp-tot').textContent+', менеджер получил уведомление')});$('#kp-pdf').addEventListener('click',function(){toast('PDF с выбранными опциями сформирован')});on[0]=true;calc()}};
+})();
+
+/* ---- юнит-экономика маркетплейса ---- */
+COMP.unit=(function(){var mp='wb',P={wb:[23,85,6],oz:[19,72,4]};
+  function calc(){var pr=+$('#ue-p').value,cs=+$('#ue-c').value,cm=+$('#ue-m').value/100,lg=+$('#ue-l').value,ad=+$('#ue-a').value/100,bo=+$('#ue-b').value/100;
+    $('#ue-pv').textContent=rub(pr);$('#ue-cv').textContent=rub(cs);$('#ue-mv').textContent=Math.round(cm*100)+'%';$('#ue-lv').textContent=rub(lg);$('#ue-av').textContent=Math.round(ad*100)+'%';$('#ue-bv').textContent=Math.round(bo*100)+'%';
+    var ret=(1-bo)/bo*lg*0.5,tax=pr*.06,parts=[['Себестоимость',cs,'#5B6B7A'],['Комиссия площадки',pr*cm,'#8E6CF2'],['Логистика',lg,'#3E7BFA'],['Возвраты',ret,'#F5A524'],['Реклама',pr*ad,'#EE7D3B'],['Налог УСН 6%',tax,'#9AA6B2']],cost=sm(parts),prof=pr-cost,mg=prof/pr*100,roi=prof/cs*100;
+    var vc=cm+ad+.06,minP=(cs+lg+ret)/(1-vc);
+    setK('ue-k1',(prof<0?'−':'')+rub(Math.abs(prof)),'с одной продажи',prof<0?'down':'up');setK('ue-k2',mg.toFixed(1).replace('.',',')+'%','маржа',mg<10?'down':mg<20?'warn':'up');setK('ue-k3',Math.round(roi)+'%','на вложенный рубль');setK('ue-k4',rub(Math.ceil(minP/10)*10),'ниже этой цены уходим в минус',pr<minP?'down':'');
+    $('#ue-bar').innerHTML=parts.map(function(p){return '<i title="'+p[0]+'" style="width:'+Math.max(0,p[1]/pr*100)+'%;background:'+p[2]+'"></i>'}).join('')+(prof>0?'<i style="width:'+(prof/pr*100)+'%;background:#1E9E5E"></i>':'');
+    $('#ue-leg').innerHTML=parts.concat([['Прибыль',prof,'#1E9E5E']]).map(function(p){return '<div><span><s style="background:'+p[2]+'"></s>'+p[0]+'</span><b>'+(p[1]<0?'−':'')+f(Math.abs(p[1]))+' ₽</b></div>'}).join('')}
+  function setMp(k){mp=k;$('#ue-m').value=P[k][0];$('#ue-l').value=P[k][1];calc()}
+  return {html:function(){return res('ЕЩЁ НА БАЗЕ <b>//</b> ЮНИТ-ЭКОНОМИКА АРТИКУЛА','переключите площадку и двигайте цену')+
+    win('unit.html · артикул 1021','<div class="wbody"><div class="wtitle"><h3>Сколько остаётся с одной продажи</h3>'+segBtns('ue-mp',[['wb','Wildberries'],['oz','Ozon']],'wb')+'</div><div class="kpis">'+kpi('ue-k1','Прибыль')+kpi('ue-k2','Маржа')+kpi('ue-k3','ROI')+kpi('ue-k4','Минимальная цена')+'</div>'+
+    '<div class="grid2"><div class="card">'+fld('Цена продажи','ue-p',rng('ue-p',300,5000,10,1890))+fld('Себестоимость','ue-c',rng('ue-c',100,3000,10,640))+fld('Комиссия площадки','ue-m',rng('ue-m',5,40,1,23))+fld('Логистика за единицу','ue-l',rng('ue-l',30,400,5,85))+fld('Реклама, % от цены','ue-a',rng('ue-a',0,30,1,9))+fld('Процент выкупа','ue-b',rng('ue-b',40,100,1,82))+'</div>'+
+    '<div class="card"><h4>Из чего складывается цена</h4><div class="aging" id="ue-bar" style="height:22px"></div><div class="legend" id="ue-leg"></div><div style="font-size:12.5px;color:#6A7783;margin-top:10px">Возвраты считаются как обратная логистика невыкупленных товаров. Налог для примера 6% с цены.</div></div></div></div>')},
+   init:function(){['ue-p','ue-c','ue-m','ue-l','ue-a','ue-b'].forEach(function(id){$('#'+id).addEventListener('input',calc)});onSeg('ue-mp',function(k){setMp(k);flash($('#ue-k1'))});calc()}};
+})();
+
+/* ---- смета против факта ---- */
+COMP.estimate=(function(){
+  var OB=[{n:'ЖК «Северный», корпус 2',W:[['Земляные работы',4.2,4.6,100],['Фундамент',11.8,12.9,100],['Каркас',26.5,19.4,70],['Кровля',6.1,1.2,15],['Инженерные сети',14.3,5.8,35],['Отделка',18.9,0,0]]},
+   {n:'Склад «Логопарк»',W:[['Земляные работы',2.1,2.0,100],['Фундамент',6.4,6.1,100],['Металлокаркас',15.2,15.9,95],['Кровля и сэндвич-панели',9.8,7.2,70],['Инженерные сети',5.6,2.1,40],['Полы',4.4,0,0]]},
+   {n:'Офис на Ленина, ремонт',W:[['Демонтаж',0.8,1.1,100],['Электрика',2.6,2.4,85],['Вентиляция',3.1,3.6,80],['Отделка',5.9,2.2,35],['Мебель и оснащение',4.2,0,0]]}];
+  var oi=0,sel=null;
+  function render(){var O=OB[oi],W=O.W.map(function(w,i){var fc=w[3]?w[2]/(w[3]/100):w[1];return {i:i,n:w[0],pl:w[1],fa:w[2],pc:w[3],fc:fc,ov:fc-w[1]}});
+    var pl=sm(W.map(function(w){return [0,w.pl]})),fa=sm(W.map(function(w){return [0,w.fa]})),fc=sm(W.map(function(w){return [0,w.fc]})),prog=sm(W.map(function(w){return [0,w.pl*w.pc/100]}))/pl*100;
+    setK('es-k1',n2(pl)+' млн ₽','смета объекта');setK('es-k2',n2(fa)+' млн ₽','освоено, готовность '+Math.round(prog)+'%');setK('es-k3',n2(fc)+' млн ₽','прогноз итоговой стоимости',fc>pl?'down':'up');setK('es-k4',(fc>pl?'+':'−')+n2(Math.abs(fc-pl))+' млн ₽',(fc>pl?'перерасход ':'экономия ')+Math.abs((fc/pl-1)*100).toFixed(1).replace('.',',')+'%',fc>pl?'down':'up');
+    $('#es-rows').innerHTML=W.map(function(w){var bad=w.ov>w.pl*.03;return '<tr class="click'+(sel===w.i?' sel':'')+'" data-i="'+w.i+'"><td>'+w.n+'</td><td class="n">'+n2(w.pl)+'</td><td class="n">'+n2(w.fa)+'</td><td style="min-width:110px">'+w.pc+'%<div class="prog"><i style="width:'+w.pc+'%"></i></div></td><td class="n" style="color:'+(bad?'#E5484D':'#1E9E5E')+'">'+(w.pc?(w.ov>=0?'+':'−')+n2(Math.abs(w.ov)):'—')+'</td></tr>'}).join('');
+    if(sel!=null){var w=W[sel];$('#es-det').innerHTML='<div class="row"><div><h5>'+w.n+'</h5><div style="font-size:12.5px;color:#6A7783">выполнено '+w.pc+'%, освоено '+n2(w.fa)+' из '+n2(w.pl)+' млн</div></div></div><div style="font-size:13.5px">'+(w.ov>w.pl*.03?'При текущем темпе работа обойдётся в <b class="down">'+n2(w.fc)+' млн</b>, это на '+n2(w.ov)+' млн больше сметы. Чаще всего причина в удорожании материалов или допработах без допсоглашения.':'Идёт в рамках сметы.')+'</div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="abtn pri" data-a="ask">Запросить объяснение у прораба</button><button class="abtn" data-a="close">Закрыть</button></div>';$('#es-det').classList.add('on')}else $('#es-det').classList.remove('on')}
+  return {html:function(){return res('ЕЩЁ НА БАЗЕ <b>//</b> СМЕТА ПРОТИВ ФАКТА ПО ОБЪЕКТАМ','переключите объект и нажмите на вид работ')+
+    win('objects.html · из сметы и актов КС-2','<div class="wbody"><div class="wtitle"><h3>Смета и факт по объекту</h3>'+segBtns('es-ob',OB.map(function(o,i){return [String(i),o.n.split(',')[0]]}),'0')+'</div><div class="kpis">'+kpi('es-k1','Смета')+kpi('es-k2','Освоено')+kpi('es-k3','Прогноз')+kpi('es-k4','Отклонение')+'</div>'+
+    '<div class="card tblwrap"><table><thead><tr><th>Вид работ</th><th class="n">Смета, млн</th><th class="n">Факт, млн</th><th>Готовность</th><th class="n">Прогноз отклонения</th></tr></thead><tbody id="es-rows"></tbody></table><div class="detail" id="es-det"></div></div></div>')},
+   init:function(){render();onSeg('es-ob',function(k){oi=+k;sel=null;render();['#es-k1','#es-k2','#es-k3','#es-k4'].forEach(function(s){flash($(s))})});
+    $('#es-rows').addEventListener('click',function(e){var r=e.target.closest('tr[data-i]');if(!r)return;sel=+r.dataset.i;render()});
+    $('#es-det').addEventListener('click',function(e){var a=e.target.dataset.a;if(a=='ask')toast('Запрос ушёл прорабу в Telegram, ответ появится в карточке работ');if(a=='close'){sel=null;render()}})}};
+})();
+
+/* ---- стоимость рейса ---- */
+COMP.trip=(function(){var back=false;
+  function calc(){var km=+$('#tr-d').value,fp=+$('#tr-f').value,cons=+$('#tr-c').value,drv=+$('#tr-w').value,tol=+$('#tr-t').value,idle=+$('#tr-i').value,rate=+$('#tr-r').value*1000;
+    $('#tr-dv').textContent=f(km)+' км';$('#tr-fv').textContent=n2(fp)+' ₽/л';$('#tr-cv').textContent=cons+' л/100 км';$('#tr-wv').textContent=drv+' ₽/км';$('#tr-tv').textContent=rub(tol);$('#tr-iv').textContent=idle+' ч';$('#tr-rv').textContent=rub(rate);
+    var tk=km*(back?1:2),parts=[['Топливо',tk*cons/100*fp,'#3E7BFA'],['Водитель',tk*drv,'#8E6CF2'],['Платные дороги',tol*(back?1:2),'#F5A524'],['Амортизация и ТО',tk*9.5,'#5B6B7A'],['Простой',idle*1200,'#EE7D3B']],cost=sm(parts),prof=rate-cost;
+    setK('tr-k1',rub(cost),'себестоимость рейса'+(back?'':' с пустым обратным'));setK('tr-k2',n2(cost/km)+' ₽','за километр с грузом');setK('tr-k3',rub(Math.ceil(cost*1.15/100)*100),'минимальная ставка с маржой 15%');setK('tr-k4',(prof<0?'−':'')+rub(Math.abs(prof)),'при ставке '+rub(rate)+' · '+(prof/rate*100).toFixed(1).replace('.',',')+'%',prof<0?'down':'up');
+    $('#tr-bar').innerHTML=parts.map(function(p){return '<i style="width:'+p[1]/Math.max(cost,rate)*100+'%;background:'+p[2]+'"></i>'}).join('')+(prof>0?'<i style="width:'+prof/rate*100+'%;background:#1E9E5E"></i>':'');
+    $('#tr-leg').innerHTML=parts.map(function(p){return '<div><span><s style="background:'+p[2]+'"></s>'+p[0]+'</span><b>'+f(p[1])+' ₽</b></div>'}).join('')}
+  return {html:function(){return res('ЕЩЁ НА БАЗЕ <b>//</b> СТОИМОСТЬ РЕЙСА','двигайте параметры и включите груз обратно')+
+    win('trip.html · расчёт ставки','<div class="wbody"><div class="wtitle"><h3>Москва → Казань, тягач 20 т</h3><label class="switch" style="margin:0"><input type="checkbox" id="tr-b"><i></i>Есть груз на обратный путь</label></div><div class="kpis">'+kpi('tr-k1','Себестоимость')+kpi('tr-k2','Цена километра')+kpi('tr-k3','Минимальная ставка')+kpi('tr-k4','Прибыль')+'</div>'+
+    '<div class="grid2"><div class="card">'+fld('Расстояние в одну сторону','tr-d',rng('tr-d',100,3000,10,820))+fld('Цена дизеля','tr-f',rng('tr-f',55,85,.5,68.5))+fld('Расход','tr-c',rng('tr-c',20,45,1,32))+fld('Оплата водителю','tr-w',rng('tr-w',8,30,1,14))+fld('Платные дороги в одну сторону','tr-t',rng('tr-t',0,15000,100,5400))+fld('Простой на погрузке','tr-i',rng('tr-i',0,24,1,4))+fld('Ставка клиента','tr-r',rng('tr-r',20,300,1,95))+'</div>'+
+    '<div class="card"><h4>Из чего складывается рейс</h4><div class="aging" id="tr-bar" style="height:22px"></div><div class="legend" id="tr-leg"></div></div></div></div>')},
+   init:function(){['tr-d','tr-f','tr-c','tr-w','tr-t','tr-i','tr-r'].forEach(function(id){$('#'+id).addEventListener('input',calc)});$('#tr-b').addEventListener('change',function(){back=this.checked;calc();flash($('#tr-k4'))});calc()}};
+})();
+
 /* ===================== ПОДБОР АРТЕФАКТОВ ===================== */
 var VAR={
- budget:function(){return ['food','retail','serv','edu','realty'].indexOf(C.i)>-1?'finmodel':'budget'},
- report:function(){if(/бухгалт/i.test(C.r))return 'tax';if(['food','retail','edu','realty'].indexOf(C.i)>-1)return hsh(C.n)%2?'finmodel':'report';return hsh(C.n)%3==0?'tax':'report'},
- sales:function(){return (['retail','whole','food'].indexOf(C.i)>-1&&hsh(C.n)%2)?'abc':'sales'}
+ budget:function(){return C.i=='build'?'estimate':C.i=='logi'?'trip':['food','retail','serv','edu','realty'].indexOf(C.i)>-1?'finmodel':'budget'},
+ report:function(){if(/бухгалт/i.test(C.r))return 'tax';if(C.i=='retail'||C.d.indexOf('mp')>-1)return 'unit';if(['food','edu','realty'].indexOf(C.i)>-1)return hsh(C.n)%2?'finmodel':'report';return hsh(C.n)%3==0?'tax':'report'},
+ sales:function(){if(C.i=='retail'||C.d.indexOf('mp')>-1)return ['unit','abc','sales'][hsh(C.n)%3];if(['whole','food'].indexOf(C.i)>-1)return hsh(C.n)%2?'abc':'sales';if(['serv','edu','realty','other'].indexOf(C.i)>-1)return hsh(C.n)%2?'kp':'sales';return 'sales'}
 };
+var EXTRA={build:['estimate','finmodel','tax'],logi:['trip','finmodel','tax'],retail:['unit','abc','finmodel'],whole:['abc','finmodel','sales'],food:['finmodel','abc','sales'],serv:['kp','tax','finmodel'],edu:['kp','finmodel','tax'],realty:['kp','finmodel','tax'],prod:['finmodel','tax','sales'],other:['kp','finmodel','tax']};
 function pickBase(){var order=C.t.filter(function(t){return t!='sales'}).concat(has('sales')?['sales']:[]),L=[];
   order.forEach(function(t){var k=VAR[t]?VAR[t]():t;if(L.indexOf(k)<0&&L.length<2)L.push(k)});
-  var ex=['retail','whole','food'].indexOf(C.i)>-1?['abc','finmodel','sales']:['serv','edu','realty','other'].indexOf(C.i)>-1?['tax','finmodel','sales']:['finmodel','tax','sales'];
-  if(/бухгалт/i.test(C.r))ex.unshift('tax');
+  var ex=(EXTRA[C.i]||EXTRA.other).slice();if(/бухгалт/i.test(C.r))ex.unshift('tax');if(C.d.indexOf('mp')>-1)ex.unshift('unit');
   ex.forEach(function(k){if(L.length<2&&L.indexOf(k)<0)L.push(k)});return L}
-function useReceipts(){return ['food','serv','retail','edu','realty'].indexOf(C.i)>-1||C.d.indexOf('scan')>-1||C.d.indexOf('msg')>-1||C.d.indexOf('iiko')>-1||has('cash')}
+function pickPrac(){var c=[];
+  if(C.v.indexOf('team')>-1)c.push('staffbot');
+  if(C.d.indexOf('msg')>-1||/директор|руковод|собственн|основател/i.test(C.r))c.push('voice');
+  if(['serv','edu','realty'].indexOf(C.i)>-1||has('docs'))c.push('autoacts');
+  if(['food','retail'].indexOf(C.i)>-1||C.d.indexOf('scan')>-1||C.d.indexOf('iiko')>-1||has('cash'))c.push('receipts');
+  ['voice','staffbot','autoacts','receipts'].forEach(function(k){if(c.indexOf(k)<0)c.push(k)});
+  var first=c[0],rest=c.slice(1),second=rest[hsh(C.n+C.i)%Math.min(2,rest.length)];return [first,second]}
+function useReceipts(){return pickPrac().indexOf('receipts')>-1}
 function usePayreq(){return has('budget')||has('cash')||(has('pay')&&(boss()||C.v.indexOf('team')>-1))}
 
 /* ===================== ЗАПУСК ===================== */
