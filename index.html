@@ -338,6 +338,14 @@ svg text{font-family:var(--body)}
 }
 
 /* ---------- опросник ---------- */
+.ana{font-size:13.5px;color:var(--mut);line-height:1.55;margin-top:2px}
+.ana b{color:var(--ac);font-weight:600}
+textarea.qin{resize:vertical;min-height:84px;line-height:1.45}
+.cq{margin-top:22px;max-width:760px;border-left:3px solid var(--ac);background:linear-gradient(90deg,rgba(92,242,166,.10),transparent);border-radius:0 14px 14px 0;padding:14px 18px}
+.cq .dl{font:700 11.5px var(--mono);letter-spacing:.1em;color:var(--ac);margin-bottom:6px}
+.cq p{font-size:17px;line-height:1.45;font-style:italic;color:var(--tx)}
+.cq a{display:inline-block;margin-top:8px;color:var(--ac);font-size:14px;text-decoration:none;font-weight:600}
+
 .quiz{max-width:760px;margin:0 auto;padding:40px 20px 70px}
 .qprog{display:flex;gap:6px;margin:26px 0 30px}
 .qprog i{flex:1;height:5px;border-radius:99px;background:var(--line);transition:.3s}
@@ -409,6 +417,8 @@ var IND={
  retail:{l:'Розница и маркетплейсы',calc:[['Товар-хит','шт.',1290,3000],['Подарочный набор','шт.',3490,800],['Упаковка','шт.',85,20000],['Доставка до ПВЗ','отпр.',190,5000]],word:'отгрузка'},
  food:{l:'Общепит и кейтеринг',calc:[['Бизнес-ланч','шт.',450,3000],['Банкет, на персону','перс.',3500,300],['Кофе-брейк','перс.',900,1000],['Доставка обедов в офис','заказ',6500,200]],word:'выполнение'},
  logi:{l:'Логистика и склад',calc:[['Перевозка по городу, 20 т','рейс',18000,200],['Междугородняя перевозка','рейс',95000,60],['Хранение паллеты','пал./мес',650,3000],['Экспедирование','заказ',4500,500]],word:'отгрузка'},
+ edu:{l:'Образование и онлайн-школы',calc:[['Курс, поток','место',29900,300],['Абонемент на месяц','абон.',6400,500],['Индивидуальное занятие','урок',2500,1000],['Корпоративное обучение','группа',180000,20]],word:'выполнение'},
+ realty:{l:'Недвижимость',calc:[['Подбор объекта','услуга',60000,60],['Сопровождение сделки','сделка',95000,60],['Управление арендой','объект/мес',12000,200],['Оценка объекта','отчёт',8500,200]],word:'выполнение'},
  other:{l:'Другая сфера',calc:[['Позиция из прайса','шт.',2380,600],['Услуга','шт.',4900,200],['Комплект','шт.',12500,100],['Доставка','рейс',3500,100]],word:'выполнение'}
 };
 var TASKS={
@@ -441,36 +451,62 @@ var TASKS={
   base:'калькулятор на сайте: клиент сам считает заказ и оставляет заявку',
   prac:'какие заявки пришли с сайта',pro:'заявки клиентов'}
 };
-var DATA={c1:'1С',excel:'Excel',google:'Google-таблицы',crm:'Битрикс24 / CRM',bank:'банк-клиент'};
+var DATA={c1:'1С',excel:'Excel',google:'Google-таблицы',crm:'Битрикс24, amoCRM и другие CRM',bank:'Банк: выписки и клиент-банк',mp:'Маркетплейсы: Ozon, Wildberries',lms:'GetCourse и платформы обучения',fin:'ФинТабло, ПланФакт, Adesk',iiko:'iiko, r-keeper и кассы',edo:'ЭДО: Диадок, СБИС, Контур',scan:'Сканы и бумажная первичка',msg:'Почта и мессенджеры',bi:'Power BI',disk:'Яндекс Диск и папки с файлами'};
+var DATA_HINT={c1:'выгрузки или напрямую',excel:'файлы и выгрузки',google:'общие таблицы',crm:'сделки, счета, клиенты',bank:'движение денег',mp:'продажи, выплаты, остатки',lms:'ученики, заказы, оплаты',fin:'управленческий учёт',iiko:'чеки, выручка смен',edo:'входящие документы',scan:'нейросеть распознаёт',msg:'цифры присылают письмами и голосовыми',bi:'готовые отчёты',disk:'документы и выгрузки'};
+var DGEN={c1:'1С',excel:'Excel',google:'Google-таблиц',crm:'CRM',bank:'банковских выписок',mp:'кабинетов маркетплейсов',lms:'GetCourse',fin:'ФинТабло',iiko:'iiko',edo:'ЭДО',scan:'сканов документов',msg:'писем и сообщений',bi:'Power BI',disk:'папок с файлами'};
 var VIEW={me:'Только я',boss:'Руководитель или собственник',team:'Коллеги и отдел',clients:'Клиенты'};
 
 /* ===================== ПАРАМЕТРЫ ===================== */
 function readCfg(){
   var p=new URLSearchParams(location.search);if(!p.get('t'))return null;
   var list=function(k){return (p.get(k)||'').split(',').filter(Boolean)};
-  var c={n:p.get('n')||'',r:p.get('r')||'',s:(p.get('s')||'').slice(0,80),i:IND[p.get('i')]?p.get('i'):'other',t:list('t').filter(function(x){return TASKS[x]}).slice(0,3),d:list('d').filter(function(x){return DATA[x]}),v:list('v').filter(function(x){return VIEW[x]}),g:p.get('g')=='1'};
-  if(!c.t.length)return null;if(!c.d.length)c.d=['excel'];if(!c.v.length)c.v=['me'];return c;
+  var c={n:p.get('n')||'',r:p.get('r')||'',s:(p.get('s')||'').slice(0,80),x:(p.get('x')||'').slice(0,400),y:(p.get('y')||'').slice(0,80),i:IND[p.get('i')]?p.get('i'):'other',t:list('t').filter(function(x){return TASKS[x]}).slice(0,3),d:list('d').filter(function(x){return DATA[x]}),v:list('v').filter(function(x){return VIEW[x]}),g:p.get('g')=='1'};
+  if(!c.t.length)return null;if(!c.d.length&&!c.y)c.d=['excel'];if(!c.v.length)c.v=['me'];return c;
 }
-function cfgUrl(c){var q=new URLSearchParams();q.set('n',c.n);q.set('r',c.r);if(c.s)q.set('s',c.s);q.set('i',c.i);q.set('t',c.t.join(','));q.set('d',c.d.join(','));q.set('v',c.v.join(','));if(c.g)q.set('g','1');return location.origin+location.pathname+'?'+q.toString()}
+function cfgUrl(c){var q=new URLSearchParams();q.set('n',c.n);q.set('r',c.r);if(c.s)q.set('s',c.s);if(c.x)q.set('x',c.x);if(c.y)q.set('y',c.y);q.set('i',c.i);q.set('t',c.t.join(','));q.set('d',c.d.join(','));q.set('v',c.v.join(','));if(c.g)q.set('g','1');return location.origin+location.pathname+'?'+q.toString()}
+
+/* ===================== АНАЛИЗ ТЕКСТА ===================== */
+function norm(s){return ' '+String(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^a-zа-я0-9\s-]/g,' ').replace(/\s+/g,' ')+' '}
+function score(s,dict){s=norm(s);var best=null,bs=0;dict.forEach(function(d){var n=0;d[1].forEach(function(k){if(s.indexOf(k)>-1)n+=k.length>4?2:1});if(n>bs){bs=n;best=d[0]}});return best}
+var IND_KW=[
+ ['edu',['образован','обучен','школ','курс','университет','вуз ','колледж','детск сад','детсад','репетитор','тренинг','академи','учебн','edtech','преподава','студент','ученик','лицей','гимнази','методист']],
+ ['realty',['недвиж','риелт','риэлт','квартир','новостро','ипотек','агентство недвиж','аренд помещ','коммерческ недвиж','жилье','жилья','объект недвиж']],
+ ['food',['ресторан','кафе','общепит','кейтеринг','столов','кофе','кофейн','пекар','пицц','суши','питани',' еды','еда ','фуд','бар ','бургер','кондитер','доставк еды','банкет']],
+ ['logi',['логист','перевоз','транспорт','грузо','экспедир','фулфилмент','курьер','автопарк','тягач','склад ответ']],
+ ['retail',['рознич','магазин','маркетплейс','wildberries','вайлдберриз','ozon','озон','e-com','ecom','интернет-магаз','селлер','товарн бизнес','шоурум']],
+ ['build',['строит','стройк','ремонт','девелоп','подряд','отделк','монтаж','застрой','проектир','кровл','фасад','инженерн сист','электромонтаж']],
+ ['prod',['производ','завод','цех','фабрик','металл','мебел','пищев','агро','сельхоз','ферм','типограф','швейн','пошив','деревообр','литье','сварк','станк','упаковк','пластик','химич']],
+ ['whole',['опт','дистриб','поставк','поставщ','крепеж','импорт','торгов','снабжен','запчаст','комплектующ','дилер','оптов']],
+ ['serv',['услуг','сервис','консалт','агентств','аутсорс','бухгалтерск','юрид','it ','айти','разработк','клиник','медиц','стомат','салон','маркетинг','реклам','фитнес','гостиниц','отел','туризм','страхов','банк','охран','клининг','ит-']]
+];
+var TASK_KW=[
+ ['pay',['оплат','платеж','дебитор','долг','задолж','просроч','должник','взыскан','поступлен','неоплат','не плат','сверк']],
+ ['orders',['заказ','отгруз','выполнен','сроки','срыв','производств план','остатки на склад','складск','доставк','комплектац','исполнен']],
+ ['docs',['документ','письм','акт','договор','упд','счет-фактур','претенз','эдо','первичк','регламент','шаблон','реестр']],
+ ['budget',['бюджет','план-факт','план факт','планфакт','цфо','затрат','расход','себестоим','смет','оптимизац','экономи']],
+ ['report',['отчет','дашборд','управленческ','собственник','руководител','kpi','показател','аналитик','свод','презентац','визуализ']],
+ ['cash',['платежн календар','календар','касс','денежн','ддс','денег','деньг','остатк на счет','кассов разрыв','ликвидн','казначей']],
+ ['sales',['заявк','продаж','кп ','коммерческ предлож','расчет стоимост','калькулятор','лид','воронк','сайт','менеджер по продаж','прайс']]
+];
+var LVL_KW=[['pro',['доступ','сотрудник','кабинет','портал','логин','сервис для','систем','команд','для клиентов','по ссылке','чтобы видел','единое место','в одном месте']],
+ ['prac',['автомат','бот','без выгрузк','без ручн','напрямую','api','интеграц','уведомл','каждый день','ежедневн','сам присыла','напомина','синхрон']]];
+var DATA_KW=[['c1',['1с','1c','одинэс','унф','erp','бухгалтерия предприят']],['excel',['excel','эксел','xlsx','таблиц']],['google',['google','гугл']],['crm',['crm','срм','битрикс','amocrm','амо']],['bank',['банк','выписк','клиент-банк']],
+ ['mp',['ozon','озон','wildberries','вайлдберриз','маркетплейс','wb ']],['lms',['getcourse','геткурс','гет курс','платформ обучен','lms','skillspace','антитрест','школьн платформ']],['fin',['финтабло','планфакт','adesk','финансист сервис']],['iiko',['iiko','айко','r-keeper','кипер','касс']],['edo',['эдо','диадок','сбис','контур']],
+ ['scan',['скан','бумаж','первичк','фото документ']],['msg',['почт','мессенджер','телеграм','whatsapp','ватсап','голосов','письм']],['bi',['power bi','bi ','дашборд в']],['disk',['диск','папк','облак','файл']]];
+function sentences(s){return String(s||'').split(/[\n.;!?]+|,\s+(?=и\s|а\s|плюс\s|еще\s|ещё\s)|\s+а также\s+|\s+а еще\s+|\s+а ещё\s+|\s+плюс\s+/).map(function(x){return x.trim()}).filter(function(x){return x.length>2})}
+function detectInd(s){return score(s,IND_KW)||'other'}
+function scores(s,dict){s=norm(s);return dict.map(function(d){var n=0;d[1].forEach(function(k){if(s.indexOf(k)>-1)n+=k.length>4?2:1});return [d[0],n]}).filter(function(x){return x[1]>0}).sort(function(a,b){return b[1]-a[1]})}
+function detectTasks(s){var out=[];sentences(s).forEach(function(x){var sc=scores(x,TASK_KW);if(!sc.length){out.push([x,null]);return}sc.filter(function(y){return y[1]>=sc[0][1]/2}).slice(0,2).forEach(function(y,i){out.push([i?'':x,y[0]])})});return out}
+function detectLevel(s){var t=norm(s),sc={pro:0,prac:0};LVL_KW.forEach(function(d){d[1].forEach(function(k){if(t.indexOf(k)>-1)sc[d[0]]++})});return sc.pro?'pro':sc.prac?'prac':'base'}
+function detectData(s){var t=norm(s),r=[];DATA_KW.forEach(function(d){if(d[1].some(function(k){return t.indexOf(k)>-1}))r.push(d[0])});return r}
 
 /* ===================== АНКЕТА ДЛЯ МЕНЕДЖЕРА ===================== */
-var KW=[
- ['food',['ресторан','кафе','общепит','кейтеринг','столов','бар ','кофе','кофейн','пекар','пицц','суши','питани','еды','фуд']],
- ['logi',['логист','перевоз','транспорт','грузо','экспедир','склад ответ','фулфилмент','курьер']],
- ['retail',['рознич','магазин','маркетплейс','wildberries','вайлдберриз','ozon','озон','e-com','ecom','интернет-магаз','селлер']],
- ['build',['строит','стройк','ремонт','девелоп','подряд','отделк','монтаж','недвиж','застрой','проектир']],
- ['prod',['производ','завод','цех','фабрик','металл','мебел','пищев','агро','сельхоз','ферм','типограф','швейн','пошив','деревообр','литьё','литье','сварк','станк']],
- ['whole',['опт','дистриб','поставк','поставщ','крепёж','крепеж','импорт','торгов','снабжен','запчаст','комплектующ']],
- ['serv',['услуг','сервис','консалт','агентств','аутсорс','бухгалтерск','юрид','it','айти','клиник','медиц','стомат','школ','обучен','салон','маркетинг','реклам','фитнес','гостиниц','отел','туризм','страхов','банк']]
-];
-function detectInd(s){s=' '+(s||'').toLowerCase()+' ';for(var i=0;i<KW.length;i++){for(var j=0;j<KW[i][1].length;j++){if(s.indexOf(KW[i][1][j])>-1)return KW[i][0]}}return 'other'}
-
 function quiz(){
-  var st={n:'',r:'',i:'',s:'',mode:'',t:[],d:[],v:[],g:false},step=0;
+  var st={n:'',r:'',i:'',s:'',mode:'',t:[],d:[],v:[],x:'',y:'',g:false},step=0;
   function opts(key,list,multi,max){return '<div class="opts" data-key="'+key+'" data-multi="'+(multi?1:0)+'" data-max="'+(max||99)+'">'+list.map(function(o){return '<button class="opt" data-v="'+o[0]+'">'+o[1]+(o[2]?'<small>'+o[2]+'</small>':'')+'</button>'}).join('')+'</div>'}
-  var indList=['prod','whole','build','serv','retail','food','logi'].map(function(k){return [k,IND[k].l]}).concat([['own','Своя сфера','впишу вручную'],['none','Не указывать','без привязки к сфере']]);
+  var indList=['prod','whole','build','serv','retail','food','logi','edu','realty'].map(function(k){return [k,IND[k].l]}).concat([['own','Своя сфера','впишу вручную'],['none','Не указывать','без привязки к сфере']]);
   var tList=Object.keys(TASKS).map(function(k){return [k,TASKS[k].l,TASKS[k].d]});
-  var dList=Object.keys(DATA).map(function(k){return [k,DATA[k]]});
+  var dList=Object.keys(DATA).map(function(k){return [k,DATA[k],DATA_HINT[k]]});
   var vList=Object.keys(VIEW).map(function(k){return [k,VIEW[k]]});
   $('#app').innerHTML='<div class="wrap"><div class="top"><span><b>//</b> FIN-ACADEMY.PRO</span><span>ДЛЯ МЕНЕДЖЕРА</span></div></div>'+
   '<div class="quiz" id="quiz"><div class="eb">ГЕНЕРАТОР ПЕРСОНАЛЬНЫХ СТРАНИЦ</div><h1 style="font-size:clamp(30px,4.6vw,44px)">Соберите страницу<br><em>под задачи клиента</em></h1>'+
@@ -479,20 +515,27 @@ function quiz(){
   '<div class="qstep on" data-s="0"><div class="qnum">ШАГ 1 ИЗ 4 · КЛИЕНТ</div><div class="qh">Кто клиент и чем занимается его компания?</div><div class="qs">Имя появится в обращении на странице, должность — в панели на Профи.</div>'+
    '<label class="qlbl">Имя клиента</label><input class="qin" id="q-n" placeholder="Например, Юрий" maxlength="40"><label class="qlbl">Должность (необязательно)</label><input class="qin" id="q-r" placeholder="Например, исполнительный директор" maxlength="60">'+
    '<label class="qlbl">Сфера компании</label>'+opts('i',indList,false)+
-   '<div id="ownbox" style="display:none;margin-top:12px"><input class="qin" id="q-s" placeholder="Например, производство мебели для отелей" maxlength="80" style="margin-bottom:6px"><div id="q-det" style="font-size:13.5px;color:var(--mut);min-height:20px"></div></div></div>'+
-  '<div class="qstep" data-s="1"><div class="qnum">ШАГ 2 ИЗ 4 · ЗАДАЧИ</div><div class="qh">Какие задачи отнимают у клиента больше всего времени?</div><div class="qs">От одной до трёх. Первая выбранная станет главной: под неё будет первый прототип.</div>'+opts('t',tList,true,3)+'</div>'+
-  '<div class="qstep" data-s="2"><div class="qnum">ШАГ 3 ИЗ 4 · ДАННЫЕ</div><div class="qh">Где клиент хранит данные?</div><div class="qs">Можно несколько. От этого зависит, откуда на Практике подтягиваются данные.</div>'+opts('d',dList,true)+'</div>'+
+   '<div id="ownbox" style="display:none;margin-top:12px"><input class="qin" id="q-s" placeholder="Например, частная школа английского для детей" maxlength="80" style="margin-bottom:6px"><div class="ana" id="q-det"></div></div></div>'+
+  '<div class="qstep" data-s="1"><div class="qnum">ШАГ 2 ИЗ 4 · ЗАДАЧИ</div><div class="qh">Какие задачи отнимают у клиента больше всего времени?</div><div class="qs">Выберите до трёх или опишите словами клиента. Первая задача станет главной.</div>'+opts('t',tList,true,3)+
+   '<label class="qlbl" style="margin-top:16px">Задачи клиента своими словами</label><textarea class="qin" id="q-x" rows="3" maxlength="400" placeholder="Например: каждый понедельник свожу выгрузки из 1С в отчёт для собственника, а ещё вручную напоминаю клиентам об оплате"></textarea><div class="ana" id="q-xa"></div></div>'+
+  '<div class="qstep" data-s="2"><div class="qnum">ШАГ 3 ИЗ 4 · ДАННЫЕ</div><div class="qh">Откуда клиент берёт данные?</div><div class="qs">Можно несколько. Варианты собраны по кейсам выпускников и встречам потоков.</div>'+opts('d',dList,true)+
+   '<label class="qlbl" style="margin-top:16px">Другой источник (необязательно)</label><input class="qin" id="q-y" maxlength="80" placeholder="Например, данные присылают склады голосовыми в WhatsApp"><div class="ana" id="q-ya"></div></div>'+
   '<div class="qstep" data-s="3"><div class="qnum">ШАГ 4 ИЗ 4 · РЕЗУЛЬТАТ</div><div class="qh">Кто смотрит результаты его работы?</div><div class="qs">Можно несколько. Влияет на бота, панель и кабинет для клиентов.</div>'+opts('v',vList,true)+
    '<div class="mgrbox"><label class="switch"><input type="checkbox" id="q-g"><i></i>Клиент — выпускник AI-навыков: цены со скидкой и подарки выпускнику</label></div></div>'+
   '<div class="qerr" id="qerr"></div><div class="qnav"><button class="qback" id="qback" style="visibility:hidden">Назад</button><button class="qbtn" id="qnext">Дальше</button></div></div>'+
   '<div class="loading" id="loading"><div class="spin"></div><p id="ltext">Собираю страницу…</p></div><div id="done" class="quiz" style="display:none"></div>';
+  function paint(box,k){var a=st[k];$$('.opt',box).forEach(function(o){var n=a.indexOf(o.dataset.v);o.classList.toggle('on',n>-1);if(k=='t')o.setAttribute('data-n',n>-1?n+1:'')})}
   $$('.opts').forEach(function(box){box.addEventListener('click',function(e){var b=e.target.closest('.opt');if(!b)return;var k=box.dataset.key,v=b.dataset.v;
-    if(box.dataset.multi=='1'){var a=st[k],i=a.indexOf(v);if(i>-1)a.splice(i,1);else{if(a.length>=+box.dataset.max){$('#qerr').textContent='Можно выбрать не больше трёх задач';return}a.push(v)}
-      $$('.opt',box).forEach(function(o){var n=a.indexOf(o.dataset.v);o.classList.toggle('on',n>-1);if(k=='t')o.setAttribute('data-n',n>-1?n+1:'')})}
+    if(box.dataset.multi=='1'){var a=st[k],i=a.indexOf(v);if(i>-1)a.splice(i,1);else{if(a.length>=+box.dataset.max){$('#qerr').textContent='Можно выбрать не больше трёх задач';return}a.push(v)}paint(box,k)}
     else{st.mode=v;$$('.opt',box).forEach(function(o){o.classList.toggle('on',o===b)});$('#ownbox').style.display=v=='own'?'block':'none';if(v=='own')$('#q-s').focus()}
     $('#qerr').textContent=''})});
-  $('#q-s').addEventListener('input',function(){var s=this.value.trim();if(!s){$('#q-det').textContent='';return}var k=detectInd(s);
-    $('#q-det').innerHTML=k=='other'?'Не нашла похожую сферу: примеры будут универсальными, а «'+esc(s)+'» появится на странице клиента.':'Подстрою примеры под сферу <b style="color:var(--ac)">«'+IND[k].l+'»</b>: позиции калькулятора и формулировки. На странице будет написано «'+esc(s)+'».'});
+  $('#q-s').addEventListener('input',function(){var s=this.value.trim();if(!s){$('#q-det').innerHTML='';return}var k=detectInd(s);
+    $('#q-det').innerHTML=k=='other'?'Не нашла похожую сферу: примеры будут универсальными, а «'+esc(s)+'» появится на странице клиента.':'Подстрою примеры под сферу <b>«'+IND[k].l+'»</b>: позиции калькулятора и формулировки. На странице будет «'+esc(s)+'».'});
+  $('#q-x').addEventListener('input',function(){var s=this.value.trim(),el=$('#q-xa');if(!s){el.innerHTML='';return}var r=detectTasks(s),lv=detectLevel(s);
+    el.innerHTML='<div style="margin-bottom:4px">Как я поняла задачи клиента:</div>'+r.map(function(x){return '<div>«'+esc(x[0].slice(0,70))+'» → '+(x[1]?'<b>'+TASKS[x[1]].l+'</b>':'<span style="color:#FF8A8A">не распознала, покажу на странице словами клиента</span>')+'</div>'}).join('')+
+     (detectData(s).length?'<div style="margin-top:4px">Источники данных из текста: <b>'+detectData(s).map(function(k){return DATA[k]}).join(', ')+'</b> — отмечу их на шаге 3</div>':'')+'<div style="margin-top:4px">Уровень задачи: <b>'+{base:'База',prac:'Практика',pro:'Профи'}[lv]+'</b>'+(lv=='base'?' (работа с выгрузками)':lv=='prac'?' (автоматизация без ручного участия)':' (своя система с доступом для других)')+'</div>'});
+  $('#q-y').addEventListener('input',function(){var s=this.value.trim(),el=$('#q-ya');if(!s){el.innerHTML='';return}var r=detectData(s);
+    el.innerHTML=r.length?'Распознала: <b>'+r.map(function(k){return DATA[k]}).join(', ')+'</b>. Отмечу их и подстрою обмен данными на Практике.':'Не нашла в списке: на странице будет написано «'+esc(s)+'», а обмен данными покажу на примере таблиц.'});
   function show(){$$('.qstep').forEach(function(s){s.classList.toggle('on',+s.dataset.s==step)});$$('#qprog i').forEach(function(x,i){x.classList.toggle('on',i<=step)});
     $('#qback').style.visibility=step?'visible':'hidden';$('#qnext').textContent=step==3?'Собрать страницу':'Дальше';$('#qerr').textContent='';window.scrollTo(0,0)}
   $('#qback').addEventListener('click',function(){step--;show()});
@@ -500,15 +543,20 @@ function quiz(){
     if(step==0){st.n=$('#q-n').value.trim();st.r=$('#q-r').value.trim();if(!st.n){$('#qerr').textContent='Напишите имя клиента';return}if(!st.mode){$('#qerr').textContent='Выберите сферу или «Не указывать»';return}
       if(st.mode=='own'){st.s=$('#q-s').value.trim();if(!st.s){$('#qerr').textContent='Впишите сферу клиента или выберите «Не указывать»';return}st.i=detectInd(st.s)}
       else if(st.mode=='none'){st.s='';st.i='other'}else{st.s='';st.i=st.mode}}
-    if(step==1&&!st.t.length){$('#qerr').textContent='Выберите хотя бы одну задачу';return}
-    if(step==2&&!st.d.length){$('#qerr').textContent='Выберите, где хранятся данные';return}
+    if(step==1){st.x=$('#q-x').value.trim();detectData(st.x).forEach(function(k){if(st.d.indexOf(k)<0)st.d.push(k)});paint($('.opts[data-key="d"]'),'d');var det=detectTasks(st.x).map(function(x){return x[1]}).filter(Boolean);
+      det.forEach(function(k){if(st.t.indexOf(k)<0&&st.t.length<3)st.t.push(k)});paint($('.opts[data-key="t"]'),'t');
+      if(!st.t.length){$('#qerr').textContent=st.x?'Не смогла отнести задачу ни к одному типу: выберите ближайшую из списка, а текст клиента сохраню':'Выберите задачу или опишите её словами';return}}
+    if(step==2){st.y=$('#q-y').value.trim();detectData(st.y).forEach(function(k){if(st.d.indexOf(k)<0)st.d.push(k)});paint($('.opts[data-key="d"]'),'d');if(!st.d.length&&!st.y){$('#qerr').textContent='Выберите источник данных или впишите свой';return}}
     if(step==3&&!st.v.length){$('#qerr').textContent='Выберите, кто смотрит результаты';return}
     if(step<3){step++;show();return}
     st.g=$('#q-g').checked;$('#quiz').style.display='none';$('#loading').classList.add('on');
     setTimeout(function(){$('#loading').classList.remove('on');done(st)},900);
   });
   function done(c){var url=cfgUrl(c);var el=$('#done');el.style.display='block';window.scrollTo(0,0);
-    var sum=[['Клиент',esc(c.n)+(c.r?', '+esc(c.r):'')],['Сфера',c.s?esc(c.s)+(c.i!='other'?' → примеры как для «'+IND[c.i].l+'»':' → универсальные примеры'):c.i=='other'?'не указана':IND[c.i].l],['Задачи',c.t.map(function(t,i){return (i+1)+'. '+TASKS[t].l}).join('<br>')],['Данные',c.d.map(function(x){return DATA[x]}).join(', ')],['Смотрят результат',c.v.map(function(x){return VIEW[x]}).join(', ')],['Цены',c.g?'выпускника AI-навыков, с подарками':'полные']];
+    var lv=c.x?detectLevel(c.x):'';
+    var sum=[['Клиент',esc(c.n)+(c.r?', '+esc(c.r):'')],['Сфера',c.s?esc(c.s)+(c.i!='other'?' → примеры как для «'+IND[c.i].l+'»':' → универсальные примеры'):c.i=='other'?'не указана':IND[c.i].l],
+      ['Задачи',c.t.map(function(t,i){return (i+1)+'. '+TASKS[t].l}).join('<br>')+(c.x?'<br><span style="color:var(--mut)">Словами клиента: «'+esc(c.x)+'» → уровень '+{base:'Базы',prac:'Практики',pro:'Профи'}[lv]+'</span>':'')],
+      ['Данные',c.d.map(function(x){return DATA[x]}).concat(c.y&&!detectData(c.y).length?['«'+esc(c.y)+'»']:[]).join(', ')],['Смотрят результат',c.v.map(function(x){return VIEW[x]}).join(', ')],['Цены',c.g?'выпускника AI-навыков, с подарками':'полные']];
     el.innerHTML='<div class="eb">СТРАНИЦА ГОТОВА</div><h1 style="font-size:clamp(28px,4vw,40px)">Страница клиента <em>'+esc(c.n)+'</em></h1>'+
      '<p class="lead">Скопируйте ссылку и отправьте клиенту. Он откроет сразу свою страницу, без анкеты.</p>'+
      '<div style="display:flex;gap:8px;margin:22px 0 10px;flex-wrap:wrap"><input class="qin" id="d-url" readonly value="'+esc(url)+'" style="flex:1;min-width:240px;margin:0;font:13px var(--mono)"><button class="qbtn" id="d-copy">Скопировать ссылку</button></div>'+
@@ -527,8 +575,8 @@ function quiz(){
 /* ===================== ЛЕНДИНГ ===================== */
 var C,BS=[];
 function has(t){return C.t.indexOf(t)>-1}
-function srcNames(){var m=C.d.map(function(x){return {c1:'1С',excel:'Excel',google:'Google-таблиц',crm:'Битрикс24',bank:'банк-клиента'}[x]});return m.length>1?m.slice(0,-1).join(', ')+' и '+m[m.length-1]:m[0]}
-function liveSrc(){return C.d.indexOf('c1')>-1?'1С':C.d.indexOf('crm')>-1?'Битрикс24':C.d.indexOf('google')>-1?'Google-таблиц':null}
+function srcNames(){var m=C.d.map(function(x){return DGEN[x]});if(C.y&&!detectData(C.y).length)m.push('«'+C.y+'»');if(!m.length)m=['Excel'];return m.length>1?m.slice(0,-1).join(', ')+' и '+m[m.length-1]:m[0]}
+function liveSrc(){var o=[['c1','1С'],['crm','CRM'],['fin','ФинТабло'],['mp','маркетплейсов'],['lms','GetCourse'],['iiko','iiko'],['edo','ЭДО'],['bank','банка'],['google','Google-таблиц']];for(var i=0;i<o.length;i++)if(C.d.indexOf(o[i][0])>-1)return o[i][1];return null}
 function boss(){return C.v.indexOf('boss')>-1}
 function bossW(){return boss()?'руководитель':C.v.indexOf('team')>-1?'коллеги':''}
 function joinRu(a){return a.length>1?a.slice(0,-1).join(', ')+' и '+a[a.length-1]:a[0]||''}
@@ -541,10 +589,10 @@ function landing(){
   var tasksTxt=C.t.map(function(t){return TASKS[t]});
   // тексты тарифов
   var t0=has('sales')&&C.t.length==1?TASKS.sales:TASKS[C.t.filter(function(t){return t!='sales'})[0]];
-  var baseKey='Вы научитесь делать инструменты <mark>на основе выгрузок из '+src+'</mark>. '+t0.bk;
+  var baseKey='Вы научитесь делать инструменты <mark>на основе данных из '+src+'</mark>. '+t0.bk;
   var baseMore=tasksTxt.filter(function(x){return x!==t0}).map(function(x){return x.base});
   var baseP2=baseMore.length?'Ещё на Базе: '+baseMore.join('; ')+'.':'Плюс калькуляторы, страницы и дашборды для любых ваших расчётов.';
-  var pracKey=ls?'Всё из Базы, только <mark>без ручных выгрузок</mark>: данные подтягиваются из '+ls+' напрямую и всегда свежие.':'Всё из Базы, только <mark>без ручных выгрузок</mark>: ваши таблицы сами собираются в одну базу на сервере.';
+  var pracKey=ls?'Всё из Базы, только <mark>без ручных выгрузок</mark>: данные подтягиваются из '+ls+' напрямую и всегда свежие.':(C.d.indexOf('scan')>-1||C.d.indexOf('msg')>-1?'Всё из Базы, только <mark>без ручного переноса</mark>: письма, сканы и сообщения нейросеть сама разбирает и складывает в одну базу на сервере.':'Всё из Базы, только <mark>без ручных выгрузок</mark>: ваши таблицы сами собираются в одну базу на сервере.');
   var pracP2='<b style="color:var(--tx)">Бот в Telegram</b> каждое утро присылает '+(boss()?'вам и руководителю':'вам')+' сводку: '+joinRu(tasksTxt.map(function(x){return x.prac}))+'.'+(has('pay')&&!has('docs')?' А письма контрагентам бот готовит сам, вам остаётся проверить и отправить.':'');
   var proKey='Вместе с кураторами вы доводите до рабочего состояния <mark>свою систему для компании</mark>: единую панель, где '+joinRu(tasksTxt.map(function(x){return x.pro}))+' собраны в одном месте. '+(bossW()?'Вы и '+bossW()+' открываете':'Вы открываете')+' её <mark>по ссылке со своим логином</mark>.';
   var proP2=C.v.indexOf('clients')>-1||has('sales')||has('orders')?'А можно сделать личный кабинет для клиентов: они сами видят статус заказа и скачивают документы, и вопросов «где мой заказ» становится меньше.':'Данные защищены, всё работает на сервере, а не только у вас на компьютере. Это то, что обычно заказывают у разработчиков, только сделано под ваш бизнес вашими руками.';
@@ -558,14 +606,14 @@ function landing(){
   if(baseOrder.length<2&&!has('sales'))bp+=COMP.sales.html(1);
   var pp=COMP.sync.html()+COMP.bot.html();
   var rp=COMP.panel.html()+((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?COMP.portal.html():'');
-  var chips=C.t.map(function(t,i){return '<span class="chip"><b>0'+(i+1)+'</b> '+TASKS[t].l+'</span>'}).join('')+(C.s?'<span class="chip"><b>//</b> сфера: '+esc(C.s)+'</span>':C.i!='other'?'<span class="chip"><b>//</b> сфера: '+IND[C.i].l.toLowerCase()+'</span>':'')+'<span class="chip"><b>//</b> данные: '+C.d.map(function(x){return DATA[x]}).join(', ')+'</span>';
+  var chips=C.t.map(function(t,i){return '<span class="chip"><b>0'+(i+1)+'</b> '+TASKS[t].l+'</span>'}).join('')+(C.s?'<span class="chip"><b>//</b> сфера: '+esc(C.s)+'</span>':C.i!='other'?'<span class="chip"><b>//</b> сфера: '+IND[C.i].l.toLowerCase()+'</span>':'')+'<span class="chip"><b>//</b> данные: '+C.d.map(function(x){return DATA[x].split(':')[0].split(',')[0]}).concat(C.y&&!detectData(C.y).length?[esc(C.y)]:[]).join(', ')+'</span>';
   var gifts=C.g?'<div class="gifts"><b>Подарки выпускнику на любом тарифе:</b> +1 год доступа к обоим курсам, Обезличиватель, спецкурс «Монетизация вайб-кодинга» и спецкурс «ИИ-сотрудники на OpenClaw». Старт 30 ноября, это последний поток, где кураторами будут Софья, Натали и Алексей.</div>':
     '<div class="gifts"><b>Старт 30 ноября.</b> Это последний поток, где кураторами будут Софья, Натали и Алексей. Оплата в рассрочку до 6 месяцев без переплаты, для компаний можно по счёту.</div>';
   var admin=false?'<div class="adminbar"><div class="wrap"><span>Страница для клиента готова. Ссылка:</span><input id="adm-url" readonly value="'+esc(cfgUrl(C))+'"><button id="adm-copy">Скопировать</button><a href="'+location.pathname+'">Новый опрос</a></div></div>':'';
   $('#app').innerHTML=admin+'<div class="wrap"><div class="top"><span><b>//</b> FIN-ACADEMY.PRO</span><span>ЛИЧНАЯ ПОДБОРКА · '+name.toUpperCase()+'</span></div>'+
    '<header class="hero"><div class="eb">ВАЙБ-КОДИНГ · ПОТОК 30 НОЯБРЯ</div><h1>Что вы соберёте<br><em>на каждом тарифе</em></h1>'+
    '<p class="lead">'+name+', я взяла ваши задачи и показала, какой инструмент вы сделаете под них на Базе, Практике и Профи. Ниже не картинки из рекламы, а рабочие прототипы: в них можно нажимать, фильтровать и считать.</p>'+
-   '<div class="tasks">'+chips+'</div><div class="hint"><i>↓</i>Нажимайте на кнопки, строки таблиц и вкладки в каждом прототипе</div></header></div>'+
+   (C.x?'<div class="cq"><div class="dl">ВАША ЗАДАЧА СВОИМИ СЛОВАМИ</div><p>«'+esc(C.x)+'»</p><a href="#'+{base:'base',prac:'practice',pro:'pro'}[detectLevel(C.x)]+'">Как она решается: тариф '+{base:'База',prac:'Практика',pro:'Профи'}[detectLevel(C.x)]+' ↓</a></div>':'')+'<div class="tasks">'+chips+'</div><div class="hint"><i>↓</i>Нажимайте на кнопки, строки таблиц и вкладки в каждом прототипе</div></header></div>'+
    '<nav class="nav"><div class="wrap"><a href="#base">БАЗА · '+rub(P[0][0])+'</a><a href="#practice">ПРАКТИКА · '+rub(P[1][0])+'</a><a href="#pro" class="rec">ПРОФИ · '+rub(P[2][0])+'</a></div></nav><main class="wrap">'+
    tier('base','01','База',false,'ЧТО ВЫ ПОЛУЧИТЕ',baseKey,baseP2,price(0,false,['4 модуля, 4 живых эфира','Доступ 6 месяцев'+(C.g?' + 1 год':''),'Данные из выгрузок '+src]),bp+'<p class="note">Компании, цифры и условия в прототипах условные. На курсе вы соберёте то же самое на своих данных.</p>')+
    tier('practice','02','Практика',false,'<span class="plus">ВСЁ ИЗ БАЗЫ +</span>ЧЕМ ОТЛИЧАЕТСЯ',pracKey,pracP2,price(1,false,['6 модулей, 6 живых эфиров','Доступ 12 месяцев'+(C.g?' + 1 год':''),'Сервер, API, '+(ls||'интеграции')+', Telegram-боты']),pp)+
@@ -814,10 +862,16 @@ COMP.sync=(function(){
   function lines(ev){var s=liveSrc()||'таблицы',L;
     if(s=='1С')L=['подключение к 1С по OData… ок',ev?'Документ.ПоступлениеНаРасчетныйСчет: новых 1':'изменений нет',ev&&ev.ship?'Документ.РеализацияТоваровУслуг: новых 1':null,ev&&ev.order?'Документ.ЗаказКлиента: новый заказ':null];
     else if(s=='Битрикс24')L=['подключение к Битрикс24 по REST API… ок',ev?'crm.deal.list: изменённых сделок 2':'изменений нет',ev&&ev.pay?'crm.invoice: оплачен 1 счёт':null,ev&&ev.order?'crm.deal: новая сделка':null];
+    else if(s=='ФинТабло')L=['подключение к ФинТабло по API… ок',ev?'операции: новых 2, разнесены по статьям':'новых операций нет',ev&&ev.ship?'сделки: закрыта 1':null];
+    else if(s=='маркетплейсов')L=['Ozon Seller API и WB API… ок',ev?'заказы: новых 14, выкуплено 11':'новых заказов нет',ev&&ev.pay?'выплата от маркетплейса: 1':null];
+    else if(s=='GetCourse')L=['подключение к GetCourse по API… ок',ev?'заказы: новых 6, оплачено 4':'новых заказов нет',ev&&ev.pay?'платежи: новых 1':null];
+    else if(s=='банка')L=['подключение к банку по API… ок',ev?'выписка: новых поступлений 1':'новых операций нет',ev&&ev.ship?'списания: новых 1':null];
+    else if(s=='iiko')L=['подключение к iiko Cloud API… ок',ev?'чеки за смену: 312, выручка обновлена':'новых чеков нет',ev&&ev.ship?'списания и закупки: обновлено':null];
+    else if(s=='ЭДО')L=['подключение к ЭДО… ок',ev?'входящие документы: новых 2':'новых документов нет',ev&&ev.pay?'выписка банка: новых платежей 1':null];
     else L=['чтение Google-таблиц и папки с выгрузками… ок',ev?'лист «Оплаты»: новых строк 1':'новых строк нет',ev&&ev.ship?'лист «Заказы»: обновлено 1':null];
     return L.filter(Boolean).concat([ev?'данные на сайте и в боте обновлены':'готово'])}
   return {html:function(){var s=liveSrc()||'таблиц';return res('РЕЗУЛЬТАТ <b>//</b> ДАННЫЕ БЕЗ РУЧНЫХ ВЫГРУЗОК','нажмите «Обновить» несколько раз')+
-    win('server.ваш-домен.ru · обмен с '+s,'<div class="wbody"><div class="wtitle"><h3>Обмен с '+s+'</h3><div class="tools"><span class="tag live" id="slast">последний обмен 08:00</span><button class="abtn pri" id="ssync">Обновить из '+s+'</button></div></div>'+
+    win('server.ваш-домен.ru · обмен данными','<div class="wbody"><div class="wtitle"><h3>Обмен данными · источник: '+s+'</h3><div class="tools"><span class="tag live" id="slast">последний обмен 08:00</span><button class="abtn pri" id="ssync">Обновить из '+s+'</button></div></div>'+
     '<div class="sync"><div class="kpis" style="grid-template-columns:1fr 1fr;margin:0"><div class="kpi" id="sk1"><div class="l">Оплат сегодня</div><div class="v"></div><div class="d up"></div></div><div class="kpi" id="sk2"><div class="l">'+cap(IND[C.i].word)+' сегодня</div><div class="v"></div><div class="d"></div></div><div class="kpi" id="sk3"><div class="l">Заказы с риском</div><div class="v"></div><div class="d"></div></div><div class="kpi" id="sk4"><div class="l">'+(has('budget')?'Статей с перерасходом':'Писем к отправке')+'</div><div class="v"></div><div class="d"></div></div></div>'+
     '<div class="stack" style="gap:12px"><div class="log" id="slog" style="height:118px"><div><span class="t">08:00:02</span> обмен по расписанию завершён, изменений: 12</div></div><div class="card evt" id="sevt"><div style="color:#6A7783"><span>Здесь появятся изменения после обмена</span></div></div></div></div></div>')},
    init:function(){PS={time:[8,0],tick:0,pays:[['ООО «АгроТехМаш»',380000],['АО «Балтийская верфь-Сервис»',309550],['ИП Коваленко А. В.',96750],['ООО «ГорМашКомплект», частично',60000]],
