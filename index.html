@@ -337,6 +337,39 @@ svg text{font-family:var(--body)}
   .legend{grid-template-columns:1fr}
 }
 
+
+/* ---------- мобильная версия ---------- */
+@media (max-width:900px){
+  .grid2,.tg,.sync,.calc,.portal,.thead{grid-template-columns:1fr!important}
+  .kpis,.kpis.k5{grid-template-columns:1fr 1fr!important}
+  .card{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .docs .d{flex-wrap:wrap;align-items:flex-start}
+  .docs .d>span:last-child{margin-left:38px}
+  .wtitle .seg,.rolebar .seg,.vh .seg{max-width:100%;overflow-x:auto}
+  .rolebar{flex-wrap:wrap}
+  .phone{max-width:none}
+  .msgs{height:360px}
+  .stack{gap:12px}
+}
+@media (max-width:520px){
+  table{font-size:12.5px}
+  th,td{padding:7px 5px}
+  .kpi .l{font-size:11.5px}.kpi .d{font-size:11px}
+  .kpi .v{font-size:17px;white-space:normal;word-break:break-word}
+  .day{padding:6px 1px;font-size:10px}.day b{font-size:13px}
+  .days{gap:4px}
+  .seg button{padding:6px 8px;font-size:12px;white-space:nowrap}
+  .wbody,.main{padding:12px}
+  .card{padding:12px}
+  .sum{padding:14px}
+  .legend{grid-template-columns:1fr}
+  .res{font-size:11px}
+  .tdesc{padding:16px}
+  .mini{grid-template-columns:1fr 1fr}
+  .ltab small{display:none}
+  .cmds button{font-size:12px;padding:8px 4px}
+  .aging{margin:4px 0 8px}
+}
 /* ---------- новые артефакты ---------- */
 .rcph{position:relative;height:190px;border-radius:14px;background:#0E1621;display:grid;place-items:center;text-align:center;padding:16px;overflow:hidden}
 .rcph.scan{background:#F7F3E8;color:#2A2A2A}
