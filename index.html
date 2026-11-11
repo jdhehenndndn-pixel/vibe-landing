@@ -442,9 +442,53 @@ button.stb{border:0;cursor:pointer;font:inherit;font-size:12px}
 .obig div{background:#1C2E27;border-radius:12px;padding:12px;font-size:13px;color:#C9D8D1}
 .obig b{display:block;font-size:24px;color:var(--ac);margin-bottom:2px}
 .onext{padding-left:20px;color:#E9EEF3}.onext li{margin-bottom:6px}
-.opres.full{position:fixed;inset:0;z-index:100;border-radius:0;display:flex;flex-direction:column;justify-content:center;padding:6vh 8vw}
-.opres.full .obigt{font-size:clamp(34px,6vw,64px)}.opres.full .osb{font-size:clamp(16px,2.2vw,22px)}
-.opres.full .obig b{font-size:clamp(26px,4vw,44px)}
+.optop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font:700 11.5px var(--mono);letter-spacing:.1em;color:var(--ac);padding:2px 6px 10px}
+.optop .abtn{font-family:inherit;letter-spacing:0;font-size:12.5px}
+.opres .osl{min-height:300px}
+.ptt{font-size:24px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px}
+.pk4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.pk4.k3{grid-template-columns:repeat(3,1fr)}
+.pk4>div{background:#1C2E27;border:1px solid #24362F;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#C9D8D1}
+.pk4 b{display:block;font-size:24px;color:#fff;margin-bottom:2px;line-height:1.15}.pk4 b.g{color:var(--ac)}
+.pk4 em{display:block;font-style:normal;color:#8EA39B;font-size:12px;margin-top:4px}
+.pcmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.pcmp th{text-align:left;color:#8EA39B;font-weight:600;font-size:12px;padding:6px 10px;border-bottom:1px solid #24362F}
+.pcmp td{padding:9px 10px;border-bottom:1px solid #1C2E27;color:#E9EEF3;background:none}
+.pcmp td.was{color:#E58A8A;text-decoration:line-through;text-decoration-color:rgba(229,138,138,.5)}.pcmp td.now{color:var(--ac);font-weight:600}
+.pflow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.pflow>div{background:#1C2E27;border:1px solid #2C4038;border-radius:12px;padding:10px 12px;min-width:120px}
+.pflow b{display:block;color:#fff;font-size:14px}.pflow span{font-size:12.5px;color:var(--ac)}
+.pflow i{color:var(--ac);font-style:normal;font-size:18px}
+.pbars{display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:16px}
+.pbars>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;color:#8EA39B}
+.pbars span{color:#fff;font-weight:700;font-size:12px}.pbars i{display:block;width:100%;max-width:38px;border-radius:6px 6px 0 0;background:var(--ac)}
+.pcap{font-size:12.5px;color:#8EA39B;margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pcap s{display:inline-block;width:12px;height:8px;border-radius:2px}.pcap s.a{background:#5B6B65}.pcap s.b{background:var(--ac)}
+.prate{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px;font-size:14px;color:#C9D8D1}
+.prate input{flex:1;min-width:160px;accent-color:#5CF2A6}.prate b{color:#fff;font-size:16px;min-width:80px}
+.pq{margin-top:14px}.pq>div{display:grid;grid-template-columns:minmax(0,1.3fr) 2fr auto;gap:10px;align-items:center;margin-bottom:9px;font-size:13.5px;color:#E9EEF3}
+.pqb{display:flex;flex-direction:column;gap:3px}.pqb i{display:block;height:8px;border-radius:4px}.pqb i.a{background:#5B6B65}.pqb i.b{background:var(--ac)}
+.pq b{color:#fff;white-space:nowrap;font-size:13px}
+.pchk{list-style:none;padding:0;margin-top:14px}.pchk li{position:relative;padding-left:26px;margin-bottom:10px;color:#E9EEF3;font-size:15px}
+.pchk li:before{content:"✓";position:absolute;left:0;color:var(--ac);font-weight:700}
+.proad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.proad>div{background:#1C2E27;border:1px solid #24362F;border-radius:12px;padding:12px 14px}
+.proad b{display:block;color:#fff;font-size:16px;margin-bottom:6px}
+.proad ul{padding-left:16px;margin-top:8px;color:#C9D8D1;font-size:13px}.proad li{margin-bottom:5px}
+.opres.full{position:fixed;inset:0;margin:0;z-index:100;border-radius:0;display:flex;flex-direction:column;padding:3vh 6vw;overflow:auto}
+.opres.full .osl{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1100px;width:100%;margin:0 auto}
+.opres.full .ptt{font-size:clamp(28px,3.6vw,46px)}.opres.full .osb{font-size:clamp(16px,1.8vw,20px)}
+.opres.full .pk4 b{font-size:clamp(26px,3vw,40px)}.opres.full .pcmp{font-size:clamp(14px,1.6vw,18px)}
+.opres.full #ov-fs{background:#E5484D;color:#fff;border-color:#E5484D}
+/* база и практика своего проекта */
+.ofix{border:1px solid #BFE9D2;background:#F6FCF9;border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px;line-height:1.5}
+.xlt td.xbad{background:#FDECEC;color:#B4232A}.xlt td.xemp{background:#FEF4E2}
+.xlleg{display:flex;gap:10px;margin-top:8px;font-size:11.5px}.xlleg span{padding:2px 8px;border-radius:4px}
+.xlleg .xbad{background:#FDECEC;color:#B4232A}.xlleg .xemp{background:#FEF4E2;color:#8A5A00}
+tr.ogrp td{background:#F2F5F7;font-weight:700;font-size:12.5px}
+.orep{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--appline);font-size:13px}
+.orep small{display:block;color:#6A7783;font-size:12px}.orep b{font-weight:600;white-space:nowrap;font-size:12.5px;color:#6A7783}
+.orep.new b{color:var(--green)}.orep.new span:after{content:" · обновлён";color:var(--green);font-size:12px}
+@media (max-width:900px){.pk4,.pk4.k3{grid-template-columns:1fr 1fr}.proad{grid-template-columns:1fr}.pq>div{grid-template-columns:1fr auto}.pq .pqb{grid-column:1/-1;grid-row:2}.ptt{font-size:20px}.pcmp{font-size:12.5px}.pcmp td,.pcmp th{padding:6px 5px}}
 @media (max-width:900px){.ownpg{grid-template-columns:1fr!important}#ovwin{grid-template-columns:1fr!important;min-height:0}
   #ovwin .side{padding:8px;overflow-x:auto}#ovwin .side .lg,#ovwin .side .usr{display:none}
   #ov-side{display:flex;gap:4px}#ov-side button{width:auto;white-space:nowrap;margin:0}
@@ -1426,69 +1470,94 @@ COMP.trip=(function(){var back=false;
 
 /* ===================== СВОЙ ПРОЕКТ КЛИЕНТА ===================== */
 function ownTitle(){return C.p?'«'+esc(C.p)+'»':'ваш проект'}
-var OWN_ST=[['Готово','g'],['В работе','a'],['На проверке','b']];
-var OWN_ROWS=[['Позиция А-01','Объём, ед.',1240,0],['Позиция А-02','Объём, ед.',860,1],['Позиция Б-01','Количество, шт.',312,0],['Позиция Б-02','Количество, шт.',95,2],['Позиция В-01','Объём, ед.',2100,1],['Позиция В-02','Количество, шт.',47,0],['Позиция Г-01','Объём, ед.',530,2],['Позиция Г-02','Количество, шт.',780,0]];
+var OWN_ST=[['Действует','g'],['На согласовании','b'],['Закрыт','n'],['Просрочен','r']];
+/* № договора, подрядчик, объект, сумма, срок, статус, как записано в Excel: [сумма, срок] */
+var OWN_ROWS=[['Д-114/26','ООО «МонтажСтрой»','ЖК «Северный», корп. 2',4850000,'15.12.2026',0,['4 850 000 р.','15.12.26']],
+ ['Д-118/26','ООО «ЭлектроСети-М»','ЖК «Северный», корп. 2',1240000,'30.11.2026',0,['1240000','2026-11-30']],
+ ['Д-121/26','ИП Гусев А. В.','Склад «Промзона-3»',386000,'20.11.2026',2,['386000','20.11.2026']],
+ ['Д-125/26','ООО «ТеплоТехника»','ЖК «Северный», корп. 1',2970000,'28.02.2027',1,['2970000','28.02.2027']],
+ ['Д-127/26','АО «БетонТрансСервис»','ЖК «Северный», корп. 3',7300000,'31.03.2027',0,['7,3 млн','31.03.2027']],
+ ['Д-130/26','ООО «ОкнаПрофи»','ЖК «Северный», корп. 1',1615000,'25.12.2026',0,['1615000','25.12.2026']],
+ ['Д-133/26','ООО «ГеоИзыскания»','Склад «Промзона-3»',420000,'10.11.2026',2,['420000','10.11.26']],
+ ['Д-136/26','ООО «ЛифтМонтаж»','ЖК «Северный», корп. 2',3480000,'',1,['3480000','']],
+ ['Д-139/26','ООО «КровляСервис»','Склад «Промзона-3»',890000,'05.11.2026',3,['890000','05.11.2026']],
+ ['Д-141/26','ООО «ДорСтрой-Юг»','ЖК «Северный», благоустр.',5260000,'30.06.2027',0,['5260000','30.06.2027']]];
 function ownRoles(){var r=[['me','Я']];if(C.v.indexOf('clients')>-1)r.push(['cl','Заказчик']);if(boss())r.push(['boss','Руководитель']);if(C.v.indexOf('team')>-1)r.push(['team','Коллега']);if(r.length<2)r.push(['cl','Пользователь']);return r}
 function ownMenu(files,used){return '<div class="h">Учебные файлы</div>'+files.map(function(x,i){return '<button data-i="'+i+'"'+(used[i]?' class="on"':'')+'><span class="xls">XLSX</span><span>'+x.lbl+'<small>'+x.f+(used[i]?' · уже загружен':'')+'</small></span></button>'}).join('')}
+function mlnS(n){return n2(n/1e6)+NB+'млн'}
 
 /* ---- База: таблица → страница ---- */
 COMP.ownpage=(function(){
-  var R,q='',flt='all',view='t',srt=0;
-  function stc(i){return OWN_ST[i]}
-  function xl(){return '<div class="xl"><div class="xlbar"><b>X</b>таблица_проекта.xlsx</div><div class="tblwrap"><table class="xlt"><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td class="rn">1</td><td>Позиция</td><td>Показатель</td><td>Значение</td><td>Статус</td></tr>'+
-    R.map(function(r,i){return '<tr><td class="rn">'+(i+2)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="xs" data-i="'+i+'">'+stc(r[3])[0]+'</td></tr>'}).join('')+'</table></div><div class="xltabs"><span class="on">Лист1</span><span>Лист2</span><span>+</span></div></div>'}
-  function list(){var L=R.map(function(r,i){return [r,i]}).filter(function(x){var r=x[0];if(flt!='all'&&String(r[3])!=flt)return false;return !q||(r[0]+' '+r[1]+' '+stc(r[3])[0]).toLowerCase().indexOf(q)>-1});
-    if(srt)L.sort(function(a,b){return (b[0][2]-a[0][2])*srt});return L}
-  function render(flashIt){var L=list();
+  var R,q='',flt='all',obj='all',grp=false,srt=0;
+  var OBJ=['ЖК «Северный»','Склад «Промзона-3»'];
+  function xl(){var dup=R[4];return '<div class="xl"><div class="xlbar"><b>X</b>реестр_договоров.xlsx · Лист1</div><div class="tblwrap"><table class="xlt"><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr><tr><td class="rn">1</td><td>№</td><td>Подрядчик</td><td>Объект</td><td>Сумма</td><td>Срок</td><td>Статус</td></tr>'+
+    R.map(function(r,i){return '<tr><td class="rn">'+(i+2)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="'+(/[^\d]/.test(r[6][0])?'xbad':'')+'">'+r[6][0]+'</td><td class="'+(!r[6][1]?'xemp':/\.\d\d$|^\d{4}/.test(r[6][1])?'xbad':'')+'">'+r[6][1]+'</td><td class="xs" data-i="'+i+'">'+OWN_ST[r[5]][0].toLowerCase()+'</td></tr>'}).join('')+
+    '<tr><td class="rn">12</td><td>'+dup[0]+'</td><td>'+dup[1]+'</td><td>'+dup[2]+'</td><td class="xbad">'+dup[6][0]+'</td><td>'+dup[6][1]+'</td><td class="xbad">'+OWN_ST[dup[5]][0].toLowerCase()+'</td></tr></table></div><div class="xltabs"><span class="on">Лист1</span><span>Лист2</span><span>+</span></div></div>'}
+  function list(){var L=R.filter(function(r){if(flt!='all'&&String(r[5])!=flt)return false;if(obj!='all'&&r[2].indexOf(OBJ[+obj])<0)return false;return !q||(r[0]+' '+r[1]+' '+r[2]).toLowerCase().indexOf(q)>-1});
+    if(srt)L=L.slice().sort(function(a,b){return (b[3]-a[3])*srt});return L}
+  function row(r){var s=OWN_ST[r[5]];return '<tr><td style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'<br><small style="color:#6A7783">'+r[2]+'</small></td><td class="n">'+f(r[3])+'</td><td style="white-space:nowrap">'+(r[4]||'<span class="st a">не указан</span>')+'</td><td><span class="st '+s[1]+'">'+s[0]+'</span></td></tr>'}
+  function render(fl){var L=list(),tot=R.reduce(function(a,r){return a+r[3]},0);
     $('#op-xl').innerHTML=xl();
-    $('#op-f').innerHTML=[['all','Все',R.length]].concat(OWN_ST.map(function(s,i){return [String(i),s[0],R.filter(function(r){return r[3]==i}).length]})).map(function(x){return '<button class="fchip'+(flt==x[0]?' on':'')+'" data-f="'+x[0]+'">'+x[1]+'<b>'+x[2]+'</b></button>'}).join('');
-    var body;
+    $('#op-k').innerHTML='<div class="kpi"><div class="l">Договоров</div><div class="v">'+R.length+'</div><div class="d">2 объекта</div></div><div class="kpi"><div class="l">Сумма договоров</div><div class="v">'+mlnS(tot)+'</div><div class="d">₽ с НДС</div></div><div class="kpi"><div class="l">Действуют</div><div class="v up">'+R.filter(function(r){return r[5]==0}).length+'</div><div class="d">'+mlnS(R.filter(function(r){return r[5]==0}).reduce(function(a,r){return a+r[3]},0))+'</div></div><div class="kpi"><div class="l">Просрочены</div><div class="v down">'+R.filter(function(r){return r[5]==3}).length+'</div><div class="d">'+(R.filter(function(r){return r[5]==3}).map(function(r){return r[0]}).join(', ')||'нет')+'</div></div>';
+    $('#op-f').innerHTML=[['all','Все',R.length]].concat(OWN_ST.map(function(s,i){return [String(i),s[0],R.filter(function(r){return r[5]==i}).length]})).map(function(x){return '<button class="fchip'+(flt==x[0]?' on':'')+'" data-f="'+x[0]+'">'+x[1]+'<b>'+x[2]+'</b></button>'}).join('');
+    var head='<thead><tr><th>№</th><th>Подрядчик и объект</th><th class="n sortable" id="op-sort">Сумма, ₽ '+(srt==1?'↓':srt==-1?'↑':'↕')+'</th><th>Срок</th><th>Статус</th></tr></thead>',body;
     if(!L.length)body='<div style="color:#6A7783;font-size:13px;padding:10px 0">Ничего не нашлось</div>';
-    else if(view=='t')body='<div class="tblwrap"><table><thead><tr><th>Позиция</th><th>Показатель</th><th class="n sortable" id="op-sort">Значение '+(srt==1?'↓':srt==-1?'↑':'↕')+'</th><th>Статус</th></tr></thead><tbody>'+L.map(function(x){var r=x[0],s=stc(r[3]);return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+f(r[2])+'</td><td><span class="st '+s[1]+'">'+s[0]+'</span></td></tr>'}).join('')+'</tbody></table></div>';
-    else body='<div class="ocards">'+L.map(function(x){var r=x[0],s=stc(r[3]);return '<div class="ocd"><div><b>'+r[0]+'</b><span class="st '+s[1]+'">'+s[0]+'</span></div><small>'+r[1]+'</small><em>'+f(r[2])+'</em></div>'}).join('')+'</div>';
+    else if(grp)body='<div class="tblwrap"><table>'+head+'<tbody>'+OBJ.map(function(o){var g=L.filter(function(r){return r[2].indexOf(o)>-1});if(!g.length)return '';return '<tr class="ogrp"><td colspan="2">'+o+' · '+g.length+' дог.</td><td class="n">'+f(g.reduce(function(a,r){return a+r[3]},0))+'</td><td colspan="2"></td></tr>'+g.map(row).join('')}).join('')+'</tbody></table></div>';
+    else body='<div class="tblwrap"><table>'+head+'<tbody>'+L.map(row).join('')+'</tbody></table></div>';
     $('#op-body').innerHTML=body;
-    var done=R.filter(function(r){return r[3]==0}).length;
-    $('#op-tot').innerHTML='<span>Показано: <b>'+L.length+' из '+R.length+'</b></span><span>Сумма значений: <b>'+f(L.reduce(function(a,x){return a+x[0][2]},0))+'</b></span><span>Готово: <b>'+Math.round(done/R.length*100)+'%</b></span>';
-    $('#op-cnt').textContent=R.length+' позиций';
-    if(flashIt)flash($('#op-body'))}
-  return {html:function(){return res('РЕЗУЛЬТАТ <b>//</b> ТАБЛИЦА → СТРАНИЦА','нажмите статус в Excel, ищите и фильтруйте справа')+
-    win('project.html · из файла таблица_проекта.xlsx','<div class="wbody"><div class="wtitle"><h3>'+cap(ownTitle())+'</h3><div class="tools"><span class="tag">собрано из Excel</span><button class="abtn pri" id="op-pdf">Скачать PDF</button></div></div>'+
-    '<div class="grid2 ownpg"><div class="card"><h4>Было: Excel <span>нажмите на статус</span></h4><div id="op-xl"></div></div>'+
-    '<div class="card"><h4>Стало: страница <span id="op-cnt"></span></h4><div class="optools"><input class="search" id="op-q" placeholder="Поиск по позициям">'+segBtns('op-v',[['t','Таблица'],['c','Карточки']],'t')+'</div><div class="filters" id="op-f"></div><div id="op-body"></div><div class="optot" id="op-tot"></div></div></div></div>')},
+    $('#op-tot').innerHTML='<span>Показано: <b>'+L.length+' из '+R.length+'</b></span><span>Сумма: <b>'+f(L.reduce(function(a,r){return a+r[3]},0))+' ₽</b></span>';
+    if(fl)flash($('#op-body'))}
+  return {html:function(){return res('РЕЗУЛЬТАТ <b>//</b> ТАБЛИЦА → СТРАНИЦА','поменяйте статус в Excel, фильтруйте и группируйте справа')+
+    win('reestr.html · из файла реестр_договоров.xlsx','<div class="wbody"><div class="wtitle"><h3>Реестр договоров · '+cap(ownTitle())+'</h3><div class="tools"><span class="tag">обновлено из Excel</span><button class="abtn pri" id="op-pdf">Скачать PDF</button></div></div>'+
+    '<div class="ofix"><b>При переводе в страницу нашлось и исправлено:</b> суммы, записанные текстом, переведены в числа (2) · даты приведены к одному формату (3) · удалён дубль строки 12 · пустой срок у Д-136/26 подсвечен</div>'+
+    '<div class="grid2 ownpg"><div class="card"><h4>Было: Excel <span>нажмите на статус в колонке F</span></h4><div id="op-xl"></div><div class="xlleg"><span class="xbad">ошибка формата</span><span class="xemp">пустая ячейка</span></div></div>'+
+    '<div class="card"><h4>Стало: страница для заказчика</h4><div class="kpis" id="op-k"></div><div class="optools"><input class="search" id="op-q" placeholder="Поиск: номер, подрядчик, объект">'+segBtns('op-o',[['all','Все объекты'],['0','ЖК «Северный»'],['1','Промзона-3']],'all')+'</div><div class="filters" id="op-f"></div>'+
+    '<label class="switch" style="margin:0 0 8px"><input type="checkbox" id="op-g"><i></i>Группировать по объектам с итогами</label><div id="op-body"></div><div class="optot" id="op-tot"></div></div></div></div>')},
    init:function(){R=OWN_ROWS.map(function(r){return r.slice()});render();
     $('#op-q').addEventListener('input',function(){q=this.value.trim().toLowerCase();render()});
-    onSeg('op-v',function(k){view=k;render(true)});
+    onSeg('op-o',function(k){obj=k;render(true)});
+    $('#op-g').addEventListener('change',function(){grp=this.checked;render(true)});
     $('#op-f').addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;flt=b.dataset.f;render()});
     $('#op-body').addEventListener('click',function(e){if(e.target.closest('#op-sort')){srt=srt==1?-1:srt==-1?0:1;render()}});
-    $('#op-xl').addEventListener('click',function(e){var c=e.target.closest('.xs');if(!c)return;var r=R[+c.dataset.i];r[3]=(r[3]+1)%OWN_ST.length;render(true);toast('Поменяли статус в Excel: страница обновилась сама')});
-    $('#op-pdf').addEventListener('click',function(){var b=this;b.disabled=true;b.textContent='Собираю PDF…';setTimeout(function(){b.disabled=false;b.textContent='PDF готов ✓';toast('PDF собран: '+list().length+' позиций, итоги внизу страницы')},900)})}};
+    $('#op-xl').addEventListener('click',function(e){var c=e.target.closest('.xs');if(!c)return;var r=R[+c.dataset.i];r[5]=(r[5]+1)%OWN_ST.length;render(true);toast(r[0]+': статус в Excel изменён, страница обновилась сама')});
+    $('#op-pdf').addEventListener('click',function(){var b=this;b.disabled=true;b.textContent='Собираю PDF…';setTimeout(function(){b.disabled=false;b.textContent='PDF готов ✓';toast('PDF: '+list().length+' договоров на '+mlnS(list().reduce(function(a,r){return a+r[3]},0))+' ₽, с итогами по объектам')},900)})}};
 })();
 
 /* ---- Практика: данные на сервере ---- */
 COMP.ownsrv=(function(){
-  var FL=[{f:'таблица_12.11.xlsx',lbl:'Добавились новые позиции',add:3,chg:1,del:0,t:'12.11, 10:15'},{f:'таблица_13.11.xlsx',lbl:'Сменились статусы',add:0,chg:4,del:0,t:'13.11, 09:40'},{f:'таблица_14.11.xlsx',lbl:'Убрали дубли',add:0,chg:0,del:2,t:'14.11, 11:05'}];
-  var used=[false,false,false],n=8,ver=1,last='11.11, 18:05',LOG=[],busy=false;
-  function k(){setK('os-k1',String(n),'в одной базе на сервере');setK('os-k2',last,'без ручной загрузки');setK('os-k3',String(ver),'можно вернуть любую');setK('os-k4','актуальна','обновилась сама','up')}
-  function log(){$('#os-log').innerHTML=LOG.map(function(l){return '<tr><td style="white-space:nowrap">'+l[0]+'</td><td>'+l[1]+'</td></tr>'}).join('')}
-  function desc(x){var p=[];if(x.add)p.push('добавлено позиций: '+x.add);if(x.chg)p.push('изменилось: '+x.chg);if(x.del)p.push('удалено дублей: '+x.del);return p.join(', ')}
-  function bot(h,kb){chat('os-msgs',h+(kb?'<div class="kb"><button data-a="open">Открыть страницу</button><button data-a="what">Что именно изменилось?</button></div>':''))}
-  function apply(i){var x=FL[i];used[i]=true;n+=x.add-x.del;ver++;last=x.t;LOG.unshift([x.t,'Загружен '+x.f+': '+desc(x)]);k();log();flash($('#os-log'));
-    typing('os-msgs',900,function(){bot('<div class="h">Обновление: '+cap(ownTitle())+'</div>'+cap(desc(x))+'. Страница уже показывает свежие данные.',true)})}
+  var FL=[{f:'реестр_договоров_13.11.xlsx',lbl:'Реестр договоров: новые договоры',rep:0,rows:4826,t:'13.11, 09:20',
+      d:'+2 договора, у 3 сменился статус',det:['Новый: Д-143/26, ООО «СтальКаркас», 2 140 000 ₽','Новый: Д-144/26, ООО «ВентСистемы», 965 000 ₽','Д-125/26 и Д-136/26: на согласовании → действует','Д-139/26: просрочен уже 8 дней, подрядчику ушло напоминание'],bot:'Д-139/26 (ООО «КровляСервис») просрочен уже 8 дней.'},
+    {f:'график_поставок_13.11.xlsx',lbl:'График поставок: сдвиг дат',rep:1,rows:3158,t:'13.11, 14:05',
+      d:'у 4 поставок сдвинулись даты',det:['Арматура А500, ЖК «Северный», корп. 3: 18.11 → 22.11','Окна ПВХ, корп. 1: 20.11 → 27.11','Лифтовое оборудование, корп. 2: 02.12 → 09.12','Кровельная мембрана, Промзона-3: 15.11 → 16.11'],bot:'Окна ПВХ для корп. 1 сдвинулись на неделю, до 27.11.'},
+    {f:'остатки_14.11.xlsx',lbl:'Остатки материалов: новая выгрузка',rep:2,rows:2951,t:'14.11, 08:45',
+      d:'обновлены остатки по 312 позициям',det:['Обновлено позиций: 312 из 2 951','Ниже минимального запаса: 7 позиций','Больше всего не хватает: кабель ВВГнг 3×2,5 (осталось 140 м из 600 м)'],bot:'7 позиций ниже минимального запаса, сильнее всего не хватает кабеля ВВГнг 3×2,5.'}];
+  var REPS=[['Реестр договоров',4820,'12.11, 09:40'],['График поставок по объектам',3150,'11.11, 17:20'],['Остатки материалов на складах',2940,'11.11, 10:05'],['Реестр входящих документов',3610,'10.11, 16:45'],['Сводка по подрядчикам',1880,'08.11, 12:30'],['Сверка с контрагентами',2020,'12.11, 11:15']];
+  var used=[false,false,false],ver=46,LOG=[],busy=false,lastI=-1,auto=false;
+  function rowsT(){return REPS.reduce(function(a,r){return a+r[1]},0)}
+  function k(){setK('os-k1',String(REPS.length),'у заказчика по ссылке');setK('os-k2',f(rowsT()),'в одной базе на сервере');setK('os-k3',lastI<0?'12.11, 11:15':FL[lastI].t,auto?'папка проверяется каждый час':'загрузка вручную или из папки');setK('os-k4',String(ver),'любую можно вернуть')}
+  function reps(){$('#os-reps').innerHTML=REPS.map(function(r,i){return '<div class="orep'+(r[3]?' new':'')+'"><span>'+r[0]+'<small>'+f(r[1])+' строк</small></span><b>'+r[2]+'</b></div>'}).join('')}
+  function log(){$('#os-log').innerHTML=LOG.map(function(l){return '<tr><td style="white-space:nowrap">'+l[0]+'</td><td>'+l[1]+'<br><small style="color:#6A7783">'+l[2]+'</small></td><td style="font-size:12px;color:#6A7783">'+l[3]+'</td></tr>'}).join('')}
+  function bot(h,kb){chat('os-msgs',h+(kb?'<div class="kb"><button data-a="what">Что изменилось?</button><button data-a="open">Открыть отчёт</button></div>':''))}
+  function apply(i){var x=FL[i],r=REPS[x.rep];used[i]=true;lastI=i;ver++;r[1]=x.rows;r[2]=x.t;r[3]=1;
+    LOG.unshift([x.t,x.f,x.d,auto?'автозагрузка из папки':esc(C.n)]);k();reps();log();flash($('#os-log'));
+    typing('os-msgs',900,function(){bot('<div class="h">'+r[0]+' обновлён</div>'+cap(x.d)+'. '+x.bot+'<br><span style="color:#8FC1FF">Заказчик уже видит новую версию.</span>',true)})}
   return {html:function(){return res('РЕЗУЛЬТАТ <b>//</b> ДАННЫЕ НА СЕРВЕРЕ','загрузите новый файл и посмотрите, что напишет бот')+
-    win('server · хранилище проекта','<div class="wbody"><div class="wtitle"><h3>Хранилище проекта</h3><div class="tools"><span class="tag live">сервер · онлайн</span><div class="dd"><button class="abtn pri" id="os-load">Загрузить новый файл ▾</button><div class="ddm" id="os-files"></div></div></div></div>'+
-    '<div class="kpis">'+kpi('os-k1','Позиций в базе')+kpi('os-k2','Последнее обновление')+kpi('os-k3','Версий сохранено')+kpi('os-k4','Страница проекта')+'</div>'+
-    '<div class="grid2"><div class="card"><h4>Журнал изменений <span>новые сверху</span></h4><div class="tblwrap"><table><thead><tr><th>Когда</th><th>Что изменилось</th></tr></thead><tbody id="os-log"></tbody></table></div><label class="switch"><input type="checkbox" id="os-auto"><i></i>Забирать файл из папки автоматически, каждый час</label></div>'+
-    '<div class="phone"><div class="phead"><div class="ava">П</div><div><b>Проект · уведомления</b><span>бот · в сети</span></div></div><div class="msgs" id="os-msgs" style="height:300px"></div></div></div></div>')},
-   init:function(){LOG=[['11.11, 18:05','Загружен таблица_11.11.xlsx: 8 позиций']];k();log();
-    bot('Здравствуйте, '+esc(C.n)+'! Я слежу за данными проекта и напишу, как только что-то поменяется.');
+    win('server · хранилище '+ownTitle(),'<div class="wbody"><div class="wtitle"><h3>Хранилище проекта</h3><div class="tools"><span class="tag live">сервер · онлайн</span><div class="dd"><button class="abtn pri" id="os-load">Загрузить файл ▾</button><div class="ddm" id="os-files"></div></div></div></div>'+
+    '<div class="kpis">'+kpi('os-k1','Отчётов на сервере')+kpi('os-k2','Строк данных')+kpi('os-k3','Последнее обновление')+kpi('os-k4','Версий сохранено')+'</div>'+
+    '<div class="grid2"><div class="stack"><div class="card"><h4>Отчёты <span>обновляются из файлов</span></h4><div id="os-reps"></div></div>'+
+    '<div class="card"><h4>Журнал изменений <span>новые сверху</span></h4><div class="tblwrap"><table><thead><tr><th>Когда</th><th>Файл и изменения</th><th>Кто</th></tr></thead><tbody id="os-log"></tbody></table></div>'+
+    '<label class="switch"><input type="checkbox" id="os-auto"><i></i>Забирать файлы из папки «Отчёты заказчика» на Яндекс Диске каждый час</label></div></div>'+
+    '<div class="phone"><div class="phead"><div class="ava">П</div><div><b>Проект · уведомления</b><span>бот · в сети</span></div></div><div class="msgs" id="os-msgs"></div></div></div></div>')},
+   init:function(){LOG=[['12.11, 11:15','сверка_3кв.xlsx','2 020 строк, 4 строки нужно поправить',esc(C.n)],['12.11, 09:40','реестр_договоров.xlsx','+3 договора, исправлено 2 ошибки формата',esc(C.n)],['11.11, 17:20','график_поставок.xlsx','без ошибок, сдвиг 2 дат','автозагрузка из папки']];k();reps();log();
+    bot('<div class="h">Доброе утро, '+esc(C.n)+'</div>Вчера обновились 2 отчёта. В сверке с контрагентами 4 строки ждут правки, список отправлен заказчику.');
     $('#os-load').addEventListener('click',function(e){e.stopPropagation();$('#os-files').innerHTML=ownMenu(FL,used);$('#os-files').classList.toggle('on')});
     document.addEventListener('click',function(e){if(!e.target.closest('#os-load')&&!e.target.closest('#os-files'))$('#os-files').classList.remove('on')});
     $('#os-files').addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(!b||busy)return;var i=+b.dataset.i;$('#os-files').classList.remove('on');if(used[i]){toast('Этот файл уже на сервере, дубля не будет');return}
-      var btn=$('#os-load');busy=true;btn.disabled=true;btn.textContent='Загружаю '+FL[i].f+'…';setTimeout(function(){busy=false;btn.disabled=false;btn.textContent='Загрузить новый файл ▾';apply(i)},900)});
-    $('#os-auto').addEventListener('change',function(){if(this.checked){LOG.unshift(['сейчас','Включена автозагрузка из папки: раз в час']);log();toast('Теперь файл можно просто класть в папку, сервер заберёт его сам')}else toast('Автозагрузка выключена')});
-    $('#os-msgs').addEventListener('click',function(e){var b=e.target.closest('.kb button');if(!b)return;var kb=b.parentNode;if(kb.classList.contains('used'))return;kb.classList.add('used');chat('os-msgs',b.textContent,'me');
-      if(b.dataset.a=='open'){typing('os-msgs',700,function(){chat('os-msgs','Ссылка на страницу: project.ваш-домен.ru. Там уже свежая версия.')});return}
-      var last=LOG[0];typing('os-msgs',800,function(){chat('os-msgs','<div class="h">Изменения</div>'+(last?last[1]:'')+'<br>Старая версия сохранена, её можно вернуть одной кнопкой.')})})}};
+      var btn=$('#os-load');busy=true;btn.disabled=true;btn.textContent='Проверяю '+FL[i].f+'…';setTimeout(function(){busy=false;btn.disabled=false;btn.textContent='Загрузить файл ▾';apply(i)},1000)});
+    $('#os-auto').addEventListener('change',function(){auto=this.checked;k();toast(auto?'Теперь файл можно просто положить в папку, сервер заберёт его сам':'Автозагрузка выключена')});
+    $('#os-msgs').addEventListener('click',function(e){var b=e.target.closest('.kb button');if(!b)return;var kb=b.parentNode;if(kb.classList.contains('used'))return;kb.classList.add('used');chat('os-msgs',b.textContent,'me');var x=FL[lastI];
+      if(b.dataset.a=='open'){typing('os-msgs',700,function(){chat('os-msgs','Открыла «'+REPS[x.rep][0]+'»: project.ваш-домен.ru/'+['reestr','postavki','ostatki'][x.rep]+'. Прошлая версия сохранена, её можно вернуть.')});return}
+      typing('os-msgs',800,function(){chat('os-msgs','<div class="h">Что изменилось</div>'+x.det.map(function(d){return '• '+d}).join('<br>'))})})}};
 })();
 
 /* ---- Профи: сервис по ссылке ---- */
@@ -1524,23 +1593,45 @@ COMP.ownsvc=(function(){
     if(C.v.indexOf('clients')>-1||!w.bs){U.push([hide?'••••':'Ковалёва Марина',w.cl+', '+cu(),'5 опубликованных отчётов','сегодня, 10:02','g']);U.push([hide?'••••':'Дубов Андрей',w.cl+', '+cu(),'Реестр договоров, сверка','вчера, 18:40','g'])}
     if(w.bs)U.push(['Руководитель','Просмотр','сводка и презентация','приглашение отправлено','a']);if(C.v.indexOf('team')>-1)U.push(['Коллега','Редактор','загрузка файлов','сегодня, 09:15','g']);
     return '<div class="vh"><div><h3>Доступы</h3><div class="s">у каждого свой логин и свои права</div></div><button class="abtn pri" id="ov-inv">Пригласить</button></div><div class="card tblwrap"><table><thead><tr><th>Кто</th><th>Роль</th><th>Что видит</th><th>Последний вход</th></tr></thead><tbody>'+U.map(function(u){return '<tr><td>'+u[0]+'</td><td>'+u[1]+'</td><td>'+u[2]+'</td><td><span class="st '+u[4]+'">'+u[3]+'</span></td></tr>'}).join('')+'</tbody></table></div><div class="o152">● Данные хранятся на сервере в России · вход по логину и паролю · журнал входов · 152-ФЗ</div>'}
-  function mkSL(){var p=PER[1];return [
-    ['ЗАДАЧА','6 отчётов','Заказчик получал отчёты в Excel по почте. Каждое обновление занимало около 40 минут ручной работы, и всегда был риск отправить старую версию.'],
-    ['РЕШЕНИЕ','Excel → ссылка','<div class="oflow"><span>Файл Excel</span><i>→</i><span>Автопроверка</span><i>→</i><span>База на сервере</span><i>→</i><span>Страница по ссылке</span><i>→</i><span>Вход по логину</span></div>'],
-    ['РЕЗУЛЬТАТ ЗА ОКТЯБРЬ','','<div class="obig"><div><b>40 → 3 мин</b>на одно обновление</div><div><b>'+p.saved+' ч</b>сэкономлено за месяц</div><div><b>'+p.err+'</b>ошибок поймано до заказчика</div><div><b>'+p.views+'</b>просмотров, 0 писем с файлами</div></div>'],
-    ['БЕЗОПАСНОСТЬ','152-ФЗ','Данные хранятся на сервере в России. У заказчика и руководителя свои логины: каждый видит только то, что ему открыто, а все входы записываются в журнал.'],
-    ['ЧТО ДАЛЬШЕ','3 шага','<ol class="onext"><li>Подключить ещё 2 отчёта заказчика</li><li>Уведомления заказчику в Telegram, когда отчёт обновился</li><li>PDF-сводка руководителю каждый понедельник</li></ol>']]}
-  function vPre(){return '<div class="vh"><div><h3>Презентация проекта</h3><div class="s">'+(boss()?'для руководителя: ':'')+'5 слайдов, цифры берутся из сервиса</div></div><button class="abtn" id="ov-full">На весь экран</button></div>'+
-    '<div class="opres" id="ov-pres"><div class="osl" id="ov-sl"></div><div class="odn"><button class="abtn" id="ov-prev">← Назад</button><div class="odots" id="ov-dots"></div><button class="abtn pri" id="ov-next">Дальше →</button></div></div>'+
+  var rate=1500;
+  function pk(v,l,d,c){return '<div><b'+(c?' class="'+c+'"':'')+'>'+v+'</b><span>'+l+'</span>'+(d?'<em>'+d+'</em>':'')+'</div>'}
+  function ptitle(t,s){return '<div class="ptt">'+t+'</div>'+(s?'<div class="osb">'+s+'</div>':'')}
+  function econ(){var m=28*rate,y=m*12;return '<div class="pk4 k3">'+pk(f(m)+' ₽','в месяц, время специалиста','28 ч × '+f(rate)+' ₽','g')+pk(f(y)+' ₽','в год при той же нагрузке','')+pk(f(1500)+' ₽','сервер в месяц','окупается в первый же день')+'</div>'}
+  function mkSL(){var p=PER[1],o=PER[0],mxV=REP.reduce(function(a,r){return Math.max(a,r[5])},0),pub=REP.filter(function(r){return r[4]=='p'});
+   return [
+    ['ПРОЕКТ',ptitle(cap(ownTitle())+': отчёты заказчику по ссылке','Сервис превращает Excel-файлы в страницы с логинами для '+(hide?'заказчика':cu())+'. Работает два месяца, данные на сервере в России.')+
+      '<div class="pk4">'+pk(REP.length,'отчётов у заказчика')+pk(f(p.rows),'строк данных в базе')+pk('3','пользователя с логинами')+pk('2 мес.','в работе')+'</div>'],
+    ['БЫЛО → СТАЛО',ptitle('Что поменялось для заказчика')+'<table class="pcmp"><tr><th></th><th>Было: Excel по почте</th><th>Стало: сервис по ссылке</th></tr>'+
+      [['Обновление отчёта','≈40 минут вручную','3 минуты, сам'],['Как передаём','письмо с файлом','ссылка и свой логин'],['Версии','«а какой файл последний?»','одна актуальная версия'],['Ошибки в данных','находит заказчик','ловит проверка до публикации'],['Доступ','копии файла у всех','у каждого свои права']].map(function(r){return '<tr><td>'+r[0]+'</td><td class="was">'+r[1]+'</td><td class="now">'+r[2]+'</td></tr>'}).join('')+'</table>'],
+    ['КАК УСТРОЕНО',ptitle('Путь данных: от файла до заказчика')+'<div class="pflow">'+[['Файл Excel',p.files+' за месяц'],['Автопроверка',p.err+' ошибок исправлено'],['База на сервере',f(p.rows)+' строк'],['Страница по ссылке',REP.length+' отчётов'],['Вход по логину','3 пользователя']].map(function(s,i){return (i?'<i>→</i>':'')+'<div><b>'+s[0]+'</b><span>'+s[1]+'</span></div>'}).join('')+'</div>'+
+      '<div class="osb" style="margin-top:14px">Файл можно загрузить вручную или просто положить в папку: сервер заберёт его сам, проверит и обновит отчёт.</div>'],
+    ['РЕЗУЛЬТАТ ЗА ОКТЯБРЬ',ptitle('Октябрь против сентября')+'<div class="pk4">'+pk(p.files,'файлов обработано','+156%','g')+pk(p.upd,'на одно обновление','было '+o.upd+', вручную 40 мин','g')+pk(p.saved+' ч','сэкономлено','было '+o.saved+' ч','g')+pk(p.views,'просмотров заказчиком','было '+o.views,'g')+'</div>'+
+      '<div class="pbars">'+WK.map(function(w,i){return '<div><span>'+w+'</span><i style="height:'+Math.round(w/14*80)+'px'+(i<4?';opacity:.35':'')+'"></i><small>'+(i<4?'сен':'окт')+' '+(i%4+1)+'</small></div>'}).join('')+'</div><div class="pcap">файлов в неделю: нагрузка выросла в 2,5 раза, а времени уходит меньше</div>'],
+    ['ЭКОНОМИЯ',ptitle('Сколько это стоит в деньгах')+'<div class="prate"><span>Стоимость часа специалиста</span><input type="range" id="ov-rate" min="800" max="3000" step="100" value="'+rate+'"><b id="ov-ratev">'+f(rate)+' ₽</b></div><div id="ov-econ">'+econ()+'</div>'],
+    ['КАЧЕСТВО ДАННЫХ',ptitle('Ошибки: '+o.err+' → '+p.err+' (−39%)','Проверка ловит их до того, как отчёт увидит заказчик. Ошибок меньше, потому что заказчик стал заполнять файлы по шаблону.')+
+      '<div class="pq">'+EL.map(function(e,i){return '<div><span>'+e+'</span><div class="pqb"><i class="a" style="width:'+Math.round(o.E[i]/22*100)+'%"></i><i class="b" style="width:'+Math.round(p.E[i]/22*100)+'%"></i></div><b>'+o.E[i]+' → '+p.E[i]+'</b></div>'}).join('')+'</div><div class="pcap"><s class="a"></s> сентябрь <s class="b"></s> октябрь</div>'],
+    ['ЗАКАЗЧИК',ptitle('Чем пользуется заказчик','За октябрь '+p.views+' просмотра и ни одного письма с файлом.')+
+      '<div class="pq">'+pub.map(function(r){return '<div><span>'+rn(r)+'</span><div class="pqb"><i class="b" style="width:'+Math.round(r[5]/mxV*100)+'%"></i></div><b>'+r[5]+'</b></div>'}).join('')+'</div>'],
+    ['БЕЗОПАСНОСТЬ',ptitle('Данные под защитой')+'<ul class="pchk"><li>Сервер в России, хранение по 152-ФЗ</li><li>Вход по логину и паролю, у каждого свои права</li><li>Журнал входов: кто и когда открывал отчёт</li><li>Резервная копия каждую ночь, '+p.files+' версий файлов можно вернуть</li><li>Для показа названия заказчика скрываются одной кнопкой</li></ul>'],
+    ['ПЛАН',ptitle('Что дальше: три месяца')+'<div class="proad">'+[['Ноябрь','в работе',['Подключить ещё 2 отчёта: акты и сверки','Проверка ИНН контрагентов']],['Декабрь','план',['Уведомления заказчику в Telegram','PDF-сводка руководителю по понедельникам']],['Январь','план',['Второй заказчик на том же сервисе','Шаблон отчёта под нового клиента за 1 день']]].map(function(m){return '<div><b>'+m[0]+'</b><span class="st '+(m[1]=='в работе'?'a':'n')+'">'+m[1]+'</span><ul>'+m[2].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></div>'}).join('')+'</div>']
+   ]}
+  function vPre(){return '<div class="vh"><div><h3>Презентация проекта</h3><div class="s">'+(boss()?'для руководителя: ':'')+'9 слайдов, цифры берутся из сервиса</div></div></div>'+
+    '<div class="opres" id="ov-pres"><div class="optop"><span id="ov-cnt"></span><button class="abtn" id="ov-fs">⛶ На весь экран</button></div><div class="osl" id="ov-sl"></div><div class="odn"><button class="abtn" id="ov-prev">← Назад</button><div class="odots" id="ov-dots"></div><button class="abtn pri" id="ov-next">Дальше →</button></div></div>'+
     '<label class="switch"><input type="checkbox" id="ov-hide"'+(hide?' checked':'')+'><i></i>Скрыть название заказчика и имена на показе</label>'}
-  function sl(){SL=mkSL();var s=SL[slide];$('#ov-sl').innerHTML='<div class="dl">'+(slide+1)+' / '+SL.length+' · '+s[0]+'</div>'+(s[1]?'<div class="obigt">'+s[1]+'</div>':'')+'<div class="osb">'+s[2]+'</div>';$('#ov-dots').innerHTML=SL.map(function(x,i){return '<i class="'+(i==slide?'on':'')+'"></i>'}).join('')}
-  function draw(sec){var S=secs();if(!S.some(function(x){return x[0]==sec}))sec=S[0][0];
+  function sl(){SL=mkSL();var s=SL[slide];$('#ov-cnt').textContent=(slide+1)+' / '+SL.length+' · '+s[0];$('#ov-sl').innerHTML=s[1];
+    $('#ov-dots').innerHTML=SL.map(function(x,i){return '<i data-i="'+i+'" class="'+(i==slide?'on':'')+'"></i>'}).join('');
+    var r=$('#ov-rate');if(r)r.oninput=function(){rate=+this.value;$('#ov-ratev').textContent=f(rate)+' ₽';$('#ov-econ').innerHTML=econ()}}
+  function go(d){slide=(slide+d+SL.length)%SL.length;sl()}
+  var ph=null;function setFull(v){full=v;var p=$('#ov-pres');if(!p)return;if(v){ph=document.createComment('pres');p.parentNode.insertBefore(ph,p);document.body.appendChild(p)}else if(ph){ph.parentNode.insertBefore(p,ph);ph.remove();ph=null}p.classList.toggle('full',v);document.body.style.overflow=v?'hidden':'';$('#ov-fs').textContent=v?'✕ Выйти из полноэкранного режима':'⛶ На весь экран';if(v)toast('Листайте стрелками или кнопками, выход: Esc или ✕')}
+  function presInit(){sl();$('#ov-prev').onclick=function(){go(-1)};$('#ov-next').onclick=function(){go(1)};$('#ov-fs').onclick=function(){setFull(!full)};
+    $('#ov-dots').onclick=function(e){var d=e.target.closest('i[data-i]');if(d){slide=+d.dataset.i;sl()}};
+    $('#ov-hide').onchange=function(){hide=this.checked;sl();toast(hide?'Название заказчика и имена скрыты':'Показываются реальные названия')}}
+  document.addEventListener('keydown',function(e){if(!full)return;if(e.key=='Escape')setFull(false);if(e.key=='ArrowRight')go(1);if(e.key=='ArrowLeft')go(-1)});
+  function draw(sec){if(full)setFull(false);var S=secs();if(!S.some(function(x){return x[0]==sec}))sec=S[0][0];
     $('#ov-side').innerHTML=S.map(function(x){return '<button data-s="'+x[0]+'"'+(x[0]==sec?' class="on"':'')+'>'+x[1]+(x[0]=='u'&&LOG[0][4]=='r'?' <em>1</em>':'')+'</button>'}).join('');
     $('#ov-main').innerHTML={s:vSum,r:vRep,u:vUpl,a:vAcc,p:vPre}[sec]();cur=sec;
     if(sec=='s')onSeg('ov-per',function(k){per=+k;draw('s');flash($('#ov-main .kpis'))});
-    if(sec=='p'){sl();$('#ov-prev').onclick=function(){slide=(slide+4)%5;sl()};$('#ov-next').onclick=function(){slide=(slide+1)%5;sl()};
-      $('#ov-full').onclick=function(){full=!full;$('#ov-pres').classList.toggle('full',full);this.textContent=full?'Свернуть':'На весь экран';if(full)toast('Режим показа: листайте стрелками внизу')};
-      $('#ov-hide').onchange=function(){hide=this.checked;toast(hide?'Название заказчика и имена скрыты':'Показываются реальные названия')}}
+    if(sec=='p')presInit();
   }
   var cur='s';
   return {html:function(){var rs=ownRoles();
