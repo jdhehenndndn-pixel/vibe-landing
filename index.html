@@ -419,6 +419,10 @@ button.stb{border:0;cursor:pointer;font:inherit;font-size:12px}
 .odn{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px}
 .odots{display:flex;gap:6px}.odots i{width:8px;height:8px;border-radius:50%;background:#D6DCE1}.odots i.on{background:var(--green)}
 .kpis.k6{grid-template-columns:repeat(3,1fr)}
+.sgrid{display:grid;grid-template-columns:1.25fr 1fr;gap:12px}.sgrid>*{min-width:0}
+.sobjw{overflow-x:auto}.sobj{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}.sobj th{font-size:11.5px;font-weight:600;color:#6A7783;text-align:right;padding:4px 6px;border-bottom:1px solid #EEF1F4}.sobj th:first-child{text-align:left}.sobj td{padding:6px;border-bottom:1px solid #F3F5F7;text-align:right;white-space:nowrap;vertical-align:top}.sobj td:first-child{text-align:left;white-space:normal}.sobj td small{display:block;font:10.5px var(--mono);color:#8A96A3;word-break:break-all}.sobj tr.new td{background:#E8F8EF;transition:background .6s}
+.schk div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #F3F5F7;font-size:13px}.schk div:last-child{border-bottom:0}.schk .st{white-space:nowrap}
+@media (max-width:900px){.sgrid{grid-template-columns:1fr}}@media (max-width:480px){.kpis.k6{grid-template-columns:1fr 1fr}.schk div{flex-wrap:wrap}}
 .obars{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:6px}
 .obars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;font-size:11.5px;color:#6A7783;gap:4px}
 .obars span{font-weight:700;color:var(--apptx)}
@@ -1040,45 +1044,68 @@ COMP.sales=(function(){var cs={dlv:0,it:0};
 /* ---- Практика: обмен с источником ---- */
 var PS;
 COMP.sync=(function(){
-  var EV=[{min:17,pay:['ООО «ВетроЭнергоСервис»',184300],ship:['№1875, АгроТехМаш',233100],bud:['Логистика','+86 400 ₽, перерасход 12%']},
-   {min:42,pay:['ООО «Уралпром-Трейд»',168200],paid:'ООО «Уралпром-Трейд»',ship:['№1847, Северный терминал, остаток',204900],riskDone:1847},
-   {min:65,pay:['АО «Северный терминал»',298450],paid:'АО «Северный терминал»',order:['№1880, АгроТехМаш',356200],bud:['Маркетинг','+42 000 ₽, перерасход 18%']}];
+  var EV=[{min:17,pay:['ООО «ВетроЭнергоСервис»',1184300],out:1240000,ship:['№1875, АгроТехМаш',1233100],bud:['Логистика','+386 400 ₽, перерасход 12%'],o:{'in':1,out:4,real:1,sup:2,rs:3},dds:-2},
+   {min:42,pay:['ООО «Уралпром-Трейд»',1168200],out:2870500,paid:'ООО «Уралпром-Трейд»',ship:['№1847, Северный терминал, остаток',2204900],riskDone:1847,o:{'in':1,out:6,real:1,prod:1,rs:4},dds:-1,inn:-1},
+   {min:65,pay:['АО «Северный терминал»',1298450],out:960000,paid:'АО «Северный терминал»',order:['№1880, АгроТехМаш',4356200],bud:['Маркетинг','+142 000 ₽, перерасход 18%'],o:{'in':1,out:3,ord:1,rs:3,cnt:1}}];
+  var OB=[['in','Поступления на счёт','Документ.ПоступлениеНаРасчетныйСчет',7,214],
+   ['out','Списания со счёта','Документ.СписаниеСРасчетногоСчета',23,486],
+   ['real','Реализации','Документ.РеализацияТоваровУслуг',8,172],
+   ['ord','Заказы клиентов','Документ.ЗаказКлиента',5,96],
+   ['prod','Заказы на производство','Документ.ЗаказНаПроизводство',3,58],
+   ['sup','Поступления от поставщиков','Документ.ПриобретениеТоваровУслуг',12,241],
+   ['rs','Взаиморасчёты с клиентами','РегистрНакопления.РасчетыСКлиентами',31,1184],
+   ['cnt','Контрагенты','Справочник.Контрагенты',2,1326]];
+  var CON={'1С':'подключение к 1С:ERP по OData… ок, 0,4 с','CRM':'подключение к CRM по REST API… ок, 0,6 с','ФинТабло':'подключение к ФинТабло по API… ок, 0,5 с','маркетплейсов':'Ozon Seller API и WB API… ок, 1,2 с','GetCourse':'подключение к GetCourse по API… ок, 0,7 с','банка':'подключение к банку по API… ок, 0,5 с','iiko':'подключение к iiko Cloud API… ок, 0,6 с','ЭДО':'подключение к ЭДО… ок, 0,8 с'};
+  function pl(n,a,b,c){var m=n%10,h=n%100;return n+' '+(m==1&&h!=11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c)}
+  function is1c(){return liveSrc()=='1С'}
+  function tech(r){return is1c()?r[2]:'из '+(liveSrc()||'таблиц')}
   function clk(add){PS.time[1]+=add;while(PS.time[1]>=60){PS.time[1]-=60;PS.time[0]++}return ('0'+PS.time[0]).slice(-2)+':'+('0'+PS.time[1]).slice(-2)}
-  function render(){$('#sk1 .v').textContent=PS.pays.length;$('#sk1 .d').textContent='+ '+rub(sm(PS.pays));$('#sk2 .v').textContent=PS.ships.length;$('#sk2 .d').textContent='на '+mln(sm(PS.ships));
-    var rk=Object.keys(PS.risk).length;$('#sk3 .v').textContent=rk;$('#sk3 .v').className='v '+(rk?'warn':'up');$('#sk3 .d').textContent=rk?'срок через 2–4 дня':'рисков нет';
-    $('#sk4 .v').textContent=has('budget')?PS.over.length:PS.letters;$('#sk4 .d').textContent=has('budget')?(PS.over.length?PS.over.join(', '):'перерасхода нет'):(PS.letters?'ждут проверки':'все отправлены')}
-  function lines(ev){var s=liveSrc()||'таблицы',L;
-    if(s=='1С')L=['подключение к 1С по OData… ок',ev?'Документ.ПоступлениеНаРасчетныйСчет: новых 1':'изменений нет',ev&&ev.ship?'Документ.РеализацияТоваровУслуг: новых 1':null,ev&&ev.order?'Документ.ЗаказКлиента: новый заказ':null];
-    else if(s=='Битрикс24')L=['подключение к Битрикс24 по REST API… ок',ev?'crm.deal.list: изменённых сделок 2':'изменений нет',ev&&ev.pay?'crm.invoice: оплачен 1 счёт':null,ev&&ev.order?'crm.deal: новая сделка':null];
-    else if(s=='ФинТабло')L=['подключение к ФинТабло по API… ок',ev?'операции: новых 2, разнесены по статьям':'новых операций нет',ev&&ev.ship?'сделки: закрыта 1':null];
-    else if(s=='маркетплейсов')L=['Ozon Seller API и WB API… ок',ev?'заказы: новых 14, выкуплено 11':'новых заказов нет',ev&&ev.pay?'выплата от маркетплейса: 1':null];
-    else if(s=='GetCourse')L=['подключение к GetCourse по API… ок',ev?'заказы: новых 6, оплачено 4':'новых заказов нет',ev&&ev.pay?'платежи: новых 1':null];
-    else if(s=='банка')L=['подключение к банку по API… ок',ev?'выписка: новых поступлений 1':'новых операций нет',ev&&ev.ship?'списания: новых 1':null];
-    else if(s=='iiko')L=['подключение к iiko Cloud API… ок',ev?'чеки за смену: 312, выручка обновлена':'новых чеков нет',ev&&ev.ship?'списания и закупки: обновлено':null];
-    else if(s=='ЭДО')L=['подключение к ЭДО… ок',ev?'входящие документы: новых 2':'новых документов нет',ev&&ev.pay?'выписка банка: новых платежей 1':null];
-    else L=['чтение Google-таблиц и папки с выгрузками… ок',ev?'лист «Оплаты»: новых строк 1':'новых строк нет',ev&&ev.ship?'лист «Заказы»: обновлено 1':null];
-    return L.filter(Boolean).concat([ev?'данные на сайте и в боте обновлены':'готово'])}
-  return {html:function(){var s=liveSrc()||'таблиц';return res('РЕЗУЛЬТАТ <b>//</b> ДАННЫЕ БЕЗ РУЧНЫХ ВЫГРУЗОК','нажмите «Обновить» несколько раз')+
-    win('server.ваш-домен.ru · обмен данными','<div class="wbody"><div class="wtitle"><h3>Обмен данными · источник: '+s+'</h3><div class="tools"><span class="tag live" id="slast">последний обмен 08:00</span><button class="abtn pri" id="ssync">Обновить из '+s+'</button></div></div>'+
-    '<div class="sync"><div class="kpis" style="grid-template-columns:1fr 1fr;margin:0"><div class="kpi" id="sk1"><div class="l">Оплат сегодня</div><div class="v"></div><div class="d up"></div></div><div class="kpi" id="sk2"><div class="l">'+cap(IND[C.i].word)+' сегодня</div><div class="v"></div><div class="d"></div></div><div class="kpi" id="sk3"><div class="l">Заказы с риском</div><div class="v"></div><div class="d"></div></div><div class="kpi" id="sk4"><div class="l">'+(has('budget')?'Статей с перерасходом':'Писем к отправке')+'</div><div class="v"></div><div class="d"></div></div></div>'+
-    '<div class="stack" style="gap:12px"><div class="log" id="slog" style="height:118px"><div><span class="t">08:00:02</span> обмен по расписанию завершён, изменений: 12</div></div><div class="card evt" id="sevt"><div style="color:#6A7783"><span>Здесь появятся изменения после обмена</span></div></div></div></div></div>')},
-   init:function(){PS={time:[8,0],tick:0,pays:[['ООО «АгроТехМаш»',380000],['АО «Балтийская верфь-Сервис»',309550],['ИП Коваленко А. В.',96750],['ООО «ГорМашКомплект», частично',60000]],
-     ships:[['№1861, Северный терминал',194800],['№1858, АгроТехМаш',233100],['№1855, МостСтройИнвест',412000],['№1849, ГорМашКомплект',98600],['№1863, ВетроЭнергоСервис',61200],['№1864, Коваленко ИП',47300],['№1866, часть 1',73000]],
+  function kk(id,v,d,cls){var e=$('#'+id);e.querySelector('.v').textContent=v;e.querySelector('.v').className='v'+(cls?' '+cls:'');e.querySelector('.d').textContent=d}
+  function render(){
+    kk('sk1',mln(sm(PS.pays)),pl(PS.pays.length,'платёж','платежа','платежей'));
+    kk('sk2',mln(sm(PS.ships)),pl(PS.ships.length,'документ','документа','документов'));
+    kk('sk3',mln(PS.cash),'в 3 банках · списано '+mln(PS.outs));
+    kk('sk4',mln(sm(PS.debts)),pl(PS.debts.length,'контрагент','контрагента','контрагентов'),'warn');
+    var rk=Object.keys(PS.risk).length;kk('sk5',String(rk),rk?'срок через 2–4 дня':'рисков нет',rk?'warn':'up');
+    if(has('budget'))kk('sk6',String(PS.over.length),PS.over.length?PS.over.join(', '):'перерасхода нет',PS.over.length?'warn':'up');
+    else kk('sk6',String(PS.letters),PS.letters?'ждут проверки':'все отправлены');
+    $('#sobj').innerHTML='<tr><th>Объект</th><th>сегодня</th><th>за ноябрь</th></tr>'+OB.map(function(r){return '<tr id="so-'+r[0]+'"><td>'+r[1]+'<small>'+tech(r)+'</small></td><td>'+r[3]+'</td><td>'+f(r[4])+'</td></tr>'}).join('');
+    var c=PS.chk,o30=PS.debts.filter(function(d){return d[2]>30}).length;
+    $('#schk').innerHTML=[['Дубли платежей','не найдено','g'],['Платежи без статьи ДДС',c.dds?pl(c.dds,'платёж','платежа','платежей')+', статья предложена':'все разнесены',c.dds?'a':'g'],
+      ['Контрагенты без ИНН',c.inn?pl(c.inn,'карточка','карточки','карточек'):'нет',c.inn?'a':'g'],['Остатки на счетах и выписка банка','расхождений нет','g'],
+      ['Долги старше 30 дней',o30?pl(o30,'контрагент','контрагента','контрагентов'):'нет',o30?'r':'g']].map(function(x){return '<div><span>'+x[0]+'</span><span class="st '+x[2]+'">'+x[1]+'</span></div>'}).join('')}
+  function lines(ev){var L=[CON[liveSrc()]||'чтение Google-таблиц и папки с выгрузками… ок, 0,9 с'],n=0;
+    if(ev){OB.forEach(function(r){var k=ev.o[r[0]];if(k){n+=k;L.push((is1c()?r[2]:r[1])+': новых '+k)}});
+      L.push('загружено изменений: '+n+', за '+(1.6+PS.tick*.7).toFixed(1).replace('.',',')+' с');L.push('проверки качества данных: 5 из 5');L.push('пересчитано показателей: 42, отчётов: 6');L.push('данные на сайте и в боте обновлены')}
+    else{L.push('изменений с прошлого обмена нет');L.push('готово')}
+    return L}
+  return {html:function(){var s=liveSrc()||'таблиц',sn=s=='1С'?'1С:ERP':s;return res('РЕЗУЛЬТАТ <b>//</b> ДАННЫЕ БЕЗ РУЧНЫХ ВЫГРУЗОК','нажмите «Обновить» несколько раз')+
+    win('server.ваш-домен.ru · обмен данными','<div class="wbody"><div class="wtitle"><h3>Обмен данными · источник: '+sn+'</h3><div class="tools"><span class="tag live" id="slast">каждые 15 мин · последний 08:00</span><button class="abtn pri" id="ssync">Обновить из '+s+'</button></div></div>'+
+    '<div class="kpis k6">'+[['sk1','Поступления сегодня'],['sk2',cap(IND[C.i].word)+' сегодня'],['sk3','Остаток на счетах'],['sk4','Просроченная дебиторка'],['sk5','Заказы с риском срыва'],['sk6',has('budget')?'Статей с перерасходом':'Писем к отправке']].map(function(k){return '<div class="kpi" id="'+k[0]+'"><div class="l">'+k[1]+'</div><div class="v"></div><div class="d"></div></div>'}).join('')+'</div>'+
+    '<div class="sgrid"><div class="card"><h4>Загружено из '+sn+' <span>записей</span></h4><div class="sobjw"><table class="sobj" id="sobj"></table></div></div>'+
+    '<div class="stack" style="gap:12px"><div class="card"><h4>Проверки после обмена</h4><div class="schk" id="schk"></div></div><div class="log" id="slog" style="height:132px"><div><span class="t">08:00:02</span> обмен по расписанию: загружено 92 изменения за 6,8 с</div></div></div></div>'+
+    '<div class="card evt" id="sevt" style="margin-top:12px"><div style="color:#6A7783"><span>Здесь появятся изменения после обмена</span></div></div></div>')},
+   init:function(){PS={time:[8,0],tick:0,outs:4318600,chk:{dds:3,inn:1},
+     pays:[['АО «Балтийская верфь-Сервис»',2309550],['ООО «АгроТехМаш»',1380000],['ООО «МостСтройИнвест»',1245000],['ООО «ГорМашКомплект», частично',600000],['АО «ЭнергоМонтаж-Юг»',418600],['ООО «КамаПромСнаб»',287400],['ИП Коваленко А. В.',196750]],
+     ships:[['№1855, МостСтройИнвест',2412000],['№1861, Северный терминал',1948000],['№1858, АгроТехМаш',933100],['№1866, ЭнергоМонтаж-Юг, часть 1',873000],['№1863, ВетроЭнергоСервис',612200],['№1849, ГорМашКомплект',498600],['№1867, КамаПромСнаб',356400],['№1864, Коваленко ИП',147300]],
      risk:{1847:'№1847, Северный терминал: выполнено 60%, срок 13.11, не хватает материала',1852:'№1852, ВетроЭнергоСервис: ждём поставщика, срок 15.11, поставщик сдвинул поставку на 14.11'},
-     debts:[['ООО «ПромЛифт»',124300,47],['ООО «СтальМонтаж»',412600,34],['АО «Северный терминал»',298450,21],['ООО «ТехноПромСнаб»',236900,14],['ООО «Уралпром-Трейд»',168200,9],['ООО «ДорСтройКомплект»',119850,6]],
-     letters:3,cash:2740000,over:['Закупка материалов']};
+     debts:[['ООО «ПромЛифт»',1243000,47],['ООО «СтальМонтаж»',2412600,34],['АО «Северный терминал»',1298450,21],['ООО «ТехноПромСнаб»',836900,14],['ООО «Уралпром-Трейд»',1168200,9],['ООО «ДорСтройКомплект»',419850,6]],
+     letters:3,cash:18740000,over:['Закупка материалов']};
     render();var busy=false;
     $('#ssync').addEventListener('click',function(){if(busy)return;busy=true;var btn=this;btn.disabled=true;btn.textContent='Идёт обмен…';var ev=EV[PS.tick],t=clk(ev?ev.min-(PS.tick?EV[PS.tick-1].min:0):9),L=lines(ev),log=$('#slog');
       L.forEach(function(l,i){setTimeout(function(){var d=document.createElement('div');d.innerHTML='<span class="t">'+t+':'+('0'+(i*3+2)).slice(-2)+'</span> '+l;log.appendChild(d);log.scrollTop=log.scrollHeight;
-        if(i<L.length-1)return;busy=false;btn.disabled=false;btn.textContent='Обновить из '+(liveSrc()||'таблиц');$('#slast').textContent='последний обмен '+t;var el=$('#sevt');if(!el.dataset.i){el.innerHTML='';el.dataset.i=1}
-        var rows=[];if(ev){if(ev.pay){PS.pays.push(ev.pay);PS.cash+=ev.pay[1];rows.push([t+' оплата: '+ev.pay[0],'+ '+rub(ev.pay[1]),'#1E9E5E']);flash($('#sk1'))}
-          if(ev.paid){PS.debts=PS.debts.filter(function(d){return d[0]!=ev.paid});PS.letters=Math.max(0,PS.letters-1)}
+        if(i<L.length-1)return;busy=false;btn.disabled=false;btn.textContent='Обновить из '+(liveSrc()||'таблиц');$('#slast').textContent='каждые 15 мин · последний '+t;var el=$('#sevt');if(!el.dataset.i){el.innerHTML='';el.dataset.i=1}
+        var rows=[];if(ev){if(ev.pay){PS.pays.push(ev.pay);PS.cash+=ev.pay[1];rows.push([t+' оплата: '+ev.pay[0],'+ '+rub(ev.pay[1]),'#1E9E5E']);flash($('#sk1'))}
+          if(ev.out){PS.cash-=ev.out;PS.outs+=ev.out;rows.push([t+' списания: '+pl(ev.o.out,'платёж','платежа','платежей')+' поставщикам','− '+rub(ev.out)]);flash($('#sk3'))}
+          if(ev.paid){PS.debts=PS.debts.filter(function(d){return d[0]!=ev.paid});PS.letters=Math.max(0,PS.letters-1);rows.push([t+' долг закрыт: '+ev.paid,'просрочка снята','#1E9E5E']);flash($('#sk4'))}
           if(ev.ship){PS.ships.push(ev.ship);rows.push([t+' '+IND[C.i].word+': '+ev.ship[0],rub(ev.ship[1])]);flash($('#sk2'))}
-          if(ev.riskDone){delete PS.risk[ev.riskDone];rows.push([t+' заказ №'+ev.riskDone+' закрыт','риск снят','#1E9E5E']);flash($('#sk3'))}
+          if(ev.riskDone){delete PS.risk[ev.riskDone];rows.push([t+' заказ №'+ev.riskDone+' закрыт','риск снят','#1E9E5E']);flash($('#sk5'))}
           if(ev.order)rows.push([t+' новый заказ: '+ev.order[0],rub(ev.order[1]),'#3E7BFA']);
-          if(ev.bud&&has('budget')){PS.over.push(ev.bud[0]);rows.push([t+' расход: '+ev.bud[0],ev.bud[1],'#E5484D']);flash($('#sk4'))}
-          PS.tick++;render();toast('Обмен завершён: '+rows.length+' изменения, бот уже знает свежие цифры')}else{rows.push([t+' обмен','без изменений','#6A7783']);toast('С прошлого обмена ничего не поменялось')}
-        rows.forEach(function(r){var d=document.createElement('div');d.innerHTML='<span>'+r[0]+'</span><b style="color:'+(r[2]||'#16212B')+'">'+r[1]+'</b>';el.insertBefore(d,el.firstChild)})},400+i*420)})})}};
+          if(ev.bud&&has('budget')){PS.over.push(ev.bud[0]);rows.push([t+' расход: '+ev.bud[0],ev.bud[1],'#E5484D']);flash($('#sk6'))}
+          OB.forEach(function(r){var k=ev.o[r[0]];if(k){r[3]+=k;r[4]+=k}});if(ev.dds)PS.chk.dds=Math.max(0,PS.chk.dds+ev.dds);if(ev.inn)PS.chk.inn=Math.max(0,PS.chk.inn+ev.inn);
+          PS.tick++;render();OB.forEach(function(r){if(ev.o[r[0]]){var tr=$('#so-'+r[0]);if(tr)tr.className='new'}});
+          toast('Обмен завершён: '+pl(rows.length,'изменение','изменения','изменений')+', бот уже знает свежие цифры')}else{rows.push([t+' обмен','без изменений','#6A7783']);toast('С прошлого обмена ничего не поменялось')}
+        rows.reverse().forEach(function(r){var d=document.createElement('div');d.innerHTML='<span>'+r[0]+'</span><b style="color:'+(r[2]||'#16212B')+'">'+r[1]+'</b>';el.insertBefore(d,el.firstChild)})},400+i*380)})})}};
 })();
 
 /* ---- Практика: бот ---- */
@@ -1103,8 +1130,8 @@ COMP.bot=(function(){var M,bt=[9,12],busy=false;
    warn:function(){return [['Отправил клиентам письма о сроках.',''],['<div class="who">Северный терминал, снабжение</div>Спасибо, что предупредили. Ждём 13-го.','ceo',null,1600]]},
    bud:function(){var o=PS.over;return [['<div class="h">Перерасход по бюджету</div>'+o.map(function(x,i){return li(x,['+8% к плану','+12% к плану','+18% к плану'][i%3],'warnl')}).join('')+'<div style="margin-top:6px">Остальные статьи в пределах плана.</div>','',[['Запросить объяснения у ЦФО','bexp']]]]},
    bexp:function(){return [['Отправил запрос руководителям ЦФО.',''],['<div class="who">Руководитель производства</div>Перерасход по материалам из-за срочного заказа, закупали дороже на 6%. В декабре компенсируем.','ceo',null,1700]]},
-   cashq:function(){return [['<div class="h">Прогноз остатка на неделю</div>'+li('Сегодня',mln(PS.cash))+li('Пятница, после аванса','1,54 млн ₽')+li('Понедельник, импорт','<span class="warnl">0,99 млн ₽</span>')+'<div style="margin-top:6px">В понедельник остаток уйдёт ниже неснижаемого 1 млн.</div>','',[['Что можно сдвинуть?','cfix']]]]},
-   cfix:function(){return [['Варианты:<br>• перенести оплату поставщику комплектующих на 29.11, это 315 000 ₽;<br>• попросить МостСтройИнвест оплатить остаток на день раньше.<br><br>Любой из них снимает риск.','']]},
+   cashq:function(){var fr=PS.cash-7.2e6,mo=fr-6.75e6,lo=mo<5e6;return [['<div class="h">Прогноз остатка на неделю</div>'+li('Сегодня',mln(PS.cash))+li('Пятница, после аванса',mln(fr))+li('Понедельник, оплата импорта',lo?'<span class="warnl">'+mln(mo)+'</span>':mln(mo))+'<div style="margin-top:6px">'+(lo?'В понедельник остаток уйдёт ниже неснижаемого 5 млн.':'Остаток держится выше неснижаемого 5 млн.')+'</div>','',[['Что можно сдвинуть?','cfix']]]]},
+   cfix:function(){return [['Варианты:<br>• перенести оплату поставщику комплектующих на 29.11, это 1 315 000 ₽;<br>• попросить МостСтройИнвест оплатить остаток на день раньше.<br><br>Любой из них снимает риск.','']]},
    ceo:function(){var p=PER[2];return [['<div class="h">Отчёт для руководителя</div>'+li('Выручка месяца',n2(p.rev)+' млн ₽ · '+Math.round(p.rev/p.plan*100)+'% плана')+li('Маржа',p.mg.toFixed(1).replace('.',',')+'%')+li('Просрочка',mln(sm(PS.debts)),'warnl')+li('Пришло сегодня','+ '+rub(sm(PS.pays))),'',[['Отправить','ceosend']]]]},
    leads:function(){return [['<div class="h">Заявки с сайта за сутки: 6</div>'+li('Новые, не обработаны','2','warnl')+li('В расчёте','3')+li('Ушли в счёт','1 на 184 500 ₽')+'<div style="margin-top:6px">Самая крупная: 312 000 ₽, клиент ждёт звонка с 10:20.</div>','',[['Кто не обработан?','leadn']]]]},
    leadn:function(){return [['<div class="h">Не обработаны</div>'+li('ООО «ТехСтрой», 312 000 ₽','ждёт 2 ч','warnl')+li('ИП Морозова, 48 600 ₽','ждёт 40 мин')+'<div style="margin-top:6px">Поставил задачу менеджеру и напомню через час.</div>','']]},
