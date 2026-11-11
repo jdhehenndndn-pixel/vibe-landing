@@ -379,6 +379,47 @@ svg text{font-family:var(--body)}
 .wave i{flex:1;height:6px;border-radius:3px;background:#2B5278}
 .wave.on i{background:#5CF2A6;animation:wv .6s ease-in-out infinite alternate}
 @keyframes wv{from{height:6px}to{height:40px}}
+/* ---------- свой проект ---------- */
+.ownpg{grid-template-columns:1fr 1.15fr}
+.xl{border:1px solid #CFD8D3;border-radius:8px;overflow:hidden;background:#fff;font-size:12.5px}
+.xlbar{display:flex;gap:8px;align-items:center;background:#1D6F42;color:#fff;padding:6px 10px;font-size:12px}
+.xlbar b{background:#fff;color:#1D6F42;border-radius:3px;width:18px;height:18px;display:grid;place-items:center;font-size:11px}
+.xlt{border-collapse:collapse;width:100%}
+.xlt th,.xlt td{border:1px solid #E1E5E3;padding:5px 7px;text-align:left;white-space:nowrap;font-weight:400}
+.xlt th{background:#F3F4F3;color:#6A7783;text-align:center;font-size:11px}
+.xlt td.rn{background:#F3F4F3;color:#6A7783;text-align:center;width:24px;font-size:11px}
+.xlt tr:nth-child(2) td:not(.rn){font-weight:700}
+.xlt td.xs{cursor:pointer;color:#1D6F42;text-decoration:underline dotted}
+.xlt td.xs:hover{background:#EEF8F3}
+.xltabs{display:flex;gap:2px;background:#F3F4F3;border-top:1px solid #E1E5E3;padding:3px 6px;font-size:11px;color:#6A7783}
+.xltabs span{padding:2px 10px}.xltabs .on{background:#fff;color:#1D6F42;font-weight:700;border-bottom:2px solid #1D6F42}
+.optools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.optools .search{flex:1;min-width:150px;width:auto}
+.optot{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:#6A7783;border-top:1px solid var(--appline);margin-top:10px;padding-top:10px}
+.optot b{color:var(--apptx)}
+th.sortable{cursor:pointer;user-select:none}
+.ocards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ocd{border:1px solid var(--appline);border-radius:10px;padding:10px;font-size:13px}
+.ocd div{display:flex;justify-content:space-between;gap:6px;align-items:center}
+.ocd small{display:block;color:#6A7783;margin:4px 0}
+.ocd em{font-style:normal;font-weight:700;font-size:16px}
+.ologin{display:grid;place-items:center;min-height:380px;background:linear-gradient(160deg,#0F1A17,#16302A);padding:20px}
+.obox{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:320px;color:var(--apptx);font-size:13px}
+.obox .lg{font-weight:700;font-size:16px;margin-bottom:14px;display:flex;gap:8px;align-items:center}
+.obox .lg i{width:22px;height:22px;border-radius:6px;background:var(--ac);display:inline-block}
+.obox label{display:block;color:#6A7783;margin:8px 0 4px}
+.obox input{width:100%;border:1px solid var(--appline);border-radius:9px;padding:8px 10px;font:inherit;background:#F7F9F8}
+.obox .abtn{width:100%;margin-top:14px;padding:10px}
+.obox small{display:block;margin-top:10px;color:var(--green);font-size:11.5px}
+button.stb{border:0;cursor:pointer;font:inherit;font-size:12px}
+.odemo{margin-top:14px}
+.osl{background:#0F1A17;color:#E9EEF3;border-radius:12px;padding:16px 18px;min-height:96px}
+.osl .dl{font:700 11px var(--mono);letter-spacing:.1em;color:var(--ac);margin-bottom:6px}
+.osl p{font-size:15px;line-height:1.45}
+.odn{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px}
+.odots{display:flex;gap:6px}.odots i{width:8px;height:8px;border-radius:50%;background:#D6DCE1}.odots i.on{background:var(--green)}
+@media (max-width:900px){.ownpg{grid-template-columns:1fr!important}#ovwin{grid-template-columns:1fr!important}#ovwin .side{display:none}}
+@media (max-width:520px){.ocards{grid-template-columns:1fr}}
 /* ---------- опросник ---------- */
 .ana{font-size:13.5px;color:var(--mut);line-height:1.55;margin-top:2px}
 .ana b{color:var(--ac);font-weight:600}
@@ -483,15 +524,16 @@ var TASKS={
  report:{l:'Отчёт для руководителя',d:'выручка, маржа, деньги на одном экране',
   bk:'Загружаете выгрузку, и дашборд показывает выручку, маржу и деньги на одном экране.',
   base:'дашборд для руководителя показывает выручку, маржу и деньги на одном экране',
-  prac:'ключевые цифры дня',pro:'управленческая отчётность'},
+  prac:'ключевые цифры дня',pro:'управленческая отчётность',g:'f'},
  cash:{l:'Платёжный календарь и касса',d:'остаток по дням, кассовые разрывы',
   bk:'Загружаете выгрузку и заранее видите остаток денег на каждый день и кассовые разрывы.',
   base:'платёжный календарь заранее показывает кассовые разрывы',
-  prac:'какой будет остаток денег на неделю вперёд',pro:'прогноз денег'},
+  prac:'какой будет остаток денег на неделю вперёд',pro:'прогноз денег',g:'m'},
  sales:{l:'Заявки и расчёт для клиентов',d:'калькулятор на сайте, заявки',
   bk:'Например, <mark>калькулятор на сайте</mark>: клиент сам считает заказ и оставляет заявку, а вам приходит готовый расчёт.',
   base:'калькулятор на сайте: клиент сам считает заказ и оставляет заявку',
-  prac:'какие заявки пришли с сайта',pro:'заявки клиентов'}
+  prac:'какие заявки пришли с сайта',pro:'заявки клиентов'},
+ own:{l:'Свой проект или сервис',d:'проект клиента вне типовых задач',bk:'',base:'',prac:'что изменилось в проекте',pro:'проект'}
 };
 var DATA={c1:'1С',excel:'Excel',google:'Google-таблицы',crm:'Битрикс24, amoCRM и другие CRM',bank:'Банк: выписки и клиент-банк',mp:'Маркетплейсы: Ozon, Wildberries',lms:'GetCourse и платформы обучения',fin:'ФинТабло, ПланФакт, Adesk',iiko:'iiko, r-keeper и кассы',edo:'ЭДО: Диадок, СБИС, Контур',scan:'Сканы и бумажная первичка',msg:'Почта и мессенджеры',bi:'Power BI',disk:'Яндекс Диск и папки с файлами'};
 var DATA_HINT={c1:'выгрузки или напрямую',excel:'файлы и выгрузки',google:'общие таблицы',crm:'сделки, счета, клиенты',bank:'движение денег',mp:'продажи, выплаты, остатки',lms:'ученики, заказы, оплаты',fin:'управленческий учёт',iiko:'чеки, выручка смен',edo:'входящие документы',scan:'нейросеть распознаёт',msg:'цифры присылают письмами и голосовыми',bi:'готовые отчёты',disk:'документы и выгрузки'};
@@ -502,10 +544,10 @@ var VIEW={me:'Только я',boss:'Руководитель или собст�
 function readCfg(){
   var p=new URLSearchParams(location.search);if(!p.get('t'))return null;
   var list=function(k){return (p.get(k)||'').split(',').filter(Boolean)};
-  var c={n:p.get('n')||'',r:p.get('r')||'',s:(p.get('s')||'').slice(0,80),x:(p.get('x')||'').slice(0,400),y:(p.get('y')||'').slice(0,80),i:IND[p.get('i')]?p.get('i'):'other',t:list('t').filter(function(x){return TASKS[x]}).slice(0,3),d:list('d').filter(function(x){return DATA[x]}),v:list('v').filter(function(x){return VIEW[x]}),g:p.get('g')=='1'};
+  var c={n:p.get('n')||'',r:p.get('r')||'',s:(p.get('s')||'').slice(0,80),x:(p.get('x')||'').slice(0,400),y:(p.get('y')||'').slice(0,80),p:(p.get('p')||'').slice(0,40),u:(p.get('u')||'').slice(0,60),i:IND[p.get('i')]?p.get('i'):'other',t:list('t').filter(function(x){return TASKS[x]}).slice(0,3),d:list('d').filter(function(x){return DATA[x]}),v:list('v').filter(function(x){return VIEW[x]}),g:p.get('g')=='1'};
   if(!c.t.length)return null;if(!c.d.length&&!c.y)c.d=['excel'];if(!c.v.length)c.v=['me'];return c;
 }
-function cfgUrl(c){var q=new URLSearchParams();q.set('n',c.n);q.set('r',c.r);if(c.s)q.set('s',c.s);if(c.x)q.set('x',c.x);if(c.y)q.set('y',c.y);q.set('i',c.i);q.set('t',c.t.join(','));q.set('d',c.d.join(','));q.set('v',c.v.join(','));if(c.g)q.set('g','1');return location.origin+location.pathname+'?'+q.toString()}
+function cfgUrl(c){var q=new URLSearchParams();q.set('n',c.n);q.set('r',c.r);if(c.s)q.set('s',c.s);if(c.x)q.set('x',c.x);if(c.y)q.set('y',c.y);if(c.p)q.set('p',c.p);if(c.u)q.set('u',c.u);q.set('i',c.i);q.set('t',c.t.join(','));q.set('d',c.d.join(','));q.set('v',c.v.join(','));if(c.g)q.set('g','1');return location.origin+location.pathname+'?'+q.toString()}
 
 /* ===================== АНАЛИЗ ТЕКСТА ===================== */
 function norm(s){return ' '+String(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^a-zа-я0-9\s-]/g,' ').replace(/\s+/g,' ')+' '}
@@ -544,7 +586,7 @@ function detectData(s){var t=norm(s),r=[];DATA_KW.forEach(function(d){if(d[1].so
 
 /* ===================== АНКЕТА ДЛЯ МЕНЕДЖЕРА ===================== */
 function quiz(){
-  var st={n:'',r:'',i:'',s:'',mode:'',t:[],d:[],v:[],x:'',y:'',g:false},step=0;
+  var st={n:'',r:'',i:'',s:'',mode:'',t:[],d:[],v:[],x:'',y:'',p:'',u:'',g:false},step=0;
   function opts(key,list,multi,max){return '<div class="opts" data-key="'+key+'" data-multi="'+(multi?1:0)+'" data-max="'+(max||99)+'">'+list.map(function(o){return '<button class="opt" data-v="'+o[0]+'">'+o[1]+(o[2]?'<small>'+o[2]+'</small>':'')+'</button>'}).join('')+'</div>'}
   var indList=['prod','whole','build','serv','retail','food','logi','edu','realty'].map(function(k){return [k,IND[k].l]}).concat([['own','Своя сфера','впишу вручную'],['none','Не указывать','без привязки к сфере']]);
   var tList=Object.keys(TASKS).map(function(k){return [k,TASKS[k].l,TASKS[k].d]});
@@ -559,14 +601,15 @@ function quiz(){
    '<label class="qlbl">Сфера компании</label>'+opts('i',indList,false)+
    '<div id="ownbox" style="display:none;margin-top:12px"><input class="qin" id="q-s" placeholder="Например, частная школа английского для детей" maxlength="80" style="margin-bottom:6px"><div class="ana" id="q-det"></div></div></div>'+
   '<div class="qstep" data-s="1"><div class="qnum">ШАГ 2 ИЗ 4 · ЗАДАЧИ</div><div class="qh">Какие задачи отнимают у клиента больше всего времени?</div><div class="qs">Выберите до трёх или опишите словами клиента. Первая задача станет главной.</div>'+opts('t',tList,true,3)+
-   '<label class="qlbl" style="margin-top:16px">Задачи клиента своими словами</label><textarea class="qin" id="q-x" rows="3" maxlength="400" placeholder="Например: каждый понедельник свожу выгрузки из 1С в отчёт для собственника, а ещё вручную напоминаю клиентам об оплате"></textarea><div class="ana" id="q-xa"></div></div>'+
+   '<label class="qlbl" style="margin-top:16px">Задачи клиента своими словами</label><textarea class="qin" id="q-x" rows="3" maxlength="400" placeholder="Например: каждый понедельник свожу выгрузки из 1С в отчёт для собственника, а ещё вручную напоминаю клиентам об оплате"></textarea><div class="ana" id="q-xa"></div>'+
+   '<div id="projbox" style="display:none;margin-top:6px"><label class="qlbl">Название проекта (необязательно)</label><input class="qin" id="q-p" maxlength="40" placeholder="Например, Excel → html"><label class="qlbl">Для кого проект (необязательно)</label><input class="qin" id="q-u" maxlength="60" placeholder="Например, для заказчиков или для руководителя"></div></div>'+
   '<div class="qstep" data-s="2"><div class="qnum">ШАГ 3 ИЗ 4 · ДАННЫЕ</div><div class="qh">Откуда клиент берёт данные?</div><div class="qs">Можно несколько. Варианты собраны по кейсам выпускников и встречам потоков.</div>'+opts('d',dList,true)+
    '<label class="qlbl" style="margin-top:16px">Другой источник (необязательно)</label><input class="qin" id="q-y" maxlength="80" placeholder="Например, данные присылают склады голосовыми в WhatsApp"><div class="ana" id="q-ya"></div></div>'+
   '<div class="qstep" data-s="3"><div class="qnum">ШАГ 4 ИЗ 4 · РЕЗУЛЬТАТ</div><div class="qh">Кто смотрит результаты его работы?</div><div class="qs">Можно несколько. Влияет на бота, панель и кабинет для клиентов.</div>'+opts('v',vList,true)+
    '<div class="mgrbox"><label class="switch"><input type="checkbox" id="q-g"><i></i>Клиент — выпускник AI-навыков: цены со скидкой и подарки выпускнику</label></div></div>'+
   '<div class="qerr" id="qerr"></div><div class="qnav"><button class="qback" id="qback" style="visibility:hidden">Назад</button><button class="qbtn" id="qnext">Дальше</button></div></div>'+
   '<div class="loading" id="loading"><div class="spin"></div><p id="ltext">Собираю страницу…</p></div><div id="done" class="quiz" style="display:none"></div>';
-  function paint(box,k){var a=st[k];$$('.opt',box).forEach(function(o){var n=a.indexOf(o.dataset.v);o.classList.toggle('on',n>-1);if(k=='t')o.setAttribute('data-n',n>-1?n+1:'')})}
+  function paint(box,k){var a=st[k];$$('.opt',box).forEach(function(o){var n=a.indexOf(o.dataset.v);o.classList.toggle('on',n>-1);if(k=='t')o.setAttribute('data-n',n>-1?n+1:'')});if(k=='t'){var ow=a.indexOf('own')>-1;$('#projbox').style.display=ow?'block':'none';$('#q-x').placeholder=ow?'Например: перевожу таблицы из Excel в html-страницы, результат смотрит заказчик, а проект нужно показать руководителю':'Например: каждый понедельник свожу выгрузки из 1С в отчёт для собственника, а ещё вручную напоминаю клиентам об оплате'}}
   $$('.opts').forEach(function(box){box.addEventListener('click',function(e){var b=e.target.closest('.opt');if(!b)return;var k=box.dataset.key,v=b.dataset.v;
     if(box.dataset.multi=='1'){var a=st[k],i=a.indexOf(v);if(i>-1)a.splice(i,1);else{if(a.length>=+box.dataset.max){$('#qerr').textContent='Можно выбрать не больше трёх задач';return}a.push(v)}paint(box,k)}
     else{st.mode=v;$$('.opt',box).forEach(function(o){o.classList.toggle('on',o===b)});$('#ownbox').style.display=v=='own'?'block':'none';if(v=='own')$('#q-s').focus()}
@@ -585,7 +628,9 @@ function quiz(){
     if(step==0){st.n=$('#q-n').value.trim();st.r=$('#q-r').value.trim();if(!st.n){$('#qerr').textContent='Напишите имя клиента';return}if(!st.mode){$('#qerr').textContent='Выберите сферу или «Не указывать»';return}
       if(st.mode=='own'){st.s=$('#q-s').value.trim();if(!st.s){$('#qerr').textContent='Впишите сферу клиента или выберите «Не указывать»';return}st.i=detectInd(st.s)}
       else if(st.mode=='none'){st.s='';st.i='other'}else{st.s='';st.i=st.mode}}
-    if(step==1){st.x=$('#q-x').value.trim();detectData(st.x).forEach(function(k){if(st.d.indexOf(k)<0)st.d.push(k)});paint($('.opts[data-key="d"]'),'d');var det=detectTasks(st.x).map(function(x){return x[1]}).filter(Boolean);
+    if(step==1){st.x=$('#q-x').value.trim();var own=st.t.indexOf('own')>-1;st.p=own?$('#q-p').value.trim():'';st.u=own?$('#q-u').value.trim():'';
+      if(own&&!st.x){$('#qerr').textContent='Для своего проекта опишите его словами клиента: что делает и для кого';return}
+      detectData(st.x).forEach(function(k){if(st.d.indexOf(k)<0)st.d.push(k)});paint($('.opts[data-key="d"]'),'d');var det=own?[]:detectTasks(st.x).map(function(x){return x[1]}).filter(Boolean);
       det.forEach(function(k){if(st.t.indexOf(k)<0&&st.t.length<3)st.t.push(k)});paint($('.opts[data-key="t"]'),'t');
       if(!st.t.length){$('#qerr').textContent=st.x?'Не смогла отнести задачу ни к одному типу: выберите ближайшую из списка, а текст клиента сохраню':'Выберите задачу или опишите её словами';return}}
     if(step==2){st.y=$('#q-y').value.trim();detectData(st.y).forEach(function(k){if(st.d.indexOf(k)<0)st.d.push(k)});paint($('.opts[data-key="d"]'),'d');if(!st.d.length&&!st.y){$('#qerr').textContent='Выберите источник данных или впишите свой';return}}
@@ -598,8 +643,8 @@ function quiz(){
     var lv=c.x?detectLevel(c.x):'';
     var sum=[['Клиент',esc(c.n)+(c.r?', '+esc(c.r):'')],['Сфера',c.s?esc(c.s)+(c.i!='other'?' → примеры как для «'+IND[c.i].l+'»':' → универсальные примеры'):c.i=='other'?'не указана':IND[c.i].l],
       ['Задачи',c.t.map(function(t,i){return (i+1)+'. '+TASKS[t].l}).join('<br>')+(c.x?'<br><span style="color:var(--mut)">Словами клиента: «'+esc(c.x)+'» → уровень '+{base:'Базы',prac:'Практики',pro:'Профи'}[lv]+'</span>':'')],
-      ['Данные',c.d.map(function(x){return DATA[x]}).concat(c.y&&!detectData(c.y).length?['«'+esc(c.y)+'»']:[]).join(', ')],['Смотрят результат',c.v.map(function(x){return VIEW[x]}).join(', ')],['Цены',c.g?'выпускника AI-навыков, с подарками':'полные']];
-    el.innerHTML='<div class="eb">СТРАНИЦА ГОТОВА</div><h1 style="font-size:clamp(28px,4vw,40px)">Страница клиента <em>'+esc(c.n)+'</em></h1>'+
+      (c.p||c.u?['Проект',(c.p?'«'+esc(c.p)+'»':'без названия')+(c.u?', для: '+esc(c.u):'')]:null),['Данные',c.d.map(function(x){return DATA[x]}).concat(c.y&&!detectData(c.y).length?['«'+esc(c.y)+'»']:[]).join(', ')],['Смотрят результат',c.v.map(function(x){return VIEW[x]}).join(', ')],['Цены',c.g?'выпускника AI-навыков, с подарками':'полные']];
+    sum=sum.filter(Boolean);el.innerHTML='<div class="eb">СТРАНИЦА ГОТОВА</div><h1 style="font-size:clamp(28px,4vw,40px)">Страница клиента <em>'+esc(c.n)+'</em></h1>'+
      '<p class="lead">Скопируйте ссылку и отправьте клиенту. Он откроет сразу свою страницу, без анкеты.</p>'+
      '<div style="display:flex;gap:8px;margin:22px 0 10px;flex-wrap:wrap"><input class="qin" id="d-url" readonly value="'+esc(url)+'" style="flex:1;min-width:240px;margin:0;font:13px var(--mono)"><button class="qbtn" id="d-copy">Скопировать ссылку</button></div>'+
      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px"><a class="qback" id="d-open" href="'+esc(url)+'" target="_blank" rel="noopener" style="text-decoration:none">Открыть в новой вкладке</a><button class="qback" id="d-edit">Изменить ответы</button><button class="qback" id="d-new">Новая анкета</button></div>'+
@@ -630,40 +675,55 @@ function landing(){
   var P=C.g?PRICE.g:PRICE.n, name=esc(C.n), ls=liveSrc(), src=srcNames();
   var tasksTxt=C.t.map(function(t){return TASKS[t]});
   // тексты тарифов
-  var t0=has('sales')&&C.t.length==1?TASKS.sales:TASKS[C.t.filter(function(t){return t!='sales'})[0]];
+  var OWN=has('own');if(OWN)C.t=['own'].concat(C.t.filter(function(t){return t!='own'}));
+  var t0=OWN?TASKS.own:has('sales')&&C.t.length==1?TASKS.sales:TASKS[C.t.filter(function(t){return t!='sales'})[0]];
   var baseKey='Вы научитесь делать инструменты <mark>на основе данных из '+src+'</mark>. '+t0.bk;
   var baseMore=tasksTxt.filter(function(x){return x!==t0}).map(function(x){return x.base});
   var baseP2=baseMore.length?'Ещё на Базе: '+baseMore.join('; ')+'.':'Плюс калькуляторы, страницы и дашборды для любых ваших расчётов.';
   var pracKey=ls?'Всё из Базы, только <mark>без ручных выгрузок</mark>: данные подтягиваются из '+ls+' напрямую и всегда свежие.':(C.d.indexOf('scan')>-1||C.d.indexOf('msg')>-1?'Всё из Базы, только <mark>без ручного переноса</mark>: письма, сканы и сообщения нейросеть сама разбирает и складывает в одну базу на сервере.':'Всё из Базы, только <mark>без ручных выгрузок</mark>: ваши таблицы сами собираются в одну базу на сервере.');
   var pracP2='<b style="color:var(--tx)">Бот в Telegram</b> каждое утро присылает '+(boss()?'вам и руководителю':'вам')+' сводку: '+joinRu(tasksTxt.map(function(x){return x.prac}))+'.'+(has('pay')&&!has('docs')?' А письма контрагентам бот готовит сам, вам остаётся проверить и отправить.':'');
-  var proKey='Вместе с кураторами вы доводите до рабочего состояния <mark>свою систему для компании</mark>: единую панель, где '+joinRu(tasksTxt.map(function(x){return x.pro}))+' собраны в одном месте. '+(bossW()?'Вы и '+bossW()+' открываете':'Вы открываете')+' её <mark>по ссылке со своим логином</mark>.';
+  var sob=tasksTxt.length>1?'собраны':tasksTxt[0].g=='f'?'собрана':tasksTxt[0].g=='m'?'собран':'собраны';
+  var proKey='Вместе с кураторами вы доводите до рабочего состояния <mark>свою систему для компании</mark>: единую панель, где '+joinRu(tasksTxt.map(function(x){return x.pro}))+' '+sob+' в одном месте. '+(bossW()?'Вы и '+bossW()+' открываете':'Вы открываете')+' её <mark>по ссылке со своим логином</mark>.';
   var proP2=C.v.indexOf('clients')>-1||has('sales')||has('orders')?'А можно сделать личный кабинет для клиентов: они сами видят статус заказа и скачивают документы, и вопросов «где мой заказ» становится меньше.':'Данные защищены, всё работает на сервере, а не только у вас на компьютере. Это то, что обычно заказывают у разработчиков, только сделано под ваш бизнес вашими руками.';
+  var ownFinal='';
+  if(OWN){var pt=C.p?'проекта <mark>«'+esc(C.p)+'»</mark>':'своего проекта',uu=C.u?esc(C.u):'пользователи',cl=C.v.indexOf('clients')>-1;
+    baseKey='Вы сделаете первую рабочую версию '+pt+': данные из '+src+' превращаются в аккуратную html-страницу, с которой удобно работать: <mark>поиск, фильтры, итоги, выгрузка в PDF</mark>.';
+    baseP2='Такую страницу уже можно показать: она открывается в любом браузере, без Excel и установки программ.';
+    pracKey='Всё из Базы, только <mark>проект живёт на сервере</mark>: данные хранятся в одной базе и обновляются без ручной загрузки файлов, а бот в Telegram сообщает о новых изменениях.';
+    pracP2='Здесь и решается, где хранить данные: не в папках на компьютере, а на сервере, откуда их берут и страница, и бот. Старые версии сохраняются, любую можно вернуть.';
+    proKey='Вместе с кураторами вы доводите проект до <mark>рабочего сервиса по своей ссылке</mark>: '+uu+' заходят по своему логину, данные защищены (152-ФЗ), а на защите проекта вы показываете готовую систему, которую можно предъявить руководителю или заказчику.';
+    proP2='Это то, что обычно заказывают у разработчиков, только сделано вашими руками, и дорабатывать сервис вы тоже сможете сами.';
+    ownFinal=(cl&&boss()?'Ваш проект нужен заказчику, а показывать его руководителю лучше рабочим сервисом по ссылке, а не файлом.':cl?'Ваш проект нужен заказчику, а заказчику удобнее открыть рабочий сервис по ссылке, чем файл.':boss()?'Показывать проект руководителю лучше рабочим сервисом по ссылке, а не файлом.':'Проект, которым пользуются по ссылке, а не файлом, работает и выглядит совсем иначе.')+
+      ' Это и есть Профи: доводите проект до рабочего состояния вместе с кураторами. Начать можно и с Практики, а потом доплатить разницу.'}
   function price(i,rec,items){var p=P[i];return '<div class="price'+(rec?' rec':'')+'"><div class="p">'+rub(p[0])+'</div><div class="o">'+(p[1]?'вместо '+rub(p[1])+' · цена выпускника':'полная стоимость')+'</div><div class="m">'+mo(p[0])+'</div><ul>'+items.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul></div>'}
   function tier(id,num,nm,badge,dl,key,p2,pr,protos){return '<section class="tier" id="'+id+'"><div class="thead"><div><div class="tnum">ТАРИФ '+num+'</div><div class="tname">'+nm+(badge?' <span class="badge">РЕКОМЕНДУЮ</span>':'')+'</div>'+
     '<div class="tdesc"><div class="dl">'+dl+'</div><p class="key">'+key+'</p><p>'+p2+'</p></div></div>'+pr+'</div>'+protos+'</section>'}
   // прототипы
   var baseOrder=C.t.filter(function(t){return t!='sales'}).concat(has('sales')?['sales']:[]);
-  var BL=pickBase();BS=BL;var PL=['sync','bot'].concat(pickPrac());var RL=['panel'].concat(usePayreq()?['payreq']:[]).concat((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?['portal']:[]);
+  var BL,PL,RL;
+  if(OWN){var oth=C.t.filter(function(t){return t!='own'});BL=['ownpage'];if(oth.length){var ok=VAR[oth[0]]?VAR[oth[0]]():oth[0];if(COMP[ok])BL.push(ok)}PL=['ownsrv'];RL=['ownsvc']}
+  else{BL=pickBase();PL=['sync','bot'].concat(pickPrac());RL=['panel'].concat(usePayreq()?['payreq']:[]).concat((C.v.indexOf('clients')>-1||has('sales')||has('orders'))?['portal']:[])}
+  BS=BL;
   var bp=BL.map(function(k,i){return COMP[k].html(i)}).join('');
 
   var pp=PL.map(function(k){return COMP[k].html()}).join('');
   var rp=RL.map(function(k){return COMP[k].html()}).join('');
-  var chips=C.t.map(function(t,i){return '<span class="chip"><b>0'+(i+1)+'</b> '+TASKS[t].l+'</span>'}).join('')+(C.s?'<span class="chip"><b>//</b> сфера: '+esc(C.s)+'</span>':C.i!='other'?'<span class="chip"><b>//</b> сфера: '+IND[C.i].l.toLowerCase()+'</span>':'')+'<span class="chip"><b>//</b> данные: '+C.d.map(function(x){return DATA[x].split(':')[0].split(',')[0]}).concat(C.y&&!detectData(C.y).length?[esc(C.y)]:[]).join(', ')+'</span>';
+  var chips=C.t.map(function(t,i){return '<span class="chip"><b>0'+(i+1)+'</b> '+(t=='own'?'Проект'+(C.p?': «'+esc(C.p)+'»':': свой сервис'):TASKS[t].l)+'</span>'}).join('')+(OWN&&C.u?'<span class="chip"><b>//</b> для кого: '+esc(C.u)+'</span>':'')+(C.s?'<span class="chip"><b>//</b> сфера: '+esc(C.s)+'</span>':C.i!='other'?'<span class="chip"><b>//</b> сфера: '+IND[C.i].l.toLowerCase()+'</span>':'')+'<span class="chip"><b>//</b> данные: '+C.d.map(function(x){return DATA[x].split(':')[0].split(',')[0]}).concat(C.y&&!detectData(C.y).length?[esc(C.y)]:[]).join(', ')+'</span>';
   var gifts=C.g?'<div class="gifts"><b>Подарки выпускнику на любом тарифе:</b> +1 год доступа к обоим курсам, Обезличиватель, спецкурс «Монетизация вайб-кодинга» и спецкурс «ИИ-сотрудники на OpenClaw». Старт 30 ноября, это последний поток, где кураторами будут Софья, Натали и Алексей.</div>':
     '<div class="gifts"><b>Старт 30 ноября.</b> Это последний поток, где кураторами будут Софья, Натали и Алексей. Оплата в рассрочку до 6 месяцев без переплаты, для компаний можно по счёту.</div>';
   var admin=false?'<div class="adminbar"><div class="wrap"><span>Страница для клиента готова. Ссылка:</span><input id="adm-url" readonly value="'+esc(cfgUrl(C))+'"><button id="adm-copy">Скопировать</button><a href="'+location.pathname+'">Новый опрос</a></div></div>':'';
   $('#app').innerHTML=admin+'<div class="wrap"><div class="top"><span><b>//</b> FIN-ACADEMY.PRO</span><span>ЛИЧНАЯ ПОДБОРКА · '+name.toUpperCase()+'</span></div>'+
    '<header class="hero"><div class="eb">ВАЙБ-КОДИНГ · ПОТОК 30 НОЯБРЯ</div><h1>Что вы соберёте<br><em>на каждом тарифе</em></h1>'+
-   '<p class="lead">'+name+', я взяла ваши задачи и показала, какой инструмент вы сделаете под них на Базе, Практике и Профи. Ниже не картинки из рекламы, а рабочие прототипы: в них можно нажимать, фильтровать и считать.</p>'+
-   (C.x?'<div class="cq"><div class="dl">ВАША ЗАДАЧА СВОИМИ СЛОВАМИ</div><p>«'+esc(C.x)+'»</p><a href="#'+{base:'base',prac:'practice',pro:'pro'}[detectLevel(C.x)]+'">Как она решается: тариф '+{base:'База',prac:'Практика',pro:'Профи'}[detectLevel(C.x)]+' ↓</a></div>':'')+'<div class="tasks">'+chips+'</div><div class="hint"><i>↓</i>Нажимайте на кнопки, строки таблиц и вкладки в каждом прототипе</div></header></div>'+
+   '<p class="lead">'+name+(OWN?', я взяла ваш проект'+(C.p?' «'+esc(C.p)+'»':'')+' и показала, каким он станет на Базе, Практике и Профи.':', я взяла ваши задачи и показала, какой инструмент вы сделаете под них на Базе, Практике и Профи.')+' Ниже не картинки из рекламы, а рабочие прототипы: в них можно нажимать, фильтровать и считать.</p>'+
+   (C.x?'<div class="cq"><div class="dl">'+(OWN?'ВАШ ПРОЕКТ СВОИМИ СЛОВАМИ':'ВАША ЗАДАЧА СВОИМИ СЛОВАМИ')+'</div><p>«'+esc(C.x)+'»</p>'+(OWN?'<a href="#base">Каким он станет на каждом тарифе ↓</a>':'<a href="#'+{base:'base',prac:'practice',pro:'pro'}[detectLevel(C.x)]+'">Как она решается: тариф '+{base:'База',prac:'Практика',pro:'Профи'}[detectLevel(C.x)]+' ↓</a>')+'</div>':'')+'<div class="tasks">'+chips+'</div><div class="hint"><i>↓</i>Нажимайте на кнопки, строки таблиц и вкладки в каждом прототипе</div></header></div>'+
    '<nav class="nav"><div class="wrap"><a href="#base">БАЗА · '+rub(P[0][0])+'</a><a href="#practice">ПРАКТИКА · '+rub(P[1][0])+'</a><a href="#pro" class="rec">ПРОФИ · '+rub(P[2][0])+'</a></div></nav><main class="wrap">'+
    tier('base','01','База',false,'ЧТО ВЫ ПОЛУЧИТЕ',baseKey,baseP2,price(0,false,['4 модуля, 4 живых эфира','Доступ 6 месяцев'+(C.g?' + 1 год':''),'Данные из выгрузок '+src]),bp+'<p class="note">Компании, цифры и условия в прототипах условные. На курсе вы соберёте то же самое на своих данных.</p>')+
    tier('practice','02','Практика',false,'<span class="plus">ВСЁ ИЗ БАЗЫ +</span>ЧЕМ ОТЛИЧАЕТСЯ',pracKey,pracP2,price(1,false,['6 модулей, 6 живых эфиров','Доступ 12 месяцев'+(C.g?' + 1 год':''),'Сервер, API, '+(ls||'интеграции')+', Telegram-боты']),pp)+
    tier('pro','03','Профи',true,'<span class="plus">ВСЁ ИЗ ПРАКТИКИ +</span>ЧЕМ ОТЛИЧАЕТСЯ',proKey,proP2,price(2,true,['7 модулей и защита проекта, 9 эфиров','Доступ 24 месяца'+(C.g?' + 1 год':''),'Свой проект до рабочей ссылки','Поддержка кураторов до 23 апреля']),rp)+
-   '<section class="final"><h2>Под ваши задачи я бы рекомендовала <em>Профи</em></h2><p>'+cap(joinRu(C.t.map(function(t){return TASKS[t].l.toLowerCase()})))+' — это одна система, и на Профи вы соберёте её целиком, вместе с кураторами и до рабочей ссылки. Но если хочется начать спокойнее, уже Практика снимет с вас ручные выгрузки и ежедневный контроль. А начать с Базы и повысить тариф можно и позже, доплатив разницу.</p>'+
-   '<div class="cmp"><div><b>База · '+rub(P[0][0])+'</b><span>'+cap(TASKS[baseOrder[0]].l.toLowerCase())+' по выгрузкам</span></div><div><b>Практика · '+rub(P[1][0])+'</b><span>'+(ls?ls+' напрямую':'Таблицы на сервере')+', бот в Telegram'+(has('docs')||has('pay')?', письма контрагентам':'')+'</span></div><div class="rec"><b>Профи · '+rub(P[2][0])+'</b><span>Своя панель по ссылке'+(rp.indexOf('id="portal"')>-1?' и кабинет для клиентов':' для вас'+(bossW()?' и '+(boss()?'руководителя':'коллег'):''))+'</span></div></div>'+gifts+'</section>'+
+   '<section class="final"><h2>Под ваши задачи я бы рекомендовала <em>Профи</em></h2><p>'+(OWN?ownFinal+'</p>':cap(joinRu(C.t.map(function(t){return TASKS[t].l.toLowerCase()})))+' — это одна система, и на Профи вы соберёте её целиком, вместе с кураторами и до рабочей ссылки. Но если хочется начать спокойнее, уже Практика снимет с вас ручные выгрузки и ежедневный контроль. А начать с Базы и повысить тариф можно и позже, доплатив разницу.</p>')+
+   '<div class="cmp"><div><b>База · '+rub(P[0][0])+'</b><span>'+(OWN?'Проект как html-страница: поиск, фильтры, PDF':cap(TASKS[baseOrder[0]].l.toLowerCase())+' по выгрузкам')+'</span></div><div><b>Практика · '+rub(P[1][0])+'</b><span>'+(OWN?'Данные на сервере, бот сообщает об изменениях':(ls?ls+' напрямую':'Таблицы на сервере')+', бот в Telegram'+(has('docs')||has('pay')?', письма контрагентам':''))+'</span></div><div class="rec"><b>Профи · '+rub(P[2][0])+'</b><span>'+(OWN?'Рабочий сервис по ссылке с логинами'+(C.u?': '+esc(C.u):''):'Своя панель по ссылке'+(rp.indexOf('id="portal"')>-1?' и кабинет для клиентов':' для вас'+(bossW()?' и '+(boss()?'руководителя':'коллег'):'')))+'</span></div></div>'+gifts+'</section>'+
    '<div class="foot"><span>МАСТЕР CFO · FIN-ACADEMY.PRO</span><span>ПОДГОТОВИЛА АЛЕКСАНДРА</span></div></main>';
-  document.title=C.n+': вайб-кодинг по тарифам';
+  document.title=C.n+(OWN&&C.p?': '+C.p+' на вайб-кодинге':': вайб-кодинг по тарифам');
   BL.forEach(function(k){COMP[k].init()});
   PL.forEach(function(k){COMP[k].init()});RL.forEach(function(k){COMP[k].init()});
   if(false)$('#adm-copy').addEventListener('click',function(){var i=$('#adm-url');i.select();try{navigator.clipboard.writeText(i.value)}catch(e){document.execCommand('copy')}toast('Ссылка скопирована, можно отправлять клиенту')});
@@ -1320,6 +1380,103 @@ COMP.trip=(function(){var back=false;
     '<div class="grid2"><div class="card">'+fld('Расстояние в одну сторону','tr-d',rng('tr-d',100,3000,10,820))+fld('Цена дизеля','tr-f',rng('tr-f',55,85,.5,68.5))+fld('Расход','tr-c',rng('tr-c',20,45,1,32))+fld('Оплата водителю','tr-w',rng('tr-w',8,30,1,14))+fld('Платные дороги в одну сторону','tr-t',rng('tr-t',0,15000,100,5400))+fld('Простой на погрузке','tr-i',rng('tr-i',0,24,1,4))+fld('Ставка клиента','tr-r',rng('tr-r',20,300,1,95))+'</div>'+
     '<div class="card"><h4>Из чего складывается рейс</h4><div class="aging" id="tr-bar" style="height:22px"></div><div class="legend" id="tr-leg"></div></div></div></div>')},
    init:function(){['tr-d','tr-f','tr-c','tr-w','tr-t','tr-i','tr-r'].forEach(function(id){$('#'+id).addEventListener('input',calc)});$('#tr-b').addEventListener('change',function(){back=this.checked;calc();flash($('#tr-k4'))});calc()}};
+})();
+
+/* ===================== СВОЙ ПРОЕКТ КЛИЕНТА ===================== */
+function ownTitle(){return C.p?'«'+esc(C.p)+'»':'ваш проект'}
+var OWN_ST=[['Готово','g'],['В работе','a'],['На проверке','b']];
+var OWN_ROWS=[['Позиция А-01','Объём, ед.',1240,0],['Позиция А-02','Объём, ед.',860,1],['Позиция Б-01','Количество, шт.',312,0],['Позиция Б-02','Количество, шт.',95,2],['Позиция В-01','Объём, ед.',2100,1],['Позиция В-02','Количество, шт.',47,0],['Позиция Г-01','Объём, ед.',530,2],['Позиция Г-02','Количество, шт.',780,0]];
+function ownRoles(){var r=[['me','Я']];if(C.v.indexOf('clients')>-1)r.push(['cl','Заказчик']);if(boss())r.push(['boss','Руководитель']);if(C.v.indexOf('team')>-1)r.push(['team','Коллега']);if(r.length<2)r.push(['cl','Пользователь']);return r}
+function ownMenu(files,used){return '<div class="h">Учебные файлы</div>'+files.map(function(x,i){return '<button data-i="'+i+'"'+(used[i]?' class="on"':'')+'><span class="xls">XLSX</span><span>'+x.lbl+'<small>'+x.f+(used[i]?' · уже загружен':'')+'</small></span></button>'}).join('')}
+
+/* ---- База: таблица → страница ---- */
+COMP.ownpage=(function(){
+  var R,q='',flt='all',view='t',srt=0;
+  function stc(i){return OWN_ST[i]}
+  function xl(){return '<div class="xl"><div class="xlbar"><b>X</b>таблица_проекта.xlsx</div><div class="tblwrap"><table class="xlt"><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td class="rn">1</td><td>Позиция</td><td>Показатель</td><td>Значение</td><td>Статус</td></tr>'+
+    R.map(function(r,i){return '<tr><td class="rn">'+(i+2)+'</td><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+r[2]+'</td><td class="xs" data-i="'+i+'">'+stc(r[3])[0]+'</td></tr>'}).join('')+'</table></div><div class="xltabs"><span class="on">Лист1</span><span>Лист2</span><span>+</span></div></div>'}
+  function list(){var L=R.map(function(r,i){return [r,i]}).filter(function(x){var r=x[0];if(flt!='all'&&String(r[3])!=flt)return false;return !q||(r[0]+' '+r[1]+' '+stc(r[3])[0]).toLowerCase().indexOf(q)>-1});
+    if(srt)L.sort(function(a,b){return (b[0][2]-a[0][2])*srt});return L}
+  function render(flashIt){var L=list();
+    $('#op-xl').innerHTML=xl();
+    $('#op-f').innerHTML=[['all','Все',R.length]].concat(OWN_ST.map(function(s,i){return [String(i),s[0],R.filter(function(r){return r[3]==i}).length]})).map(function(x){return '<button class="fchip'+(flt==x[0]?' on':'')+'" data-f="'+x[0]+'">'+x[1]+'<b>'+x[2]+'</b></button>'}).join('');
+    var body;
+    if(!L.length)body='<div style="color:#6A7783;font-size:13px;padding:10px 0">Ничего не нашлось</div>';
+    else if(view=='t')body='<div class="tblwrap"><table><thead><tr><th>Позиция</th><th>Показатель</th><th class="n sortable" id="op-sort">Значение '+(srt==1?'↓':srt==-1?'↑':'↕')+'</th><th>Статус</th></tr></thead><tbody>'+L.map(function(x){var r=x[0],s=stc(r[3]);return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td class="n">'+f(r[2])+'</td><td><span class="st '+s[1]+'">'+s[0]+'</span></td></tr>'}).join('')+'</tbody></table></div>';
+    else body='<div class="ocards">'+L.map(function(x){var r=x[0],s=stc(r[3]);return '<div class="ocd"><div><b>'+r[0]+'</b><span class="st '+s[1]+'">'+s[0]+'</span></div><small>'+r[1]+'</small><em>'+f(r[2])+'</em></div>'}).join('')+'</div>';
+    $('#op-body').innerHTML=body;
+    var done=R.filter(function(r){return r[3]==0}).length;
+    $('#op-tot').innerHTML='<span>Показано: <b>'+L.length+' из '+R.length+'</b></span><span>Сумма значений: <b>'+f(L.reduce(function(a,x){return a+x[0][2]},0))+'</b></span><span>Готово: <b>'+Math.round(done/R.length*100)+'%</b></span>';
+    $('#op-cnt').textContent=R.length+' позиций';
+    if(flashIt)flash($('#op-body'))}
+  return {html:function(){return res('РЕЗУЛЬТАТ <b>//</b> ТАБЛИЦА → СТРАНИЦА','нажмите статус в Excel, ищите и фильтруйте справа')+
+    win('project.html · из файла таблица_проекта.xlsx','<div class="wbody"><div class="wtitle"><h3>'+cap(ownTitle())+'</h3><div class="tools"><span class="tag">собрано из Excel</span><button class="abtn pri" id="op-pdf">Скачать PDF</button></div></div>'+
+    '<div class="grid2 ownpg"><div class="card"><h4>Было: Excel <span>нажмите на статус</span></h4><div id="op-xl"></div></div>'+
+    '<div class="card"><h4>Стало: страница <span id="op-cnt"></span></h4><div class="optools"><input class="search" id="op-q" placeholder="Поиск по позициям">'+segBtns('op-v',[['t','Таблица'],['c','Карточки']],'t')+'</div><div class="filters" id="op-f"></div><div id="op-body"></div><div class="optot" id="op-tot"></div></div></div></div>')},
+   init:function(){R=OWN_ROWS.map(function(r){return r.slice()});render();
+    $('#op-q').addEventListener('input',function(){q=this.value.trim().toLowerCase();render()});
+    onSeg('op-v',function(k){view=k;render(true)});
+    $('#op-f').addEventListener('click',function(e){var b=e.target.closest('.fchip');if(!b)return;flt=b.dataset.f;render()});
+    $('#op-body').addEventListener('click',function(e){if(e.target.closest('#op-sort')){srt=srt==1?-1:srt==-1?0:1;render()}});
+    $('#op-xl').addEventListener('click',function(e){var c=e.target.closest('.xs');if(!c)return;var r=R[+c.dataset.i];r[3]=(r[3]+1)%OWN_ST.length;render(true);toast('Поменяли статус в Excel: страница обновилась сама')});
+    $('#op-pdf').addEventListener('click',function(){var b=this;b.disabled=true;b.textContent='Собираю PDF…';setTimeout(function(){b.disabled=false;b.textContent='PDF готов ✓';toast('PDF собран: '+list().length+' позиций, итоги внизу страницы')},900)})}};
+})();
+
+/* ---- Практика: данные на сервере ---- */
+COMP.ownsrv=(function(){
+  var FL=[{f:'таблица_12.11.xlsx',lbl:'Добавились новые позиции',add:3,chg:1,del:0,t:'12.11, 10:15'},{f:'таблица_13.11.xlsx',lbl:'Сменились статусы',add:0,chg:4,del:0,t:'13.11, 09:40'},{f:'таблица_14.11.xlsx',lbl:'Убрали дубли',add:0,chg:0,del:2,t:'14.11, 11:05'}];
+  var used=[false,false,false],n=8,ver=1,last='11.11, 18:05',LOG=[],busy=false;
+  function k(){setK('os-k1',String(n),'в одной базе на сервере');setK('os-k2',last,'без ручной загрузки');setK('os-k3',String(ver),'можно вернуть любую');setK('os-k4','актуальна','обновилась сама','up')}
+  function log(){$('#os-log').innerHTML=LOG.map(function(l){return '<tr><td style="white-space:nowrap">'+l[0]+'</td><td>'+l[1]+'</td></tr>'}).join('')}
+  function desc(x){var p=[];if(x.add)p.push('добавлено позиций: '+x.add);if(x.chg)p.push('изменилось: '+x.chg);if(x.del)p.push('удалено дублей: '+x.del);return p.join(', ')}
+  function bot(h,kb){chat('os-msgs',h+(kb?'<div class="kb"><button data-a="open">Открыть страницу</button><button data-a="what">Что именно изменилось?</button></div>':''))}
+  function apply(i){var x=FL[i];used[i]=true;n+=x.add-x.del;ver++;last=x.t;LOG.unshift([x.t,'Загружен '+x.f+': '+desc(x)]);k();log();flash($('#os-log'));
+    typing('os-msgs',900,function(){bot('<div class="h">Обновление: '+cap(ownTitle())+'</div>'+cap(desc(x))+'. Страница уже показывает свежие данные.',true)})}
+  return {html:function(){return res('РЕЗУЛЬТАТ <b>//</b> ДАННЫЕ НА СЕРВЕРЕ','загрузите новый файл и посмотрите, что напишет бот')+
+    win('server · хранилище проекта','<div class="wbody"><div class="wtitle"><h3>Хранилище проекта</h3><div class="tools"><span class="tag live">сервер · онлайн</span><div class="dd"><button class="abtn pri" id="os-load">Загрузить новый файл ▾</button><div class="ddm" id="os-files"></div></div></div></div>'+
+    '<div class="kpis">'+kpi('os-k1','Позиций в базе')+kpi('os-k2','Последнее обновление')+kpi('os-k3','Версий сохранено')+kpi('os-k4','Страница проекта')+'</div>'+
+    '<div class="grid2"><div class="card"><h4>Журнал изменений <span>новые сверху</span></h4><div class="tblwrap"><table><thead><tr><th>Когда</th><th>Что изменилось</th></tr></thead><tbody id="os-log"></tbody></table></div><label class="switch"><input type="checkbox" id="os-auto"><i></i>Забирать файл из папки автоматически, каждый час</label></div>'+
+    '<div class="phone"><div class="phead"><div class="ava">П</div><div><b>Проект · уведомления</b><span>бот · в сети</span></div></div><div class="msgs" id="os-msgs" style="height:300px"></div></div></div></div>')},
+   init:function(){LOG=[['11.11, 18:05','Загружен таблица_11.11.xlsx: 8 позиций']];k();log();
+    bot('Здравствуйте, '+esc(C.n)+'! Я слежу за данными проекта и напишу, как только что-то поменяется.');
+    $('#os-load').addEventListener('click',function(e){e.stopPropagation();$('#os-files').innerHTML=ownMenu(FL,used);$('#os-files').classList.toggle('on')});
+    document.addEventListener('click',function(e){if(!e.target.closest('#os-load')&&!e.target.closest('#os-files'))$('#os-files').classList.remove('on')});
+    $('#os-files').addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(!b||busy)return;var i=+b.dataset.i;$('#os-files').classList.remove('on');if(used[i]){toast('Этот файл уже на сервере, дубля не будет');return}
+      var btn=$('#os-load');busy=true;btn.disabled=true;btn.textContent='Загружаю '+FL[i].f+'…';setTimeout(function(){busy=false;btn.disabled=false;btn.textContent='Загрузить новый файл ▾';apply(i)},900)});
+    $('#os-auto').addEventListener('change',function(){if(this.checked){LOG.unshift(['сейчас','Включена автозагрузка из папки: раз в час']);log();toast('Теперь файл можно просто класть в папку, сервер заберёт его сам')}else toast('Автозагрузка выключена')});
+    $('#os-msgs').addEventListener('click',function(e){var b=e.target.closest('.kb button');if(!b)return;var kb=b.parentNode;if(kb.classList.contains('used'))return;kb.classList.add('used');chat('os-msgs',b.textContent,'me');
+      if(b.dataset.a=='open'){typing('os-msgs',700,function(){chat('os-msgs','Ссылка на страницу: project.ваш-домен.ru. Там уже свежая версия.')});return}
+      var last=LOG[0];typing('os-msgs',800,function(){chat('os-msgs','<div class="h">Изменения</div>'+(last?last[1]:'')+'<br>Старая версия сохранена, её можно вернуть одной кнопкой.')})})}};
+})();
+
+/* ---- Профи: сервис по ссылке ---- */
+COMP.ownsvc=(function(){
+  var role='me',R,slide=0,demo=false;
+  var SL=[['Было','Excel-файл, который пересылают по почте. Версий много, какая последняя, непонятно.'],['Стало','Страница по ссылке: поиск, фильтры, итоги и PDF в один клик.'],['Данные','Всё хранится на сервере в одной базе, обновляется само, бот сообщает об изменениях.'],['Доступ','Каждый заходит по своему логину и видит своё. Данные защищены по 152-ФЗ.']];
+  function nm(r){return demo?'Позиция '+String.fromCharCode(1040+r[4])+'-•••':r[0]}
+  function view(){var el=$('#ov-main'),rs=ownRoles(),lbl=(rs.filter(function(x){return x[0]==role})[0]||rs[0])[1];
+    $('#ov-un').textContent=role=='me'?C.n:lbl;$('#ov-ur').textContent=role=='me'?'полный доступ':'только просмотр';$('#ov-app').classList.toggle('ro',role!='me');
+    var done=R.filter(function(r){return r[3]==0}).length,pc=Math.round(done/R.length*100);
+    if(role=='me')el.innerHTML='<div class="vh"><div><h3>Все данные проекта</h3><div class="s">нажмите на статус, чтобы поменять его</div></div><span class="tag live">данные онлайн</span></div><div class="card tblwrap"><table><thead><tr><th>Позиция</th><th class="n">Значение</th><th>Статус</th><th>Видит</th></tr></thead><tbody>'+
+      R.map(function(r,i){var s=OWN_ST[r[3]];return '<tr><td>'+nm(r)+'</td><td class="n">'+f(r[2])+'</td><td><button class="st '+s[1]+' stb" data-i="'+i+'">'+s[0]+'</button></td><td style="font-size:12px;color:#6A7783">'+(r[5]?'все':'вы'+(rs.length>1?' и '+rs[1][1].toLowerCase():''))+'</td></tr>'}).join('')+'</tbody></table></div>';
+    else if(role=='boss')el.innerHTML='<div class="vh"><div><h3>Сводка по проекту</h3><div class="s">руководитель видит итоги, без правок</div></div></div><div class="kpis"><div class="kpi"><div class="l">Позиций</div><div class="v">'+R.length+'</div></div><div class="kpi"><div class="l">Готово</div><div class="v up">'+pc+'%</div><div class="prog"><i style="width:'+pc+'%"></i></div></div><div class="kpi"><div class="l">На проверке</div><div class="v">'+R.filter(function(r){return r[3]==2}).length+'</div></div><div class="kpi"><div class="l">В работе</div><div class="v">'+R.filter(function(r){return r[3]==1}).length+'</div></div></div><button class="abtn pri" id="ov-pdf">Скачать сводку в PDF</button>';
+    else{var my=R.filter(function(r){return r[5]});el.innerHTML='<div class="vh"><div><h3>Мои позиции</h3><div class="s">'+lbl.toLowerCase()+' видит только то, что открыто для него</div></div></div><div class="card docs">'+my.map(function(r){var s=OWN_ST[r[3]];return '<div class="d"><span>'+nm(r)+'<br><small style="color:#6A7783">'+r[1]+': '+f(r[2])+'</small></span><span class="st '+s[1]+'">'+s[0]+'</span></div>'}).join('')+'</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="abtn pri" id="ov-pdf">Скачать PDF</button><button class="abtn" id="ov-ask">Задать вопрос</button></div>'}
+  }
+  function sl(){var s=SL[slide];$('#ov-sl').innerHTML='<div class="dl">'+(slide+1)+' / '+SL.length+' · '+s[0].toUpperCase()+'</div><p>'+s[1]+'</p>';$$('#ov-dots i').forEach(function(x,i){x.classList.toggle('on',i==slide)})}
+  return {html:function(){var rs=ownRoles();
+    return res('РЕЗУЛЬТАТ <b>//</b> СЕРВИС ПО ССЫЛКЕ','войдите и переключайте, кто смотрит')+
+    win('project.ваш-домен.ru · защищённый вход','<div id="ov-login" class="ologin"><div class="obox"><div class="lg"><i></i>'+cap(ownTitle())+'</div><label>Логин</label><input id="ov-l" value="'+esc(C.n.toLowerCase())+'@project" readonly><label>Пароль</label><input type="password" value="demo-password" readonly><button class="abtn pri" id="ov-in">Войти</button><small>● 152-ФЗ · данные на сервере в России</small></div></div>'+
+     '<div id="ov-app" style="display:none"><div class="rolebar"><span>Смотреть как:</span>'+segBtns('ov-role',rs,'me')+'<span class="ro-note">только просмотр</span></div>'+
+     '<div class="app" id="ovwin"><aside class="side"><div class="lg"><i></i>'+cap(ownTitle())+'</div><div class="usr"><b id="ov-un"></b><span id="ov-ur"></span><br><span class="lock">● защищённый вход</span></div></aside><div class="main"><div id="ov-main"></div>'+
+     '<div class="card odemo"><h4>Демо для презентации <span>'+(boss()?'для руководителя':'для показа проекта')+'</span></h4><div id="ov-sl" class="osl"></div><div class="odn"><button class="abtn" id="ov-prev">←</button><div class="odots" id="ov-dots">'+SL.map(function(){return '<i></i>'}).join('')+'</div><button class="abtn pri" id="ov-next">Дальше →</button></div><label class="switch"><input type="checkbox" id="ov-demo"><i></i>Скрыть реальные названия на показе</label></div></div></div></div>','ovwrap')},
+   init:function(){R=OWN_ROWS.map(function(r,i){return r.concat([i,i%2==0])});
+    $('#ov-in').addEventListener('click',function(){var b=this;b.textContent='Проверяю доступ…';b.disabled=true;setTimeout(function(){$('#ov-login').style.display='none';$('#ov-app').style.display='block';view();sl();toast('Вход выполнен: у каждого свой логин и свои права')},700)});
+    onSeg('ov-role',function(k){role=k;view();flash($('#ov-main'))});
+    $('#ov-main').addEventListener('click',function(e){var b=e.target.closest('.stb');if(b){var r=R[+b.dataset.i];r[3]=(r[3]+1)%OWN_ST.length;view();toast('Статус обновлён: '+(ownRoles()[1]||['','другие'])[1].toLowerCase()+' сразу видит новый')}
+      if(e.target.id=='ov-pdf')toast('PDF скачан, без писем и пересылки файлов');if(e.target.id=='ov-ask')toast('Вопрос пришёл вам в Telegram')});
+    $('#ov-prev').addEventListener('click',function(){slide=(slide+SL.length-1)%SL.length;sl()});
+    $('#ov-next').addEventListener('click',function(){slide=(slide+1)%SL.length;sl()});
+    $('#ov-demo').addEventListener('change',function(){demo=this.checked;if($('#ov-app').style.display!='none')view();toast(demo?'Названия скрыты: можно показывать на презентации':'Показываются реальные данные')})}};
 })();
 
 /* ===================== ПОДБОР АРТЕФАКТОВ ===================== */
